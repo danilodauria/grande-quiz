@@ -1,0 +1,180 @@
+{
+  "meta": {
+    "title": "FeniceOS — Tecnologia Gentile per Tutte le Età",
+    "subtitle": "Presentazione interattiva per la lezione in aula",
+    "author": "Danilo D'Auria"
+  },
+  "parts": [
+    {"roman":"I","title":"Fondamenta","color":"green","chapters":[1,2,3,4]},
+    {"roman":"II","title":"FeniceOS: il progetto","color":"warm","chapters":[5,6,7,8]},
+    {"roman":"III","title":"Didattica","color":"blue","chapters":[9,10,11,12]},
+    {"roman":"IV","title":"L'universo informatico: ieri, oggi, domani","color":"purple","chapters":[13,14,15]}
+  ],
+  "chapters": [
+    {
+      "num": 1, "part": "I", "color": "green",
+      "title": "Tecnologia Gentile: la filosofia che ci guida",
+      "bullets": [
+        "Comprensibilità — si spiega da sé, nessun gergo oscuro",
+        "Accessibilità — non esclude per età, reddito o disabilità",
+        "Sostenibilità — pensata per durare, essere riparata, aggiornata",
+        "Rispetto — accompagna, non infantilizza né pretende troppo"
+      ],
+      "callout": "Gentile non significa \"meno potente\": significa progettato con intenzione."
+    },
+    {
+      "num": 2, "part": "I", "color": "green",
+      "title": "Economia circolare e informatica",
+      "bullets": [
+        "Dal modello lineare (estrai, produci, getta) al circolare",
+        "Riduci → riusa → ripara → rigenera → ricicla",
+        "FeniceOS gira anche con meno di 500 MB di RAM",
+        "Un PC \"troppo lento\" spesso è solo vittima del software sbagliato"
+      ],
+      "callout": "Il problema raramente è l'hardware: è cosa gli si chiede di far girare."
+    },
+    {
+      "num": 3, "part": "I", "color": "green",
+      "title": "Etica del digitale: un'informatica inclusiva",
+      "bullets": [
+        "Domanda guida: a chi serve? Chi rischia di restarne escluso?",
+        "Inclusione per età e per condizione economica",
+        "Trasparenza — software libero, verificabile da chiunque",
+        "Autonomia — rendere le persone indipendenti, non dipendenti"
+      ],
+      "callout": "Un sistema tecnicamente perfetto ma inaccessibile non è neutrale: è una scelta."
+    },
+    {
+      "num": 4, "part": "I", "color": "green",
+      "title": "L'obsolescenza programmata",
+      "bullets": [
+        "Tre forme: tecnica, software (la più rilevante), percepita/psicologica",
+        "Tre impatti: ambientale (e-waste), economico, sociale",
+        "Come si combatte: software libero e leggero, riparabilità, riuso",
+        "FeniceOS è la risposta tecnica concreta a questo problema"
+      ],
+      "callout": "Un dispositivo \"vecchio\" e uno \"rotto\" sono due cose diverse."
+    },
+    {
+      "num": 5, "part": "II", "color": "warm",
+      "title": "Cos'è FeniceOS: presentazione del progetto",
+      "bullets": [
+        "Distribuzione Linux live, ideata e sviluppata da Danilo D'Auria",
+        "Come la fenice: rinasce dalle ceneri, dà nuova vita all'hardware",
+        "Costruita su base Debian 12 \"Bookworm\"",
+        "Per chi: centri anziani, scuole, centri per il sociale"
+      ],
+      "callout": "Non è un sistema \"per anziani\" semplificato: è un sistema completo, reso accessibile."
+    },
+    {
+      "num": 6, "part": "II", "color": "warm",
+      "title": "Come funziona FeniceOS",
+      "bullets": [
+        "Sistema \"live\": parte da chiavetta USB, non tocca il disco fisso",
+        "Pipeline di build: debootstrap → chroot → squashfs → xorriso",
+        "Obiettivo: funzionare anche con meno di 500 MB di RAM",
+        "Compatibile sia con BIOS sia con UEFI"
+      ],
+      "callout": "Live, leggero, compatibile: tre caratteristiche, un solo risultato — accessibilità reale."
+    },
+    {
+      "num": 7, "part": "II", "color": "warm",
+      "title": "FeniceOS per i centri anziani",
+      "bullets": [
+        "Obiettivo: autonomia quotidiana — email, videochiamate, documenti",
+        "Obiettivo sociale: socialità, autostima, contrasto all'isolamento",
+        "Nessun rischio percepito di \"rompere qualcosa\" (sistema live)",
+        "Ritmo rispettato: piccoli passi, ripetizione, rinforzo positivo"
+      ],
+      "callout": "Il successo si misura in autonomia e fiducia ritrovate, non in competenze tecniche."
+    },
+    {
+      "num": 8, "part": "II", "color": "warm",
+      "title": "FeniceOS per la scuola e i centri sociali",
+      "bullets": [
+        "Hardware dismesso → laboratorio funzionante, anche a budget zero",
+        "Introduce economia circolare e software libero in modo pratico",
+        "Nei centri sociali: inclusione digitale come inclusione sociale",
+        "Rimuove il vincolo dei costi, non sostituisce le scelte didattiche"
+      ],
+      "callout": "L'inclusione digitale comincia con l'accesso a uno strumento funzionante."
+    },
+    {
+      "num": 9, "part": "III", "color": "blue",
+      "title": "Primi passi con il computer",
+      "bullets": [
+        "Le parti del PC: schermo, tastiera, mouse, unità centrale",
+        "Accendere, avviare da USB, spegnere sempre dal menu",
+        "Il mouse: clic, doppio clic, tasto destro, trascinamento",
+        "Aprire/chiudere programmi, scrivere e salvare un primo testo"
+      ],
+      "callout": "Le prime lezioni servono a costruire fiducia, non velocità."
+    },
+    {
+      "num": 10, "part": "III", "color": "blue",
+      "title": "Usare FeniceOS: guida pratica passo-passo",
+      "bullets": [
+        "Avviare da USB (F12 / F2 / Esc / Canc all'accensione)",
+        "Navigare in internet, gestire la posta elettronica",
+        "Fare una videochiamata — spesso l'obiettivo più desiderato",
+        "Scrivere e salvare documenti, gestire le foto, spegnere dal menu"
+      ],
+      "callout": "Ogni lezione parte da un obiettivo concreto: \"oggi impariamo a fare una videochiamata\"."
+    },
+    {
+      "num": 11, "part": "III", "color": "blue",
+      "title": "Funzioni avanzate: per utenti esperti",
+      "bullets": [
+        "Il terminale: comandi diretti al sistema, precisione e velocità",
+        "Personalizzazione dell'ambiente grafico",
+        "Gestione software con APT: centralizzata e sicura",
+        "Sicurezza: phishing, password robuste, autenticazione a due fattori"
+      ],
+      "callout": "L'approfondimento parte sempre dall'interesse dell'utente, mai imposto dall'alto."
+    },
+    {
+      "num": 12, "part": "III", "color": "blue",
+      "title": "Consigli per chi insegna",
+      "bullets": [
+        "Rispettare i tempi: la ripetizione è fisiologica, non un limite",
+        "Linguaggio semplice ma mai infantilizzante",
+        "Piccoli passi, obiettivi concreti; normalizzare l'errore",
+        "Quiz come momento ludico, non come esame"
+      ],
+      "callout": "Il compito di chi insegna è costruire fiducia duratura con la tecnologia."
+    },
+    {
+      "num": 13, "part": "IV", "color": "purple",
+      "title": "Storia dell'informatica: dalle origini al PC",
+      "bullets": [
+        "Dalle origini: abaco, Babbage, Ada Lovelace e il primo algoritmo",
+        "Anni '40: ENIAC, e Turing con la macchina universale",
+        "Anni '70-'80: la rivoluzione del personal computer",
+        "1991: Linus Torvalds rende pubblico Linux"
+      ],
+      "callout": "FeniceOS eredita da questa storia i principi tecnici ed etici del software libero."
+    },
+    {
+      "num": 14, "part": "IV", "color": "purple",
+      "title": "L'informatica di oggi",
+      "bullets": [
+        "Internet oggi: infrastruttura pervasiva come elettricità e acqua",
+        "Cloud computing: dati e programmi su server remoti",
+        "Centralità del mobile — ma il PC resta insostituibile per molti compiti",
+        "Sicurezza e privacy: competenze di cittadinanza digitale di base"
+      ],
+      "callout": "Il divario digitale non è solo una questione di età anagrafica."
+    },
+    {
+      "num": 15, "part": "IV", "color": "purple",
+      "title": "Il futuro e l'intelligenza artificiale",
+      "bullets": [
+        "Cos'è: sistemi statistici addestrati su dati, non \"coscienza\"",
+        "Opportunità: assistenti vocali, traduzione, materiali personalizzati",
+        "Rischi: scatole nere, disinformazione, impatto ambientale",
+        "Un approccio equilibrato: critico e informato, mai acritico"
+      ],
+      "callout": "Le scelte di oggi determinano quale futuro digitale costruiamo, e per chi."
+    }
+  ]
+}

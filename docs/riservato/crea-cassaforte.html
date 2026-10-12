@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Crea la cassaforte · Il Grande Quiz dell'Informatica</title>
+<meta name="author" content="Danilo D'Auria">
+<meta name="robots" content="noindex">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/stile.css">
+<link rel="stylesheet" href="riservato.css">
+</head>
+<body>
+<div id="gq-barra"></div>
+<main class="stretto crea">
+  <div class="crea-testa"><span class="occhiello">Solo per Danilo D'Auria</span><h1>Crea la cassaforte delle soluzioni</h1>
+    <p>Questo strumento lavora <b>solo nel vostro browser</b>: la password e il collegamento con Google Authenticator non escono mai da questo computer
+      e nessuno li conosce, nemmeno chi ha preparato il programma. Alla fine si scarica il file <code>cassaforte.bin</code>, già cifrato, da mettere nel sito.</p></div>
+
+  <ol class="crea-passi">
+    <li class="scheda" id="p1"><h2><span class="num">1</span> Il contenuto riservato</h2>
+      <p>Scegliete il file <code>contenuto-riservato.json</code> che trovate nella cartella privata <b>grande-quiz-PRIVATO</b> (mai metterlo su GitHub).</p>
+      <label class="bt bt-chiaro file-bt"><svg class="ico" viewBox="0 0 24 24"><path d="M12 15V4M7.5 8.5 12 4l4.5 4.5M4.5 16.5v2a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-2"/></svg>
+        Scegli contenuto-riservato.json<input type="file" id="fcont" accept=".json,application/json" hidden></label>
+      <div id="cont-esito" class="esito"></div></li>
+
+    <li class="scheda" id="p2"><h2><span class="num">2</span> Google Authenticator</h2>
+      <div class="segmenti" role="radiogroup"><button type="button" class="seg seg-on" data-auth="nuovo" aria-pressed="true">Primo collegamento</button>
+        <button type="button" class="seg" data-auth="vecchio" aria-pressed="false">Tengo il collegamento di prima</button></div>
+      <div id="auth-nuovo">
+        <ol class="mini"><li>Sul telefono aprite <b>Google Authenticator</b> e toccate <b>+</b> → <b>Scansiona un codice QR</b>.</li>
+          <li>Inquadrate il codice qui sotto: comparirà la voce <b>GrandeQuiz (Danilo)</b> con 6 cifre che cambiano ogni 30 secondi.</li>
+          <li>Scrivete qui le 6 cifre che vedete in questo momento, per controllare che il collegamento funzioni.</li></ol>
+        <div class="qr-blocco"><div id="qr" class="qr"></div><div><p class="piccolo">Se non riuscite a inquadrare, scegliete <b>Inserisci una chiave di configurazione</b>, nome <b>GrandeQuiz</b>, chiave:</p>
+          <p class="segreto" id="segreto"></p><p class="piccolo">Tipo: <b>basata sull'ora</b>.</p></div></div>
+        <label class="campo codice"><span>Codice di 6 cifre mostrato dall'app</span><input id="totp1" inputmode="numeric" autocomplete="one-time-code" maxlength="7" placeholder="123 456"></label>
+        <div id="totp-esito" class="esito"></div>
+        <div class="emergenza"><h3>Il codice di emergenza</h3><p>Se un giorno perdete il telefono, al posto delle 6 cifre potrete usare questo codice. <b>Scrivetelo a mano</b> o stampate questa pagina, e conservatelo insieme al libretto.</p>
+          <p class="segreto grande" id="emergenza"></p>
+          <label class="spunta"><input type="checkbox" id="emerg-ok"><span>L'ho scritto e lo conservo in un posto sicuro</span></label></div>
+      </div>
+      <div id="auth-vecchio" hidden>
+        <p>Scegliete la <b>cassaforte.bin di prima</b> e scrivete la <b>vecchia password</b>: il collegamento con Authenticator e il codice di emergenza restano gli stessi.</p>
+        <label class="bt bt-chiaro file-bt">Scegli la cassaforte.bin di prima<input type="file" id="fvecchia" accept=".bin" hidden></label>
+        <label class="campo"><span>Vecchia password</span><input type="password" id="pwvecchia" autocomplete="off"></label>
+        <button class="bt bt-scuro" id="apri-vecchia" type="button">Leggi il collegamento di prima</button>
+        <div id="vecchia-esito" class="esito"></div>
+      </div></li>
+
+    <li class="scheda" id="p3"><h2><span class="num">3</span> La password</h2>
+      <p>È il vero lucchetto: senza di lei le soluzioni sono illeggibili. Usate una <b>frase lunga</b> che ricordate bene, per esempio quattro o cinque parole
+        con un numero (almeno 12 caratteri). <b>Non c'è modo di recuperarla</b>: se la dimenticate, rifate la cassaforte con questo strumento.</p>
+      <div class="griglia-2"><label class="campo"><span>Password</span><input type="password" id="pw1" autocomplete="new-password"></label>
+        <label class="campo"><span>Ripetete la password</span><input type="password" id="pw2" autocomplete="new-password"></label></div>
+      <label class="spunta"><input type="checkbox" id="mostra"><span>Mostra la password mentre scrivo</span></label>
+      <div class="forza"><span id="forza-barra"></span></div><p id="forza-testo" class="piccolo"></p></li>
+
+    <li class="scheda" id="p4"><h2><span class="num">4</span> Crea e scarica</h2>
+      <button class="bt bt-primario bt-grande" id="crea" type="button" disabled><svg class="ico" viewBox="0 0 24 24"><rect x="4.5" y="10.5" width="15" height="10.5" rx="2.5"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3M12 14.5v2.5"/></svg> Crea la cassaforte</button>
+      <p id="crea-mancano" class="piccolo"></p>
+      <div id="crea-esito" class="esito"></div>
+      <div id="dopo" hidden class="dopo"><h3>Ultimo passo: metterla nel sito</h3><ol>
+        <li>Copiate il file scaricato <code>cassaforte.bin</code> nella cartella <code>Documenti\GitHub\grande-quiz\docs\riservato\</code> (sostituite quello vecchio, se c'è).</li>
+        <li>In <b>GitHub Desktop</b>: scrivete «Nuova cassaforte» in basso a sinistra, <b>Commit to main</b>, poi <b>Push origin</b>.</li>
+        <li>Dopo 1–2 minuti aprite l'<b>Area riservata</b> del sito e provate: password, poi le 6 cifre di Authenticator.</li></ol></div></li>
+  </ol>
+</main>
+<div id="gq-piede"></div>
+<script src="../assets/comune.js"></script>
+<script src="../assets/qr.js"></script>
+<script src="../assets/cassaforte.js"></script>
+<script>
+(function () {
+  "use strict";
+  var $ = GQ.$, C = GQC;
+  GQ.monta("../", "riservato/");
+  if (!C.disponibile()) { document.querySelector(".crea").innerHTML = "<div class='scheda'><h2>Browser non adatto</h2><p>Serve un browser recente (Chrome, Edge, Firefox o Safari aggiornati).</p></div>"; return; }
+  var stato = { contenuto: null, segreto: C.nuovoSegreto(), emergenza: C.codiceEmergenza(), emergenzaHash: null, totpOk: false, modo: "nuovo", vecchio: null };
+
+  function esito(id, testo, tipo) { var e = $("#" + id); e.className = "esito " + (tipo || ""); e.innerHTML = testo; }
+  function mostraNuovo() {
+    $("#qr").innerHTML = window.PD && PD.qr ? PD.qr.svg(C.uri(stato.segreto), 220) : "";
+    $("#segreto").textContent = stato.segreto.replace(/(.{4})/g, "$1 ").trim();
+    $("#emergenza").textContent = stato.emergenza;
+  }
+  mostraNuovo();
+
+  $("#fcont").onchange = function (e) {
+    var f = e.target.files[0]; if (!f) return;
+    var r = new FileReader();
+    r.onload = function () {
+      try {
+        var c = JSON.parse(r.result);
+        if (c.tipo !== "grande-quiz-contenuto-riservato") throw new Error("non è il contenuto riservato del Grande Quiz");
+        stato.contenuto = c;
+        esito("cont-esito", "✔ Contenuto letto: " + Object.keys(c.chiavi.grande || {}).length + " soluzioni del Grande Quiz, " + Object.keys(c.chiavi.manuale || {}).length +
+          " del Quiz del Manuale, " + Object.keys(c.pagine || {}).length + " pagine e " + Object.keys(c.pdf || {}).length + " PDF riservati (versione " + GQ.esc(c.versione) + ").", "ok");
+      } catch (err) { stato.contenuto = null; esito("cont-esito", "✘ File non valido: " + GQ.esc(err.message), "errore"); }
+      controlla();
+    };
+    r.readAsText(f);
+  };
+
+  Array.prototype.forEach.call(document.querySelectorAll("[data-auth]"), function (b) {
+    b.onclick = function () {
+      stato.modo = b.getAttribute("data-auth");
+      Array.prototype.forEach.call(document.querySelectorAll("[data-auth]"), function (x) { var on = x === b; x.classList.toggle("seg-on", on); x.setAttribute("aria-pressed", on); });
+      $("#auth-nuovo").hidden = stato.modo !== "nuovo"; $("#auth-vecchio").hidden = stato.modo !== "vecchio"; controlla();
+    };
+  });
+  $("#totp1").oninput = function () {
+    var v = this.value.replace(/\D/g, "");
+    if (v.length < 6) { stato.totpOk = false; esito("totp-esito", ""); controlla(); return; }
+    C.verificaTotp(stato.segreto, v).then(function (ok) {
+      stato.totpOk = ok;
+      esito("totp-esito", ok ? "✔ Collegamento riuscito: Google Authenticator è pronto." : "✘ Il codice non corrisponde. Controllate di aver inquadrato questo QR e che l'ora del telefono e del computer sia giusta.", ok ? "ok" : "errore");
+      controlla();
+    });
+  };
+  $("#emerg-ok").onchange = controlla;
+
+  var vecchiaBytes = null;
+  $("#fvecchia").onchange = function (e) { var f = e.target.files[0]; if (!f) return; var r = new FileReader(); r.onload = function () { vecchiaBytes = new Uint8Array(r.result); }; r.readAsArrayBuffer(f); };
+  $("#apri-vecchia").onclick = function () {
+    if (!vecchiaBytes) { esito("vecchia-esito", "Scegliete prima il file.", "errore"); return; }
+    esito("vecchia-esito", "Apro la vecchia cassaforte…");
+    C.apri(vecchiaBytes, $("#pwvecchia").value).then(function (o) {
+      if (!o.sicurezza || !o.sicurezza.totp) throw new Error("manca il collegamento");
+      stato.vecchio = o.sicurezza;
+      esito("vecchia-esito", "✔ Collegamento di prima letto: Authenticator e codice di emergenza restano gli stessi.", "ok"); controlla();
+    }).catch(function (err) { stato.vecchio = null; esito("vecchia-esito", err.password ? "✘ Password non corretta." : "✘ " + GQ.esc(err.message), "errore"); controlla(); });
+  };
+
+  function forza(p) {
+    var punti = 0;
+    if (p.length >= 12) punti++; if (p.length >= 16) punti++; if (p.length >= 22) punti++;
+    if (/[a-z]/.test(p) && /[A-Z]/.test(p)) punti++; if (/\d/.test(p)) punti++; if (/[^A-Za-z0-9]/.test(p)) punti++;
+    if (/(.)\1{3,}/.test(p) || /^(password|123456|qwerty)/i.test(p)) punti = Math.min(punti, 1);
+    return p.length < 12 ? Math.min(punti, 1) : punti;
+  }
+  function aggiornaForza() {
+    var p = $("#pw1").value, f = forza(p), pct = Math.min(100, f / 6 * 100);
+    var b = $("#forza-barra"); b.style.width = pct + "%"; b.className = f >= 4 ? "ok" : f >= 3 ? "media" : "debole";
+    $("#forza-testo").textContent = !p ? "" : p.length < 12 ? "Troppo corta: almeno 12 caratteri." : f >= 4 ? "Ottima." : f >= 3 ? "Accettabile: allungatela un po' per stare più tranquilli." : "Debole: usate una frase più lunga, con un numero.";
+    controlla();
+  }
+  $("#pw1").oninput = aggiornaForza; $("#pw2").oninput = controlla;
+  $("#mostra").onchange = function () { $("#pw1").type = $("#pw2").type = this.checked ? "text" : "password"; };
+
+  function mancano() {
+    var m = [], p = $("#pw1").value;
+    if (!stato.contenuto) m.push("il contenuto riservato (passo 1)");
+    if (stato.modo === "nuovo" && !stato.totpOk) m.push("il codice di Authenticator (passo 2)");
+    if (stato.modo === "nuovo" && !$("#emerg-ok").checked) m.push("la conferma del codice di emergenza (passo 2)");
+    if (stato.modo === "vecchio" && !stato.vecchio) m.push("il collegamento di prima (passo 2)");
+    if (p.length < 12 || forza(p) < 3) m.push("una password più robusta (passo 3)");
+    else if (p !== $("#pw2").value) m.push("le due password uguali (passo 3)");
+    return m;
+  }
+  function controlla() { var m = mancano(); $("#crea").disabled = m.length > 0; $("#crea-mancano").textContent = m.length ? "Manca ancora: " + m.join(", ") + "." : "Tutto pronto."; }
+  controlla();
+
+  $("#crea").onclick = function () {
+    var bt = this; bt.disabled = true; esito("crea-esito", "Cifratura in corso (qualche secondo)…");
+    var sic = stato.modo === "vecchio" ? Promise.resolve(stato.vecchio)
+      : C.sha256(stato.emergenza.replace(/[^A-Z0-9]/g, "")).then(function (h) { return { totp: stato.segreto, emergenzaHash: h, collegato: new Date().toISOString() }; });
+    var pw = $("#pw1").value, oggetto;
+    sic.then(function (s) {
+      oggetto = JSON.parse(JSON.stringify(stato.contenuto)); oggetto.sicurezza = s;
+      return C.chiudi(oggetto, pw);
+    }).then(function (u8) {
+      return C.apri(u8, pw).then(function (prova) {                 // prova subito di riaprirla
+        if (!prova.sicurezza || prova.sicurezza.totp !== oggetto.sicurezza.totp) throw new Error("verifica non riuscita");
+        GQ.scaricaFile("cassaforte.bin", new Blob([u8], { type: "application/octet-stream" }));
+        esito("crea-esito", "✔ Cassaforte creata e verificata (" + (u8.length / 1e6).toFixed(1) + " MB): il file <b>cassaforte.bin</b> è nella cartella Download.", "ok");
+        $("#dopo").hidden = false; $("#pw1").value = $("#pw2").value = ""; bt.disabled = false;
+      });
+    }).catch(function (err) { esito("crea-esito", "✘ Errore: " + GQ.esc(err.message), "errore"); bt.disabled = false; });
+  };
+  window._gqCrea = stato;
+})();
+</script>
+</body>
+</html>

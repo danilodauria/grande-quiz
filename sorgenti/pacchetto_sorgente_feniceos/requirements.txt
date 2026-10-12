@@ -1,0 +1,4 @@
+Markdown>=3.4
+beautifulsoup4>=4.11
+pypdf>=3.0
+reportlab>=4.0

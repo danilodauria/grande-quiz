@@ -1,0 +1,179 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><style>@page { size: A4; margin: 0; }
+* { box-sizing: border-box; }
+/* NOTA TECNICA: questo motore di stampa applica internamente un fattore di
+   auto-adattamento che riduce tutte le misure fisiche (mm/px) di circa il
+   23%, causando margini asimmetrici e testo più piccolo del dichiarato.
+   Il seguente "zoom" compensa esattamente questo effetto, cosicché ogni
+   misura in mm/px nel foglio di stile corrisponda alla sua dimensione
+   fisica reale sulla pagina stampata. NON RIMUOVERE. */
+html { margin:0; padding:0; zoom: 1.302; }
+body { margin:0; padding:0; }
+body {
+  font-family: "DejaVu Sans", "Liberation Sans", sans-serif;
+  color: #201c18;
+  font-size: 18.5px;
+  line-height: 1.72;
+  background: #ffffff;
+}
+h1,h2,h3,h4 { font-family: "DejaVu Serif", "Liberation Serif", serif; font-weight: bold; margin: 0; }
+p { margin: 0 0 13px 0; text-align: justify; orphans: 3; widows: 3; }
+* { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+strong { color: #1b3a4b; }
+a { color: inherit; text-decoration: none; }
+.cover strong, .backcover strong { color: #b5602f; }
+
+/* ---------- utility page ---------- */
+.page {
+  width: 210mm; position: relative;
+  padding: 10mm;
+  page-break-after: always;
+  background: #ffffff;
+  overflow: hidden;
+}
+.page:last-child { page-break-after: auto; }
+/* pagine "singole" (frontespizio, prefazione, indice, divisori) devono riempire un intero foglio */
+.page.fill { min-height: 297mm; }
+
+/* ---------- COVER ---------- */
+.cover {
+  width: 210mm; height: 297mm; position: relative;
+  background: #ffffff;
+  page-break-after: always;
+  overflow: hidden;
+}
+.cover-inner { position:relative; z-index:2; height:100%; width:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; padding: 26mm 22mm; text-align:center; color:#201c18; margin:0 auto; }
+.cover-kicker { letter-spacing: 4px; font-size: 14px; text-transform: uppercase; color: #b5602f; margin-bottom: 18px; font-weight:bold;}
+.cover-mark { margin: 6px 0 26px 0; }
+.cover-title { font-family: "DejaVu Serif", serif; font-size: 56px; font-weight:bold; line-height:1.14; margin-bottom: 18px; color:#1b3a4b; }
+.cover-title .accent { color:#d9752f; }
+.cover-subtitle { font-size: 20px; max-width: 470px; line-height:1.55; color:#4a4137; margin: 0 auto 34px auto; }
+.cover-divider { width:72px; height:4px; background:#d9752f; border-radius:3px; margin: 4px auto 30px auto; }
+.cover-author { font-size: 17px; letter-spacing:1px; color:#1b3a4b; font-weight:bold; }
+.cover-author small { display:block; font-size:14px; color:#6b5f52; margin-top:6px; letter-spacing:0.5px; font-weight:normal; }
+
+/* ---------- BACK COVER ---------- */
+.backcover {
+  width:210mm; height:297mm; position:relative;
+  background: #ffffff;
+  color:#201c18; page-break-after: auto; overflow:hidden;
+}
+.backcover-inner { position:relative; z-index:2; height:100%; width:100%; padding:15mm 22mm; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; }
+.backcover .mark-small { margin: 0 auto 10px auto; }
+.backcover h3 { font-family:"DejaVu Serif",serif; font-size:20px; color:#1b3a4b; margin-bottom:8px; line-height:1.28; }
+.backcover .blurb { margin-top: 3mm; max-width:155mm; }
+.backcover p { color:#2e2822; font-size:14.5px; line-height:1.48; text-align: justify; margin-bottom:9px;}
+.backcover .author-line { margin-top:14px; padding-top:8px; border-top:1px solid #e7dcc4; font-size:12px; line-height:1.4; color:#4a4137; font-style:italic; max-width:155mm; text-align:center; }
+.backcover .isbn-row { margin-top:8px; font-size:11px; color:#7a6a53; letter-spacing:0.5px; text-align:center; }
+.backcover .isbn-row span:first-child { margin-right:14px; padding-right:14px; border-right:1px solid #d8c9ad; }
+.backcover .pullquote { margin: 5mm auto; padding: 8px 18px; border-top: 2px solid #d9752f; border-bottom: 2px solid #d9752f; color:#b5602f; font-family:"DejaVu Serif",serif; font-style:italic; font-size:15.5px; line-height:1.35; max-width: 145mm; text-align:center; }
+
+/* ---------- FRONTESPIZIO / PREFAZIONE ---------- */
+.frontespizio { text-align:center; padding-top: 55mm; }
+.frontespizio .badge-mark { margin: 0 auto 24px auto; }
+.frontespizio h1 { font-size:42px; color:#1b3a4b; margin-bottom:8px; }
+.frontespizio .sub { font-size:18px; color:#6b5f52; max-width:460px; line-height:1.5; margin: 10px auto 30px auto; }
+.frontespizio .rule { width:76px; height:3px; background:#d9752f; margin: 20px auto; }
+.frontespizio .authorblock { font-size:16.5px; color:#2e2822; line-height:1.9; }
+.frontespizio .authorblock b { color:#1b3a4b; }
+
+.prefazione h1 { font-size:30px; color:#1b3a4b; margin-bottom:6px; }
+.prefazione .kick { color:#d9752f; font-weight:bold; letter-spacing:2px; font-size:13px; text-transform:uppercase; margin-bottom:12px; }
+.prefazione p { margin-bottom: 14px; }
+.prefazione .sign { text-align:right; font-style:italic; margin-top: 20px; color:#1b3a4b; font-size:17px; }
+
+/* ---------- INDICE ---------- */
+.toc h1 { font-size:30px; color:#1b3a4b; margin-bottom: 6px;}
+.toc .kick { color:#d9752f; font-weight:bold; letter-spacing:2px; font-size:13px; text-transform:uppercase; margin-bottom:20px; }
+.toc-part { margin-top: 20px; }
+.toc-part-title { font-family:"DejaVu Serif",serif; font-weight:bold; font-size:16.5px; color:#fff; padding:7px 14px; border-radius:4px; display:inline-block; margin-bottom:10px; }
+.toc-row { display:flex; justify-content:space-between; padding:7px 4px 7px 16px; border-bottom:1px dotted #d8c9ad; font-size:16.5px; }
+.toc-row .n { color:#8a7a5e; margin-right:10px; font-weight:bold; }
+
+/* ---------- PART DIVIDER ---------- */
+.part-divider { background:#fff; color:#201c18; display:flex; flex-direction:column; justify-content:center; align-items:center; height:297mm; position:relative; overflow:hidden; text-align:center; }
+.part-divider .pnum { font-family:"DejaVu Serif",serif; font-size:120px; font-weight:bold; opacity:0.16; margin-bottom:-20px; }
+.part-divider .kick { letter-spacing:4px; font-size:15px; text-transform:uppercase; font-weight:bold; margin-bottom:12px; }
+.part-divider h1 { font-family:"DejaVu Serif",serif; font-size:44px; max-width: 150mm; line-height:1.18; margin-bottom:18px; color:#1b3a4b; }
+.part-divider .rule { width:72px; height:4px; border-radius:3px; margin: 4px auto 24px auto; }
+.part-divider .desc { max-width:135mm; font-size:18px; line-height:1.6; color:#4a4137; margin:0 auto; }
+.part-divider .chlist { margin-top:26px; font-size:16.5px; line-height:2.1; color:#2e2822; }
+.part-divider .chlist span { font-weight:bold; margin-right:10px; display:inline-block; min-width:20px; }
+
+/* ---------- CHAPTER ---------- */
+.chapter { margin-bottom: 9mm; }
+.chapter-head { display:flex; align-items:center; gap:18px; margin-bottom:16px; padding-bottom:14px; border-bottom: 2px solid #e7dcc4; }
+.chapter-icon svg { display:block; }
+.chapter-eyebrow { font-size:13px; font-weight:bold; letter-spacing:2px; text-transform:uppercase; margin-bottom:3px; }
+.chapter-head h2 { font-size:27px; color:#1b3a4b; line-height:1.25; }
+.chapter-body ul, .chapter-body ol { margin: 8px 0 16px 0; padding-left: 26px; }
+.chapter-body li { margin-bottom:9px; text-align:justify; }
+.chapter-body em { color:#7a4a2a; }
+
+.callout { display:flex; gap:16px; align-items:flex-start; border-left: 5px solid; border-radius: 6px; padding: 15px 18px; margin: 16px 0; }
+.callout-icon svg { display:block; }
+.callout-text p { margin:0; font-size:16.5px; }
+.callout-text strong { display:block; margin-bottom:3px; font-size:16px; }
+
+/* ---------- QUIZ ---------- */
+.quiz-intro { font-style:italic; color:#6b5f52; margin-bottom:16px; font-size:17px; }
+.quiz-section { font-family:"DejaVu Serif",serif; font-weight:bold; font-size:18px; color:#fff; background:#c78a2e; display:inline-block; padding:7px 18px; border-radius:4px; margin: 16px 0 12px 0; }
+.quiz-card { display:flex; gap:14px; background:#fff; border:1px solid #e9dfc6; border-radius:8px; padding:16px 18px; margin-bottom:13px; page-break-inside: avoid; }
+.qnum { flex: 0 0 auto; width:46px; height:46px; border-radius:50%; background:#1b3a4b; color:#fff; font-weight:bold; font-size:15px; display:flex; align-items:center; justify-content:center; font-family:"DejaVu Serif",serif; }
+.qbody { flex:1; }
+.qstem { font-size:17.5px; margin-bottom:9px; }
+.qtag { display:inline-block; margin-left:6px; font-size:12px; text-transform:uppercase; letter-spacing:0.5px; color:#7a4f9e; border:1px solid #7a4f9e; border-radius:10px; padding:2px 9px; vertical-align:middle; }
+.opts { display:flex; flex-wrap:wrap; margin-top:6px; }
+.opt { font-size:16.5px; display:flex; width:100%; padding:4px 8px 4px 0; }
+.optlet { font-weight:bold; color:#c78a2e; flex:0 0 auto; margin-right:8px; }
+.opttext { flex:1 1 auto; min-width:0; }
+
+/* ---------- ANSWERS ---------- */
+.ans-block { margin-bottom: 18px; page-break-inside: avoid;}
+.ans-head { display:flex; align-items:center; gap:12px; border-left:5px solid; padding: 7px 0 7px 14px; margin-bottom:10px; }
+.ans-head h3 { font-size:18.5px; color:#1b3a4b; }
+.ans-icon svg { display:block; }
+.ans-grid { display:flex; flex-wrap:wrap; }
+.ans-row { font-size:15px; display:flex; padding:5px 10px 5px 0; border-bottom:1px dotted #e6dcc2; width:100%; }
+.ans-num { font-weight:bold; color:#1b3a4b; flex:0 0 auto; margin-right:8px; }
+.ans-text { flex:1 1 auto; min-width:0; }
+
+/* ---------- BACK MATTER ---------- */
+.backmatter h2 { font-size:23px; color:#1b3a4b; margin: 6px 0 12px 0; }
+.backmatter ul { padding-left:22px; }
+.backmatter li { margin-bottom:10px; }
+.colophon { text-align:center; color:#8a7a5e; font-size:13px; margin-top: 26mm; line-height:1.9; }
+</style></head><body>
+<div class="cover">
+  <div class="cover-inner">
+    <div class="cover-kicker">Manuale di Quiz &middot; Un progetto FeniceOS</div>
+    <div class="cover-mark"><svg width="300" height="300" viewBox="0 0 380 380" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <linearGradient id="featherGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" stop-color="#f2b25c"/>
+    <stop offset="100%" stop-color="#e07a3e"/>
+  </linearGradient>
+  <radialGradient id="glow" cx="50%" cy="45%" r="60%">
+    <stop offset="0%" stop-color="#ffe1b0" stop-opacity="0.9"/>
+    <stop offset="100%" stop-color="#ffe1b0" stop-opacity="0"/>
+  </radialGradient>
+</defs>
+<circle cx="190" cy="200" r="175" fill="url(#glow)"/>
+<path d="M190,210 Q109.7,238.5 49.0,245.9" fill="none" stroke="url(#featherGrad)" stroke-width="6.0" stroke-linecap="round" opacity="0.55"/><path d="M190,210 Q96.7,225.7 31.1,223.0" fill="none" stroke="url(#featherGrad)" stroke-width="7.0" stroke-linecap="round" opacity="0.68"/><path d="M190,210 Q88.0,210.3 21.1,196.2" fill="none" stroke="url(#featherGrad)" stroke-width="8.0" stroke-linecap="round" opacity="0.82"/><path d="M190,210 Q84.8,192.8 20.9,166.9" fill="none" stroke="url(#featherGrad)" stroke-width="9.0" stroke-linecap="round" opacity="0.95"/><path d="M190,210 Q98.7,178.2 48.0,144.6" fill="none" stroke="url(#featherGrad)" stroke-width="8.0" stroke-linecap="round" opacity="0.82"/><path d="M190,210 Q116.2,167.0 80.2,128.5" fill="none" stroke="url(#featherGrad)" stroke-width="7.0" stroke-linecap="round" opacity="0.68"/><path d="M190,210 Q136.0,159.6 115.0,119.1" fill="none" stroke="url(#featherGrad)" stroke-width="6.0" stroke-linecap="round" opacity="0.55"/>
+<path d="M190,210 Q270.3,238.5 331.0,245.9" fill="none" stroke="url(#featherGrad)" stroke-width="6.0" stroke-linecap="round" opacity="0.55"/><path d="M190,210 Q283.3,225.7 348.9,223.0" fill="none" stroke="url(#featherGrad)" stroke-width="7.0" stroke-linecap="round" opacity="0.68"/><path d="M190,210 Q292.0,210.3 358.9,196.2" fill="none" stroke="url(#featherGrad)" stroke-width="8.0" stroke-linecap="round" opacity="0.82"/><path d="M190,210 Q295.2,192.8 359.1,166.9" fill="none" stroke="url(#featherGrad)" stroke-width="9.0" stroke-linecap="round" opacity="0.95"/><path d="M190,210 Q281.3,178.2 332.0,144.6" fill="none" stroke="url(#featherGrad)" stroke-width="8.0" stroke-linecap="round" opacity="0.82"/><path d="M190,210 Q263.8,167.0 299.8,128.5" fill="none" stroke="url(#featherGrad)" stroke-width="7.0" stroke-linecap="round" opacity="0.68"/><path d="M190,210 Q244.0,159.6 265.0,119.1" fill="none" stroke="url(#featherGrad)" stroke-width="6.0" stroke-linecap="round" opacity="0.55"/>
+<path d="M190 200 C170 250 175 300 190 335 C205 300 210 250 190 200 Z" fill="url(#featherGrad)" opacity="0.85"/>
+<ellipse cx="190" cy="185" rx="26" ry="34" fill="#f2b25c"/>
+<path d="M190 152 C182 138 168 132 156 134 C164 146 174 152 190 158 C206 152 216 146 224 134 C212 132 198 138 190 152 Z" fill="#f2b25c"/>
+<circle cx="190" cy="148" r="15" fill="#f2b25c"/>
+<path d="M190 138 L202 132 L192 146 Z" fill="#1b3a4b"/>
+<circle cx="185" cy="145" r="2.6" fill="#1b3a4b"/>
+</svg></div>
+    <div class="cover-title">Il Grande Quiz<br><span class="accent">dell'Informatica</span></div>
+    <div class="cover-title" style="font-size:20px; margin-top:2px;">Domande e Risposte per l'Alfabetizzazione Digitale, dalle Basi ai Livelli Esperti</div>
+    <div class="cover-divider"></div>
+    <div class="cover-subtitle">264 domande a scelta multipla e Vero/Falso, organizzate per capitolo e per livello progressivo — Base, Intermedio, Esperto — per centri anziani, scuole e centri per il sociale.</div>
+    <div class="cover-author">DANILO D'AURIA
+      <small>Ideatore e sviluppatore di FeniceOS &middot; Autore di &laquo;Tecnologia Gentile: Informatica Sostenibile&raquo;</small>
+    </div>
+  </div>
+</div>
+</body></html>

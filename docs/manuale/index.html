@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FeniceOS Manuale &mdash; Manuale interattivo offline</title>
+<meta name="description" content="Manuale interattivo offline con fondamenti, guide didattiche e quiz sul progetto FeniceOS di Danilo D'Auria. Nessuna connessione richiesta.">
+<style>:root{
+  --bg:#fbf5ea; --surface:#ffffff; --surface-2:#f4ead6;
+  --ink:#2a2420; --ink-mute:#6b5f4f; --line:#e7dcc4;
+  --dark:#1b3a4b; --dark-ink:#0e222d;
+  --warm:#c9622a; --warm-soft:#fbead9;
+  --green:#3a7249; --green-soft:#e7f0e3;
+  --blue:#2f6b8f; --blue-soft:#e3edf3;
+  --purple:#7a4f9e; --purple-soft:#ece2f3;
+  --gold:#b87b23; --gold-soft:#faf0dc;
+  --shadow: 0 10px 30px -14px rgba(27,58,75,0.28);
+  --radius: 14px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#121c24; --surface:#1b2a34; --surface-2:#20323d;
+    --ink:#eee6d8; --ink-mute:#a99d84; --line:#2d3f4a;
+    --dark:#7fb4d6; --dark-ink:#dff0fb;
+    --warm:#e8873f; --warm-soft:#3a2c1c;
+    --green:#67ad78; --green-soft:#1c2e21;
+    --blue:#6fa9cc; --blue-soft:#1a2933;
+    --purple:#b493d1; --purple-soft:#2a2033;
+    --gold:#e0a94a; --gold-soft:#332a17;
+    --shadow: 0 10px 30px -14px rgba(0,0,0,0.5);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#121c24; --surface:#1b2a34; --surface-2:#20323d;
+  --ink:#eee6d8; --ink-mute:#a99d84; --line:#2d3f4a;
+  --dark:#7fb4d6; --dark-ink:#dff0fb;
+  --warm:#e8873f; --warm-soft:#3a2c1c;
+  --green:#67ad78; --green-soft:#1c2e21;
+  --blue:#6fa9cc; --blue-soft:#1a2933;
+  --purple:#b493d1; --purple-soft:#2a2033;
+  --gold:#e0a94a; --gold-soft:#332a17;
+  --shadow: 0 10px 30px -14px rgba(0,0,0,0.5);
+}
+:root[data-contrast="high"]{
+  --bg:#ffffff; --surface:#ffffff; --surface-2:#f0f0f0;
+  --ink:#000000; --ink-mute:#1a1a1a; --line:#000000;
+  --dark:#00233d; --dark-ink:#000000;
+  --warm:#a94b00; --warm-soft:#fbe4d2;
+  --green:#1e5c33; --green-soft:#d9f2e0;
+  --blue:#154b66; --blue-soft:#d8e9f2;
+  --purple:#4a2a66; --purple-soft:#e9dcf2;
+  --gold:#7a5300; --gold-soft:#f2e4c2;
+  --shadow: 0 2px 0 rgba(0,0,0,0.4);
+}
+
+*{box-sizing:border-box;}
+html{ font-size:18px; } /* dimensione base del testo: regolabile dai controlli di accessibilità */
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:"Segoe UI","DejaVu Sans","Liberation Sans",Arial,sans-serif;
+  font-size:1rem; line-height:1.68;
+  padding-inline:0;
+}
+h1,h2,h3,h4{ font-family:Georgia,"DejaVu Serif","Liberation Serif",serif; color:var(--dark); margin:0; text-wrap:balance; }
+p{ margin:0 0 14px 0; }
+a{ color:var(--warm); }
+strong{ color:var(--dark); }
+img,svg{ max-width:100%; }
+.wrap{ max-width:1180px; margin:0 auto; padding-inline:20px; }
+
+/* ---------------- topbar ---------------- */
+.topbar{
+  position:sticky; top:env(safe-area-inset-top,0px); z-index:50;
+  background:color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom:1px solid var(--line);
+}
+.topbar-inner{ max-width:1180px; margin:0 auto; padding:10px 20px; display:flex; align-items:center; gap:12px; }
+.topbar .mark{ width:34px; height:34px; flex:0 0 auto; }
+.topbar .name{ font-family:Georgia,"DejaVu Serif",serif; font-weight:700; font-size:1rem; color:var(--dark); white-space:nowrap; }
+.topbar nav{ display:flex; gap:4px; overflow-x:auto; scrollbar-width:none; flex:1; }
+.topbar nav::-webkit-scrollbar{ display:none; }
+.topbar nav a{
+  white-space:nowrap; font-size:.85rem; font-weight:700; color:var(--ink-mute);
+  padding:7px 12px; border-radius:20px; text-decoration:none; border:1px solid transparent;
+}
+.topbar nav a:hover, .topbar nav a.active{ color:var(--dark); background:var(--surface-2); border-color:var(--line); }
+.a11y-controls{ display:flex; align-items:center; gap:6px; flex:0 0 auto; }
+.a11y-controls button{
+  flex:0 0 auto; min-width:34px; height:34px; border-radius:10px; border:1px solid var(--line);
+  background:var(--surface); color:var(--ink); cursor:pointer; display:flex; align-items:center; justify-content:center;
+  font-size:.85rem; font-weight:700; padding:0 8px;
+}
+.a11y-controls button:hover{ background:var(--surface-2); }
+.a11y-controls button[aria-pressed="true"]{ background:var(--gold); border-color:var(--gold); color:#241a04; }
+.themebtn{
+  flex:0 0 auto; width:34px; height:34px; border-radius:50%; border:1px solid var(--line);
+  background:var(--surface); color:var(--ink); cursor:pointer; display:flex; align-items:center; justify-content:center;
+  font-size:.9rem;
+}
+
+/* ---------------- hero ---------------- */
+.hero{
+  position:relative; overflow:hidden; color:#fbf3e4;
+  background: linear-gradient(150deg, var(--dark-ink) 0%, var(--dark) 45%, #9a4f27 100%);
+}
+:root[data-theme="dark"] .hero, :root:not([data-theme="light"]) .hero{ background: linear-gradient(150deg,#0b141a 0%, #16303f 45%, #6e3a1e 100%); }
+.hero-inner{ max-width:1180px; margin:0 auto; padding:56px 20px 42px 20px; display:grid; grid-template-columns: auto 1fr; gap:32px; align-items:center; }
+.hero .mark-big{ width:150px; height:150px; filter: drop-shadow(0 10px 24px rgba(0,0,0,0.35)); }
+.hero-kicker{ letter-spacing:3px; font-size:.78rem; text-transform:uppercase; font-weight:700; color:#f2c48d; margin-bottom:10px; }
+.hero h1{ color:#fff; font-size:clamp(1.9rem,4.4vw,2.9rem); line-height:1.15; margin-bottom:8px; }
+.hero h1 span{ color:#ffd27f; }
+.hero .sub{ font-size:1.08rem; color:#f0e2cb; max-width:640px; margin-bottom:16px; }
+.hero .authorline{ font-size:.85rem; color:#e5cba4; }
+.hero .chips{ margin-top:18px; display:flex; gap:8px; flex-wrap:wrap; }
+.hero .chip{ font-size:.78rem; font-weight:700; padding:6px 12px; border-radius:20px; background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.2); color:#fff; }
+@media (max-width:680px){ .hero-inner{ grid-template-columns:1fr; text-align:center; } .hero .mark-big{ margin:0 auto; } .hero .chips{ justify-content:center; } }
+
+/* ---------------- layout ---------------- */
+.layout{ display:grid; grid-template-columns: 240px 1fr; gap:36px; max-width:1180px; margin:0 auto; padding:32px 20px 80px 20px; align-items:start; }
+@media (max-width:900px){ .layout{ grid-template-columns:1fr; } .side{ display:none; } }
+
+.side{ position:sticky; top:calc(56px + env(safe-area-inset-top,0px)); max-height:calc(100vh - 70px); overflow-y:auto; }
+.side-part{ margin-bottom:18px; }
+.side-part-title{ font-size:.72rem; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; padding:4px 10px; border-radius:6px; color:#fff; display:inline-block; margin-bottom:6px; }
+.side a{ display:block; font-size:.92rem; color:var(--ink-mute); text-decoration:none; padding:5px 10px; border-radius:8px; border-left:2px solid transparent; }
+.side a:hover, .side a.active{ color:var(--dark); background:var(--surface-2); border-left-color:var(--warm); }
+
+/* ---------------- part section ---------------- */
+.part{ margin-bottom:56px; scroll-margin-top:64px; }
+.part-banner{
+  border-radius:var(--radius); padding:28px 30px; color:#fff; margin-bottom:26px;
+  box-shadow:var(--shadow);
+}
+.part-banner .kick{ letter-spacing:2.5px; font-size:.72rem; text-transform:uppercase; opacity:0.85; margin-bottom:6px; font-weight:700; }
+.part-banner h2{ color:#fff; font-size:clamp(1.5rem,3vw,2.05rem); margin-bottom:8px; }
+.part-banner p{ margin:0; opacity:0.95; max-width:620px; font-size:1.05rem; }
+
+.chapter{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:26px 28px; margin-bottom:18px; box-shadow:var(--shadow); scroll-margin-top:64px; }
+.chapter-head{ display:flex; align-items:center; gap:14px; margin-bottom:14px; padding-bottom:14px; border-bottom:1px solid var(--line); }
+.chapter-head .cicon{ width:52px; height:52px; flex:0 0 auto; }
+.chapter-eyebrow{ font-size:.72rem; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:2px; }
+.chapter-head h3{ font-size:1.35rem; color:var(--dark); }
+.chapter-body ul, .chapter-body ol{ padding-left:24px; margin:8px 0 14px 0; }
+.chapter-body li{ margin-bottom:8px; }
+.chapter-body em{ color:var(--warm); font-style:italic; }
+
+.callout{ display:flex; gap:14px; border-left:4px solid; border-radius:10px; padding:14px 16px; margin:16px 0 4px 0; }
+.callout svg{ width:40px; height:40px; flex:0 0 auto; }
+.callout-text p{ margin:0; font-size:1.05rem; }
+.callout-text strong{ display:block; margin-bottom:3px; }
+
+/* ---------------- quiz ---------------- */
+.quiz-intro{ font-style:italic; color:var(--ink-mute); margin-bottom:14px; font-size:1.02rem; }
+.quiz-section{ font-family:Georgia,"DejaVu Serif",serif; font-weight:700; font-size:1.02rem; color:#fff; background:var(--gold); display:inline-block; padding:6px 16px; border-radius:8px; margin:16px 0 12px 0; }
+.qcard{ background:var(--surface-2); border:1px solid var(--line); border-radius:12px; padding:16px 18px; margin-bottom:14px; }
+.qtop{ display:flex; gap:12px; align-items:flex-start; }
+.qnum{ flex:0 0 auto; width:38px; height:38px; border-radius:50%; background:var(--dark); color:#fff; font-weight:700; font-size:.8rem; display:flex; align-items:center; justify-content:center; font-family:Georgia,"DejaVu Serif",serif; }
+.qstem{ font-size:1.12rem; margin-bottom:8px; }
+.qtag{ display:inline-block; margin-left:6px; font-size:.65rem; text-transform:uppercase; letter-spacing:0.5px; color:var(--purple); border:1px solid var(--purple); border-radius:10px; padding:1px 8px; vertical-align:middle; }
+.opts{ display:flex; flex-wrap:wrap; margin-top:4px; }
+.opt{ font-size:1.03rem; display:flex; gap:6px; width:100%; padding:4px 8px 4px 0; }
+.optlet{ font-weight:700; color:var(--gold); flex:0 0 auto; }
+.revealbtn{
+  margin-top:10px; font-size:.88rem; font-weight:700; color:var(--dark); background:var(--surface);
+  border:1px solid var(--line); border-radius:20px; padding:7px 16px; cursor:pointer; min-height:40px;
+}
+.revealbtn:hover{ background:var(--surface-2); }
+.answer{ display:none; margin-top:10px; padding:11px 15px; border-radius:8px; background:var(--green-soft); border-left:3px solid var(--green); font-size:1.05rem; }
+.answer.show{ display:block; }
+.answer b{ color:var(--green); }
+
+/* ---------------- footer ---------------- */
+.sitefooter{ border-top:1px solid var(--line); padding:30px 20px 50px 20px; text-align:center; color:var(--ink-mute); font-size:.85rem; }
+.sitefooter .mark{ width:40px; height:40px; margin:0 auto 10px auto; }
+
+.backtotop{
+  position:fixed; right:18px; bottom:calc(18px + env(safe-area-inset-bottom,0px)); z-index:40;
+  width:42px; height:42px; border-radius:50%; background:var(--dark); color:#fff; border:none;
+  box-shadow:var(--shadow); cursor:pointer; font-size:16px; display:flex; align-items:center; justify-content:center;
+  opacity:0; pointer-events:none; transition:opacity .2s;
+}
+.backtotop.show{ opacity:1; pointer-events:auto; }
+
+@media (prefers-reduced-motion: reduce){ * { scroll-behavior:auto !important; transition:none !important; } }
+html{ scroll-behavior:smooth; }
+</style>
+</head>
+<body><div style="position:relative;z-index:9999;background:#12262f;color:#e8f0f4;font:600 14px/1.4 system-ui,sans-serif;padding:8px 16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><a href="../" style="color:#f2b37a;text-decoration:none">&#8592; Il Grande Quiz dell'Informatica</a><span style="opacity:.75">Opera di Danilo D'Auria &middot; un progetto FeniceOS &middot; CC BY-NC-SA 4.0</span></div>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="mark"><svg width="80" height="80" viewBox="0 0 380 380" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <linearGradient id="featherGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" stop-color="#f2b25c"/>
+    <stop offset="100%" stop-color="#e07a3e"/>
+  </linearGradient>
+  <radialGradient id="glow" cx="50%" cy="45%" r="60%">
+    <stop offset="0%" stop-color="#ffe1b0" stop-opacity="0.9"/>
+    <stop offset="100%" stop-color="#ffe1b0" stop-opacity="0"/>
+  </radialGradient>
+</defs>
+<circle cx="190" cy="200" r="175" fill="url(#glow)"/>
+<path d="M190,210 Q109.7,238.5 49.0,245.9" fill="none" stroke="url(#featherGrad)" stroke-width="6.0" stroke-linecap="round" opacity="0.55"/><path d="M190,210 Q96.7,225.7 31.1,223.0" fill="none" stroke="url(#featherGrad)" stroke-width="7.0" stroke-linecap="round" opacity="0.68"/><path d="M190,210 Q88.0,210.3 21.1,196.2" fill="none" stroke="url(#featherGrad)" stroke-width="8.0" stroke-linecap="round" opacity="0.82"/><path d="M190,210 Q84.8,192.8 20.9,166.9" fill="none" stroke="url(#featherGrad)" stroke-width="9.0" stroke-linecap="round" opacity="0.95"/><path d="M190,210 Q98.7,178.2 48.0,144.6" fill="none" stroke="url(#featherGrad)" stroke-width="8.0" stroke-linecap="round" opacity="0.82"/><path d="M190,210 Q116.2,167.0 80.2,128.5" fill="none" stroke="url(#featherGrad)" stroke-width="7.0" stroke-linecap="round" opacity="0.68"/><path d="M190,210 Q136.0,159.6 115.0,119.1" fill="none" stroke="url(#featherGrad)" stroke-width="6.0" stroke-linecap="round" opacity="0.55"/>
+<path d="M190,210 Q270.3,238.5 331.0,245.9" fill="none" stroke="url(#featherGrad)" stroke-width="6.0" stroke-linecap="round" opacity="0.55"/><path d="M190,210 Q283.3,225.7 348.9,223.0" fill="none" stroke="url(#featherGrad)" stroke-width="7.0" stroke-linecap="round" opacity="0.68"/><path d="M190,210 Q292.0,210.3 358.9,196.2" fill="none" stroke="url(#featherGrad)" stroke-width="8.0" stroke-linecap="round" opacity="0.82"/><path d="M190,210 Q295.2,192.8 359.1,166.9" fill="none" stroke="url(#featherGrad)" stroke-width="9.0" stroke-linecap="round" opacity="0.95"/><path d="M190,210 Q281.3,178.2 332.0,144.6" fill="none" stroke="url(#featherGrad)" stroke-width="8.0" stroke-linecap="round" opacity="0.82"/><path d="M190,210 Q263.8,167.0 299.8,128.5" fill="none" stroke="url(#featherGrad)" stroke-width="7.0" stroke-linecap="round" opacity="0.68"/><path d="M190,210 Q244.0,159.6 265.0,119.1" fill="none" stroke="url(#featherGrad)" stroke-width="6.0" stroke-linecap="round" opacity="0.55"/>
+<path d="M190 200 C170 250 175 300 190 335 C205 300 210 250 190 200 Z" fill="url(#featherGrad)" opacity="0.85"/>
+<ellipse cx="190" cy="185" rx="26" ry="34" fill="#f2b25c"/>
+<path d="M190 152 C182 138 168 132 156 134 C164 146 174 152 190 158 C206 152 216 146 224 134 C212 132 198 138 190 152 Z" fill="#f2b25c"/>
+<circle cx="190" cy="148" r="15" fill="#f2b25c"/>
+<path d="M190 138 L202 132 L192 146 Z" fill="#1b3a4b"/>
+<circle cx="185" cy="145" r="2.6" fill="#1b3a4b"/>
+</svg></div>
+    <div class="name">FeniceOS</div>
+    <nav id="topnav"><a href="#part1">Fondamenta</a><a href="#part2">FeniceOS: il progetto</a><a href="#part3">Didattica</a><a href="#part4">L'universo informatico</a><a href="#part5">Quiz e verifica</a><a href="#approfondimenti">Approfondimenti</a></nav>
+    <div class="a11y-controls" role="group" aria-label="Accessibilità">
+      <button id="fontMinus" aria-label="Riduci dimensione testo">A&minus;</button>
+      <button id="fontPlus" aria-label="Aumenta dimensione testo">A+</button>
+      <button id="contrastBtn" aria-pressed="false" aria-label="Attiva alto contrasto">&#9680;</button>
+      <button class="themebtn" id="themeBtn" title="Cambia tema chiaro/scuro" aria-label="Cambia tema chiaro/scuro">&#9788;</button>
+    </div>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="mark-big"><svg width="280" height="280" viewBox="0 0 380 380" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <linearGradient id="featherGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" stop-color="#f2b25c"/>
+    <stop offset="100%" stop-color="#e07a3e"/>
+  </linearGradient>
+  <radialGradient id="glow" cx="50%" cy="45%" r="60%">
+    <stop offset="0%" stop-color="#ffe1b0" stop-opacity="0.9"/>
+    <stop offset="100%" stop-color="#ffe1b0" stop-opacity="0"/>
+  </radialGradient>
+</defs>
+<circle cx="190" cy="200" r="175" fill="url(#glow)"/>
+<path d="M190,210 Q109.7,238.5 49.0,245.9" fill="none" stroke="url(#featherGrad)" stroke-width="6.0" stroke-linecap="round" opacity="0.55"/><path d="M190,210 Q96.7,225.7 31.1,223.0" fill="none" stroke="url(#featherGrad)" stroke-width="7.0" stroke-linecap="round" opacity="0.68"/><path d="M190,210 Q88.0,210.3 21.1,196.2" fill="none" stroke="url(#featherGrad)" stroke-width="8.0" stroke-linecap="round" opacity="0.82"/><path d="M190,210 Q84.8,192.8 20.9,166.9" fill="none" stroke="url(#featherGrad)" stroke-width="9.0" stroke-linecap="round" opacity="0.95"/><path d="M190,210 Q98.7,178.2 48.0,144.6" fill="none" stroke="url(#featherGrad)" stroke-width="8.0" stroke-linecap="round" opacity="0.82"/><path d="M190,210 Q116.2,167.0 80.2,128.5" fill="none" stroke="url(#featherGrad)" stroke-width="7.0" stroke-linecap="round" opacity="0.68"/><path d="M190,210 Q136.0,159.6 115.0,119.1" fill="none" stroke="url(#featherGrad)" stroke-width="6.0" stroke-linecap="round" opacity="0.55"/>
+<path d="M190,210 Q270.3,238.5 331.0,245.9" fill="none" stroke="url(#featherGrad)" stroke-width="6.0" stroke-linecap="round" opacity="0.55"/><path d="M190,210 Q283.3,225.7 348.9,223.0" fill="none" stroke="url(#featherGrad)" stroke-width="7.0" stroke-linecap="round" opacity="0.68"/><path d="M190,210 Q292.0,210.3 358.9,196.2" fill="none" stroke="url(#featherGrad)" stroke-width="8.0" stroke-linecap="round" opacity="0.82"/><path d="M190,210 Q295.2,192.8 359.1,166.9" fill="none" stroke="url(#featherGrad)" stroke-width="9.0" stroke-linecap="round" opacity="0.95"/><path d="M190,210 Q281.3,178.2 332.0,144.6" fill="none" stroke="url(#featherGrad)" stroke-width="8.0" stroke-linecap="round" opacity="0.82"/><path d="M190,210 Q263.8,167.0 299.8,128.5" fill="none" stroke="url(#featherGrad)" stroke-width="7.0" stroke-linecap="round" opacity="0.68"/><path d="M190,210 Q244.0,159.6 265.0,119.1" fill="none" stroke="url(#featherGrad)" stroke-width="6.0" stroke-linecap="round" opacity="0.55"/>
+<path d="M190 200 C170 250 175 300 190 335 C205 300 210 250 190 200 Z" fill="url(#featherGrad)" opacity="0.85"/>
+<ellipse cx="190" cy="185" rx="26" ry="34" fill="#f2b25c"/>
+<path d="M190 152 C182 138 168 132 156 134 C164 146 174 152 190 158 C206 152 216 146 224 134 C212 132 198 138 190 152 Z" fill="#f2b25c"/>
+<circle cx="190" cy="148" r="15" fill="#f2b25c"/>
+<path d="M190 138 L202 132 L192 146 Z" fill="#1b3a4b"/>
+<circle cx="185" cy="145" r="2.6" fill="#1b3a4b"/>
+</svg></div>
+    <div>
+      <div class="hero-kicker">Manuale interattivo &middot; Fondamenti &middot; Quiz</div>
+      <h1>Fenice<span>OS</span> &mdash; Tecnologia Gentile per Tutte le Età</h1>
+      <p class="sub">Fondamenti, guide pratiche e un intero universo di quiz &mdash; con le soluzioni riservate a chi conduce &mdash; sull'informatica di ieri, oggi e domani. Pensato per centri anziani, scuole e centri per il sociale.</p>
+      <div class="authorline">Danilo D'Auria &middot; Ideatore e sviluppatore di FeniceOS &middot; Autore di &laquo;Tecnologia Gentile: Informatica Sostenibile&raquo;</div>
+      <div class="chips"><span class="chip">21 capitoli</span><span class="chip">66 quiz</span><span class="chip">5 parti tematiche</span><span class="chip">Soluzioni per chi conduce</span><span class="chip">&#9679; Funziona offline</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="layout">
+  <aside class="side"><div class="side-part"><div class="side-part-title" style="background:#3f7a4f">Parte I</div><a href="#cap1" data-cap="1">01 &middot; Tecnologia Gentile</a><a href="#cap2" data-cap="2">02 &middot; Economia circolare</a><a href="#cap3" data-cap="3">03 &middot; Etica del digitale</a><a href="#cap4" data-cap="4">04 &middot; Obsolescenza programmata</a></div><div class="side-part"><div class="side-part-title" style="background:#d9752f">Parte II</div><a href="#cap5" data-cap="5">05 &middot; Cos'è FeniceOS</a><a href="#cap6" data-cap="6">06 &middot; Come funziona</a><a href="#cap7" data-cap="7">07 &middot; Centri anziani</a><a href="#cap8" data-cap="8">08 &middot; Scuola e sociale</a></div><div class="side-part"><div class="side-part-title" style="background:#2f6b8f">Parte III</div><a href="#cap9" data-cap="9">09 &middot; Primi passi</a><a href="#cap10" data-cap="10">10 &middot; Usare FeniceOS</a><a href="#cap11" data-cap="11">11 &middot; Funzioni avanzate</a><a href="#cap12" data-cap="12">12 &middot; Consigli per chi insegna</a></div><div class="side-part"><div class="side-part-title" style="background:#7a4f9e">Parte IV</div><a href="#cap13" data-cap="13">13 &middot; Storia dell'informatica</a><a href="#cap14" data-cap="14">14 &middot; L'informatica di oggi</a><a href="#cap15" data-cap="15">15 &middot; Futuro e IA</a></div><div class="side-part"><div class="side-part-title" style="background:#c78a2e">Parte V</div><a href="#cap16" data-cap="16">16 &middot; Come usare i quiz</a><a href="#cap17" data-cap="17">17 &middot; Livello Base</a><a href="#cap18" data-cap="18">18 &middot; Livello Intermedio</a><a href="#cap19" data-cap="19">19 &middot; Livello Avanzato</a><a href="#cap20" data-cap="20">20 &middot; Storia · Presente · Futuro · IA</a><a href="#cap21" data-cap="21">21 &middot; Economia circolare · Etica</a></div><div class="side-part"><div class="side-part-title" style="background:#1b3a4b">Approfondimenti</div><a href="#approfondimenti">Bibliografia &amp; nota autore</a></div></aside>
+  <main><section class="part" id="part1">
+  <div class="part-banner" style="background:linear-gradient(120deg,#3f7a4f,#1b3a4b)">
+    <div class="kick">Parte I</div><h2>Fondamenta</h2><p>Tecnologia Gentile, economia circolare, etica del digitale, obsolescenza programmata.</p>
+  </div>
+  
+<article class="chapter" id="cap1">
+  <div class="chapter-head">
+    <div class="cicon"><svg width="100" height="100" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<circle cx="60" cy="60" r="58" fill="#3f7a4f"/>
+<circle cx="60" cy="60" r="58" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"/>
+<path d="M60 24 L68 52 L96 60 L68 68 L60 96 L52 68 L24 60 L52 52 Z" fill="none" stroke="#fff" stroke-width="4.5" stroke-linejoin="round"/>
+</svg></div>
+    <div><div class="chapter-eyebrow" style="color:#3f7a4f">Capitolo 1</div><h3>Tecnologia Gentile: la filosofia che ci guida</h3></div>
+  </div>
+  <div class="chapter-body"><p>Chiamare "gentile" una tecnologia può sembrare, a prima vista, quasi un controsenso: le macchine non hanno sentimenti, non possono essere gentili o scortesi. Eppure, chiunque abbia visto una persona anziana bloccarsi davanti a un messaggio d'errore incomprensibile, o un ragazzo rinunciare a un dispositivo perché "troppo complicato", sa che la tecnologia comunica qualcosa. Comunica se è stata pensata per chi la userà, o solo per chi l'ha venduta.</p>
+<p>La Tecnologia Gentile è un approccio, prima ancora che un insieme di strumenti. Si fonda su quattro principi che attraversano tutto questo manuale:</p>
+<p><strong>Comprensibilità.</strong> Uno strumento gentile si spiega da sé, o quasi. Non nasconde le proprie funzioni dietro menu a più livelli, icone ambigue o messaggi tecnici. Chi lo usa deve poter costruire, passo dopo passo, un modello mentale corretto di ciò che sta facendo.</p>
+<p><strong>Accessibilità.</strong> Gentile è ciò che non esclude. Non esclude per età, per reddito, per disabilità, per scarsa dimestichezza pregressa. Un sistema operativo che richiede hardware costoso e continuamente rinnovato è, per definizione, meno gentile di uno che gira su qualunque macchina disponibile.</p>
+<p><strong>Sostenibilità.</strong> La gentilezza si estende agli oggetti e all'ambiente che li ospita. Un prodotto pensato per durare, per essere riparato, per essere aggiornato senza dover essere sostituito, è coerente con un'idea di tecnologia che non spreca.</p>
+<p><strong>Rispetto.</strong> Rispetto per il tempo delle persone, per la loro intelligenza, per la loro autonomia. Una tecnologia gentile non infantilizza chi la usa, ma nemmeno pretende competenze che non ha ancora costruito: accompagna.</p>
+<p>Questi quattro principi non sono astrazioni. Sono criteri di progettazione concreti, che guidano ogni scelta tecnica di FeniceOS: dall'interfaccia semplificata al peso ridotto del sistema, dalla scelta di software libero e documentato alla struttura stessa dei percorsi didattici che troverete nella Parte III di questo manuale.</p>
+<p>Vale la pena chiarire un equivoco frequente: gentile non significa "meno potente" o "meno serio". Significa progettato con intenzione. Un sistema può essere tecnicamente sofisticato — e FeniceOS, costruito su una pipeline di build che va da debootstrap a xorriso passando per la compressione in squashfs, lo è — e allo stesso tempo restare comprensibile e accessibile a chi non ha mai sentito parlare di nessuno di questi termini. La sofisticazione tecnica, quando è ben progettata, si nasconde: resta a disposizione di chi vuole approfondire, senza mai essere un ostacolo per chi vuole solo usare il computer per scrivere una lettera.</p>
+<div class="callout" style="border-color:#3f7a4f; background:#e7f0e3;"><div><svg height="54" viewbox="0 0 120 120" width="54" xmlns="http://www.w3.org/2000/svg">
+<circle cx="60" cy="60" fill="#3f7a4f" r="58"></circle>
+<circle cx="60" cy="60" fill="none" r="58" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"></circle>
+<path d="M60 24 L68 52 L96 60 L68 68 L60 96 L52 68 L24 60 L52 52 Z" fill="none" stroke="#fff" stroke-linejoin="round" stroke-width="4.5"></path>
+</svg></div><div class="callout-text">
+<p><strong>Da ricordare.</strong> La Tecnologia Gentile non è un prodotto: è un metodo di progettazione e di insegnamento che mette al centro la persona, non la macchina.</p>
+</div></div></div>
+</article>
+<article class="chapter" id="cap2">
+  <div class="chapter-head">
+    <div class="cicon"><svg width="100" height="100" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<circle cx="60" cy="60" r="58" fill="#3f7a4f"/>
+<circle cx="60" cy="60" r="58" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"/>
+<path d="M60 28 L72 50 L60 50 Z M60 28 A32 32 0 0 1 88 46" fill="none" stroke="#fff" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M92 62 L92 88 L68 88 Z M92 62 A32 32 0 0 1 78 90" fill="none" stroke="#fff" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M28 62 L46 88 L58 78 Z M28 62 A32 32 0 0 1 46 34" fill="none" stroke="#fff" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+</svg></div>
+    <div><div class="chapter-eyebrow" style="color:#3f7a4f">Capitolo 2</div><h3>Economia circolare e informatica: dare nuova vita all'hardware</h3></div>
+  </div>
+  <div class="chapter-body"><p>L'economia lineare che ha dominato l'industria informatica degli ultimi decenni segue uno schema semplice: si estrae, si produce, si usa, si getta. Un computer viene fabbricato, venduto, utilizzato per qualche anno e infine smaltito — spesso molto prima che i suoi componenti abbiano davvero esaurito la propria utilità.</p>
+<p>L'economia circolare propone un'inversione di rotta. Anziché "estrarre, produrre, buttare", il ciclo diventa "ridurre, riutilizzare, riparare, rigenerare, riciclare" — nell'ordine di priorità con cui questi verbi vengono normalmente elencati dagli esperti del settore. Applicata all'informatica, questa logica assume un significato molto concreto: un computer che non riesce più a far girare un sistema operativo pesante e aggiornato non è un rifiuto. È una risorsa che aspetta il software giusto.</p>
+<p>FeniceOS nasce esattamente in questo spazio. Ogni distribuzione Linux progettata per hardware "rigenerato" — con requisiti minimi contenuti, spesso inferiori ai 500 MB di RAM — restituisce dignità operativa a macchine che altrimenti finirebbero accantonate in un magazzino o, peggio, in una discarica. Non si tratta di un dettaglio tecnico marginale: è la condizione che rende possibile tutto il resto del progetto, dalla sua distribuzione nei centri anziani alla sua adozione nelle aule scolastiche.</p>
+<p><strong>Perché questo conta, in termini concreti:</strong></p>
+<p>Un singolo personal computer da ufficio contiene decine di materiali diversi — rame, alluminio, plastiche, terre rare, piccole quantità di metalli preziosi — la cui estrazione ha un costo ambientale e spesso anche sociale significativo. Prolungare la vita utile di un dispositivo già esistente, anche solo di due o tre anni, riduce direttamente la domanda di nuova produzione ed evita la generazione di rifiuti elettronici, una delle categorie di rifiuti in crescita più rapida a livello globale.</p>
+<p>C'è poi una dimensione economica diretta: il riuso di hardware rigenerato abbatte drasticamente i costi di accesso alla tecnologia. Un centro anziani o un istituto scolastico che riceve in donazione dieci macchine dismesse da un'azienda, e le rimette in funzione con un sistema come FeniceOS, ottiene un laboratorio informatico funzionante con un investimento economico che sarebbe altrimenti impensabile.</p>
+<p><strong>I quattro livelli dell'economia circolare applicata al software:</strong></p>
+<ol>
+<li><em>Riduzione dei requisiti</em> — progettare software che chieda meno risorse, non di più, a ogni nuova versione.</li>
+<li><em>Riutilizzo dell'hardware esistente</em> — dare priorità a soluzioni che funzionano su macchine già in circolazione.</li>
+<li><em>Estensione del ciclo di vita</em> — mantenere aggiornabile e sicuro un sistema anche su hardware datato, invece di forzarne la sostituzione.</li>
+<li><em>Comunità e riparazione condivisa</em> — un progetto open source come FeniceOS consente a chiunque di contribuire, correggere, adattare: la manutenzione diventa collettiva anziché delegata a un singolo produttore.</li>
+</ol>
+<div class="callout" style="border-color:#3f7a4f; background:#e7f0e3;"><div><svg height="54" viewbox="0 0 120 120" width="54" xmlns="http://www.w3.org/2000/svg">
+<circle cx="60" cy="60" fill="#3f7a4f" r="58"></circle>
+<circle cx="60" cy="60" fill="none" r="58" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"></circle>
+<path d="M60 24 L68 52 L96 60 L68 68 L60 96 L52 68 L24 60 L52 52 Z" fill="none" stroke="#fff" stroke-linejoin="round" stroke-width="4.5"></path>
+</svg></div><div class="callout-text">
+<p><strong>Da ricordare.</strong> Ogni computer "troppo lento per l'ultimo sistema operativo" è, quasi sempre, un computer perfettamente adatto a un sistema progettato con criteri diversi. Il problema raramente è l'hardware: è la scelta di chi decide cosa quell'hardware debba far girare.</p>
+</div></div></div>
+</article>
+<article class="chapter" id="cap3">
+  <div class="chapter-head">
+    <div class="cicon"><svg width="100" height="100" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<circle cx="60" cy="60" r="58" fill="#3f7a4f"/>
+<circle cx="60" cy="60" r="58" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"/>
+<path d="M22 58 L40 48 L54 58 L46 66 L34 58" fill="none" stroke="#fff" stroke-width="4.5" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M98 58 L80 48 L66 58 L74 66 L86 58" fill="none" stroke="#fff" stroke-width="4.5" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M46 66 L54 74 L58 70 M58 70 L64 76 L68 72 M54 58 L66 58" fill="none" stroke="#fff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></div>
+    <div><div class="chapter-eyebrow" style="color:#3f7a4f">Capitolo 3</div><h3>Etica del digitale: un'informatica inclusiva e sostenibile</h3></div>
+  </div>
+  <div class="chapter-body"><p>Parlare di etica dell'informatica significa porsi una domanda che precede ogni scelta tecnica: a chi serve davvero questo strumento, e chi rischia di restarne escluso?</p>
+<p>L'esclusione digitale non è un fenomeno astratto. Ha un volto molto concreto: quello di una persona anziana che non riesce a prenotare una visita medica perché il servizio è disponibile solo online; quello di una famiglia che non può permettersi di sostituire ogni due anni il computer dei figli per tenere il passo con requisiti software sempre crescenti; quello di chi, semplicemente, non ha mai avuto occasione — né qualcuno che gliela offrisse — di familiarizzare con uno strumento che oggi è diventato indispensabile per accedere a servizi pubblici, informazioni, relazioni sociali.</p>
+<p>Un'informatica etica si costruisce attorno ad alcuni impegni concreti, che questo manuale assume come propri:</p>
+<p><strong>Inclusione per età.</strong> I percorsi didattici della Parte III sono pensati esplicitamente per chi si avvicina al computer in età avanzata, con ritmi di apprendimento, timori e necessità specifiche — senza per questo rinunciare a offrire contenuti avanzati a chi vuole approfondire.</p>
+<p><strong>Inclusione per condizione economica.</strong> Un sistema che gira su hardware rigenerato e gratuito nel software (FeniceOS è basato su Debian, distribuzione libera) rimuove una delle barriere di accesso più concrete: il costo.</p>
+<p><strong>Trasparenza.</strong> Il software libero, di cui Debian è uno dei massimi esempi, consente a chiunque di verificare cosa un programma effettivamente faccia. Questa trasparenza è un valore etico prima ancora che tecnico: nessuno deve fidarsi ciecamente di un sistema che non può in alcun modo ispezionare.</p>
+<p><strong>Autonomia.</strong> L'obiettivo della didattica proposta in questo manuale non è rendere le persone dipendenti da chi insegna, ma progressivamente autonome: capaci di risolvere piccoli problemi da sole, di riconoscere un tentativo di truffa online, di scegliere consapevolmente gli strumenti che usano.</p>
+<p><strong>Sostenibilità ambientale.</strong> Come visto nel capitolo precedente, la scelta di privilegiare il riuso dell'hardware non è solo una questione economica: è una responsabilità verso l'ambiente e verso le generazioni future.</p>
+<p>Questi impegni non restano teorici: definiscono criteri operativi. Quando si progetta una lezione, si sceglie un'applicazione da includere in FeniceOS, o si decide come formulare un messaggio di errore, la domanda-guida resta sempre la stessa: questa scelta include o esclude? Semplifica o complica inutilmente? Rende la persona più autonoma o più dipendente?</p>
+<div class="callout" style="border-color:#3f7a4f; background:#e7f0e3;"><div><svg height="54" viewbox="0 0 120 120" width="54" xmlns="http://www.w3.org/2000/svg">
+<circle cx="60" cy="60" fill="#3f7a4f" r="58"></circle>
+<circle cx="60" cy="60" fill="none" r="58" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"></circle>
+<path d="M60 24 L68 52 L96 60 L68 68 L60 96 L52 68 L24 60 L52 52 Z" fill="none" stroke="#fff" stroke-linejoin="round" stroke-width="4.5"></path>
+</svg></div><div class="callout-text">
+<p><strong>Da ricordare.</strong> L'etica del digitale non riguarda solo "cosa" la tecnologia fa, ma "per chi" è stata pensata. Un sistema tecnicamente perfetto ma inaccessibile a una fascia di popolazione non è un sistema neutrale: è una scelta, con conseguenze sociali reali.</p>
+</div></div></div>
+</article>
+<article class="chapter" id="cap4">
+  <div class="chapter-head">
+    <div class="cicon"><svg width="100" height="100" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<circle cx="60" cy="60" r="58" fill="#3f7a4f"/>
+<circle cx="60" cy="60" r="58" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"/>
+<path d="M38 24 H82 M38 96 H82 M40 24 C40 46 80 46 80 24 M40 96 C40 74 80 74 80 96" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M50 32 L70 32 L60 52 Z M50 88 L70 88 L60 68 Z" fill="#fff"/>
+</svg></div>
+    <div><div class="chapter-eyebrow" style="color:#3f7a4f">Capitolo 4</div><h3>L'obsolescenza programmata: cos'è, perché è un problema, come si combatte</h3></div>
+  </div>
+  <div class="chapter-body"><p>L'obsolescenza programmata è la pratica, diffusa in diversi settori industriali e particolarmente visibile nell'elettronica di consumo, di progettare un prodotto in modo che la sua vita utile venga limitata artificialmente — per ragioni tecniche, commerciali o software — spingendo il consumatore a sostituirlo prima che sia realmente necessario.</p>
+<p>È utile distinguere alcune forme diverse in cui questo fenomeno si manifesta, perché non tutte hanno la stessa origine né si combattono con gli stessi strumenti:</p>
+<p><strong>Obsolescenza tecnica programmata.</strong> Componenti scelti deliberatamente meno resistenti del necessario, o progettazioni che rendono la riparazione difficile o economicamente svantaggiosa (batterie non sostituibili, componenti incollati anziché avvitati, assenza di ricambi disponibili).</p>
+<p><strong>Obsolescenza software.</strong> È la forma più rilevante per il tema di questo manuale. Un dispositivo perfettamente funzionante, dal punto di vista fisico, viene reso di fatto inutilizzabile perché il produttore smette di fornire aggiornamenti, oppure perché le nuove versioni del sistema operativo richiedono requisiti hardware che il dispositivo non possiede. È esattamente questo il meccanismo che FeniceOS contrasta direttamente: restituendo un sistema operativo aggiornabile, sicuro e leggero a macchine che i produttori considerano "fine vita".</p>
+<p><strong>Obsolescenza percepita o psicologica.</strong> Meno legata alla tecnica e più al marketing: la creazione, attraverso pubblicità e design, del desiderio di possedere l'ultima versione di un prodotto anche quando quello posseduto funziona ancora perfettamente.</p>
+<p><strong>Perché è un problema, in tre dimensioni:</strong></p>
+<p>Sul piano <em>ambientale</em>, l'obsolescenza programmata accelera la produzione di rifiuti elettronici (i cosiddetti e-waste), oggi tra le categorie di rifiuti a crescita più rapida al mondo, spesso smaltiti in condizioni che comportano rischi per la salute e per l'ambiente nei paesi dove avviene il trattamento.</p>
+<p>Sul piano <em>economico</em>, scarica sui consumatori il costo di sostituzioni non necessarie, penalizzando in modo particolare le fasce di popolazione con minore disponibilità economica — esattamente le stesse fasce che questo manuale si propone di includere.</p>
+<p>Sul piano <em>sociale</em>, alimenta il divario digitale: chi non può permettersi di rinnovare continuamente i propri dispositivi rischia di restare escluso dall'accesso a servizi che diventano sempre più digitali.</p>
+<p><strong>Come si combatte — a livello individuale e di comunità:</strong></p>
+<ul>
+<li><em>Scegliere software libero e leggero</em>, che non impone requisiti hardware crescenti per il gusto di farlo, ma li mantiene proporzionati alle reali necessità funzionali.</li>
+<li><em>Privilegiare la riparabilità</em>: informarsi, quando possibile, sull'indice di riparabilità di un prodotto prima dell'acquisto.</li>
+<li><em>Sostenere il riuso</em>: donare hardware dismesso a progetti di rigenerazione, invece di conservarlo inutilizzato o smaltirlo, è un gesto concreto contro l'obsolescenza programmata.</li>
+<li><em>Formarsi ed informare</em>: sapere che un computer "lento" può spesso essere semplicemente vittima di un sistema operativo troppo pesante, e non di un guasto reale, è già un atto di resistenza a questa dinamica.</li>
+<li><em>Progetti come FeniceOS</em>, che dimostrano concretamente come un'alternativa sia possibile, tecnicamente solida e alla portata di chiunque.</li>
+</ul>
+<p>Questi temi — che ho approfondito nel mio libro "Tecnologia Gentile: Informatica Sostenibile" — non sono considerazioni accessorie rispetto al progetto FeniceOS: ne sono la ragione fondante. FeniceOS esiste perché l'obsolescenza programmata è un problema reale, e perché a quel problema è possibile rispondere con strumenti tecnici concreti, non solo con buone intenzioni.</p>
+<div class="callout" style="border-color:#3f7a4f; background:#e7f0e3;"><div><svg height="54" viewbox="0 0 120 120" width="54" xmlns="http://www.w3.org/2000/svg">
+<circle cx="60" cy="60" fill="#3f7a4f" r="58"></circle>
+<circle cx="60" cy="60" fill="none" r="58" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"></circle>
+<path d="M60 24 L68 52 L96 60 L68 68 L60 96 L52 68 L24 60 L52 52 Z" fill="none" stroke="#fff" stroke-linejoin="round" stroke-width="4.5"></path>
+</svg></div><div class="callout-text">
+<p><strong>Da ricordare.</strong> Un dispositivo "vecchio" e un dispositivo "rotto" sono due cose diverse. Buona parte dell'hardware che finisce accantonato o smaltito appartiene alla prima categoria, non alla seconda — ed è proprio su questa distinzione che si fonda il progetto FeniceOS.</p>
+</div></div></div>
+</article>
+</section><section class="part" id="part2">
+  <div class="part-banner" style="background:linear-gradient(120deg,#d9752f,#1b3a4b)">
+    <div class="kick">Parte II</div><h2>FeniceOS: il progetto</h2><p>Cos'è, come funziona, e a chi è destinato FeniceOS.</p>
+  </div>
+  
+<article class="chapter" id="cap5">
+  <div class="chapter-head">
+    <div class="cicon"><svg width="100" height="100" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<circle cx="60" cy="60" r="58" fill="#d9752f"/>
+<circle cx="60" cy="60" r="58" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"/>
+<rect x="26" y="32" width="68" height="46" rx="4" fill="none" stroke="#fff" stroke-width="5"/>
+<path d="M46 92 H74 M60 78 V92" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round"/>
+<path d="M38 55 L52 44 L64 58 L82 40" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></div>
+    <div><div class="chapter-eyebrow" style="color:#d9752f">Capitolo 5</div><h3>Cos'è FeniceOS: presentazione del progetto</h3></div>
+  </div>
+  <div class="chapter-body"><p>FeniceOS è una distribuzione Linux live, ideata e sviluppata da Danilo D'Auria, pensata per dare una seconda vita a computer considerati obsoleti e per abbassare al minimo le barriere d'accesso all'informatica. Il nome non è casuale: come la fenice della mitologia, che rinasce dalle proprie ceneri, FeniceOS fa rinascere hardware che il mercato avrebbe destinato alla dismissione.</p>
+<p><strong>Il perché del progetto.</strong> L'idea nasce dall'incontro di due bisogni distinti ma complementari. Da un lato, un'enorme quantità di hardware informatico ancora perfettamente funzionante viene ogni anno accantonata o smaltita solo perché non regge più il peso dei sistemi operativi più recenti. Dall'altro, esistono contesti sociali — i centri anziani, le scuole con budget limitati, i centri di aggregazione sociale — che avrebbero un bisogno enorme di postazioni informatiche funzionanti, ma non le risorse economiche per acquistarle nuove. FeniceOS unisce questi due bisogni: prende l'hardware che non serve più a qualcuno e lo mette a disposizione di chi ne ha bisogno.</p>
+<p><strong>Il come del progetto.</strong> Tecnicamente, FeniceOS è costruito a partire da Debian 12 (nome in codice "Bookworm"), una delle distribuzioni Linux più stabili, sicure e longeve dal punto di vista del supporto. Attorno a questa base viene costruita un'immagine live — cioè un sistema operativo completo che può essere avviato direttamente da una chiavetta USB, senza bisogno di essere installato sul disco fisso — ottimizzata per funzionare con requisiti hardware minimi: l'obiettivo dichiarato del progetto è far girare il sistema anche su macchine con meno di 500 MB di RAM disponibile, un valore che oggi la maggior parte dei sistemi operativi commerciali considererebbe del tutto insufficiente.</p>
+<p><strong>Per chi è pensato.</strong> FeniceOS nasce, in modo specifico e dichiarato, per tre tipologie di contesti: i centri anziani, dove diventa strumento di alfabetizzazione digitale per persone spesso escluse dal mondo informatico; le aule didattiche, dove permette di allestire laboratori informatici funzionanti anche con budget scolastici ridotti; i centri per il sociale più in generale, dove l'inclusione digitale è parte di un più ampio percorso di inclusione sociale.</p>
+<p>Questo capitolo introduce il progetto nelle sue linee generali; il capitolo successivo ne descrive gli aspetti tecnici in modo accessibile anche a chi non ha alcuna base informatica pregressa, mentre i capitoli 7 e 8 approfondiscono le due applicazioni sociali principali del progetto.</p>
+<div class="callout" style="border-color:#d9752f; background:#fbead9;"><div><svg height="54" viewbox="0 0 120 120" width="54" xmlns="http://www.w3.org/2000/svg">
+<circle cx="60" cy="60" fill="#d9752f" r="58"></circle>
+<circle cx="60" cy="60" fill="none" r="58" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"></circle>
+<path d="M60 24 L68 52 L96 60 L68 68 L60 96 L52 68 L24 60 L52 52 Z" fill="none" stroke="#fff" stroke-linejoin="round" stroke-width="4.5"></path>
+</svg></div><div class="callout-text">
+<p><strong>Da ricordare.</strong> FeniceOS non è "un sistema operativo per anziani" nel senso di una versione semplificata o limitata. È un sistema operativo completo e libero, che diventa accessibile grazie a una progettazione attenta e a un percorso didattico pensato per accompagnare chiunque, indipendentemente dall'esperienza pregressa.</p>
+</div></div></div>
+</article>
+<article class="chapter" id="cap6">
+  <div class="chapter-head">
+    <div class="cicon"><svg width="100" height="100" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<circle cx="60" cy="60" r="58" fill="#d9752f"/>
+<circle cx="60" cy="60" r="58" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"/>
+<circle cx="46" cy="50" r="16" fill="none" stroke="#fff" stroke-width="4.5"/>
+<circle cx="46" cy="50" r="5" fill="#fff"/>
+<circle cx="78" cy="76" r="12" fill="none" stroke="#fff" stroke-width="4.5"/>
+<circle cx="78" cy="76" r="4" fill="#fff"/>
+<path d="M46 30 V34 M46 66 V70 M26 50 H30 M62 50 H66 M32 36 L35 39 M57 61 L60 64 M60 36 L57 39 M35 61 L32 64" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+</svg></div>
+    <div><div class="chapter-eyebrow" style="color:#d9752f">Capitolo 6</div><h3>Come funziona FeniceOS: caratteristiche tecniche spiegate in modo semplice</h3></div>
+  </div>
+  <div class="chapter-body"><p>Questo capitolo traduce in linguaggio accessibile alcune scelte tecniche del progetto, così che anche chi non ha alcuna base informatica possa comprendere, almeno nelle sue linee essenziali, cosa succede "dentro" a FeniceOS.</p>
+<p><strong>Cos'è un sistema "live".</strong> Un sistema operativo tradizionale viene installato sul disco fisso del computer: occupa spazio in modo permanente e, per essere sostituito, richiede una procedura di installazione spesso non banale. Un sistema live, come FeniceOS, funziona invece direttamente da una chiavetta USB (o da un DVD, anche se oggi la USB è la soluzione più pratica): si inserisce la chiavetta, si accende il computer, e il sistema si avvia senza toccare il disco fisso interno. Questo significa che si può "provare" FeniceOS su qualunque computer senza alcun rischio per i dati già presenti, e che la stessa chiavetta può essere portata da una macchina all'altra.</p>
+<p><strong>La base Debian.</strong> FeniceOS è costruito sopra Debian 12 "Bookworm", una distribuzione Linux nota per stabilità, sicurezza e per la vastità del proprio archivio di software libero. Scegliere Debian come fondamenta significa poter contare su un sistema estremamente testato, aggiornato regolarmente per correggere problemi di sicurezza, e completamente libero da costi di licenza.</p>
+<p><strong>Il processo di costruzione (in parole semplici).</strong> La creazione dell'immagine di FeniceOS segue una sequenza di passaggi tecnici, gestiti da uno script dedicato (fenice-build-master.sh), che si può descrivere così: prima si costruisce da zero un sistema Debian minimo (un processo chiamato debootstrap); poi, lavorando "dentro" a quel sistema come se ci si trovasse fisicamente al suo interno (un ambiente chiamato chroot), si installano e configurano i programmi necessari; infine il sistema viene compresso in un unico file molto efficiente (con una tecnologia chiamata squashfs, che riduce lo spazio occupato) e trasformato in un'immagine ISO avviabile (attraverso uno strumento chiamato xorriso), pronta per essere scritta su una chiavetta USB.</p>
+<p><strong>Requisiti hardware minimi.</strong> L'obiettivo tecnico dichiarato del progetto è la capacità di funzionare anche con meno di 500 MB di RAM: un valore che permette a FeniceOS di girare su computer che avrebbero enormi difficoltà, o l'impossibilità totale, ad avviare un sistema operativo moderno standard.</p>
+<p><strong>Compatibilità BIOS e UEFI.</strong> I computer possono avviarsi seguendo due standard tecnici diversi: il più datato BIOS e il più recente UEFI. FeniceOS è progettato per il dual boot tra questi due standard, cioè per essere in grado di avviarsi correttamente su entrambe le tipologie di macchina — una scelta necessaria per un progetto che, per sua natura, deve funzionare su hardware eterogeneo e spesso datato, come quello tipicamente donato o dismesso.</p>
+<p><strong>Perché questi dettagli contano per la didattica.</strong> Non serve che chi frequenta un corso in un centro anziani comprenda debootstrap o xorriso. Ma è utile che chi insegna li conosca, perché permettono di rispondere con sicurezza alla domanda più frequente: "perché su questo computer, che con Windows non funzionava più, adesso funziona tutto?" La risposta, in una frase, è: perché FeniceOS è stato costruito, fin dall'inizio, per chiedere all'hardware molto meno di quanto i sistemi operativi più diffusi oggi richiedano.</p>
+<div class="callout" style="border-color:#d9752f; background:#fbead9;"><div><svg height="54" viewbox="0 0 120 120" width="54" xmlns="http://www.w3.org/2000/svg">
+<circle cx="60" cy="60" fill="#d9752f" r="58"></circle>
+<circle cx="60" cy="60" fill="none" r="58" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"></circle>
+<path d="M60 24 L68 52 L96 60 L68 68 L60 96 L52 68 L24 60 L52 52 Z" fill="none" stroke="#fff" stroke-linejoin="round" stroke-width="4.5"></path>
+</svg></div><div class="callout-text">
+<p><strong>Da ricordare.</strong> "Live", "leggero", "compatibile con hardware datato": tre caratteristiche tecniche che si traducono, nella pratica, in una sola cosa — accessibilità reale, senza compromessi sulla qualità del sistema.</p>
+</div></div></div>
+</article>
+<article class="chapter" id="cap7">
+  <div class="chapter-head">
+    <div class="cicon"><svg width="100" height="100" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<circle cx="60" cy="60" r="58" fill="#d9752f"/>
+<circle cx="60" cy="60" r="58" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"/>
+<path d="M60 88 C36 70 24 56 24 42 C24 30 33 22 44 22 C51 22 57 26 60 32 C63 26 69 22 76 22 C87 22 96 30 96 42 C96 56 84 70 60 88 Z" fill="none" stroke="#fff" stroke-width="5" stroke-linejoin="round"/>
+</svg></div>
+    <div><div class="chapter-eyebrow" style="color:#d9752f">Capitolo 7</div><h3>FeniceOS per i centri anziani: obiettivi didattici e sociali</h3></div>
+  </div>
+  <div class="chapter-body"><p>I centri anziani rappresentano uno dei contesti d'elezione per FeniceOS, e meritano una trattazione dedicata perché le esigenze didattiche e sociali di questo pubblico sono specifiche e richiedono un approccio pensato appositamente.</p>
+<p><strong>Obiettivi didattici.</strong> L'alfabetizzazione digitale in età avanzata non punta a formare informatici, ma persone autonome nella vita quotidiana digitale: capaci di usare la posta elettronica per restare in contatto con familiari lontani, di effettuare una videochiamata, di consultare un sito istituzionale, di riconoscere un tentativo di truffa online, di scrivere e stampare un documento. Sono competenze modeste nella loro descrizione tecnica, ma enormi nel loro impatto sulla qualità della vita e sull'autonomia personale.</p>
+<p><strong>Obiettivi sociali.</strong> Un corso di informatica in un centro anziani non è mai solo un corso di informatica. È un'occasione di socialità, di contrasto all'isolamento, di rafforzamento dell'autostima in un momento della vita in cui il senso di inadeguatezza verso il "mondo nuovo" può essere fonte di sofferenza reale. Vedere un proprio coetaneo che riesce a fare una videochiamata con un nipote lontano è, per molte persone anziane, un incentivo più forte di qualunque manuale tecnico.</p>
+<p><strong>Perché FeniceOS è particolarmente adatto a questo contesto:</strong></p>
+<ul>
+<li><em>Nessuna pressione economica.</em> Il sistema può girare su hardware donato o dismesso, azzerando i costi di accesso per il centro anziani e per i partecipanti.</li>
+<li><em>Interfaccia comprensibile.</em> Coerentemente con i principi della Tecnologia Gentile (Capitolo 1), l'ambiente grafico privilegia chiarezza su complessità.</li>
+<li><em>Nessun rischio percepito di "rompere qualcosa".</em> Essendo un sistema live, avviabile da chiavetta USB, l'ambiente di apprendimento può essere resettato facilmente, riducendo l'ansia da errore che spesso frena l'apprendimento in età avanzata.</li>
+<li><em>Ritmo rispettato.</em> I percorsi didattici della Parte III sono pensati per procedere a piccoli passi, con ripetizione e rinforzo positivo, coerentemente con le migliori pratiche di didattica per adulti anziani (si veda il Capitolo 12 per la metodologia).</li>
+</ul>
+<p><strong>Un punto di attenzione per chi organizza i corsi.</strong> L'obiettivo non è "portare tutti allo stesso livello", ma accompagnare ciascuno al proprio livello di autonomia desiderato. Alcuni parteciperanno solo per imparare a fare videochiamate; altri, con il tempo, chiederanno di andare oltre. Entrambi i percorsi sono ugualmente validi, e il Capitolo 11 di questo manuale, dedicato alle funzioni avanzate, è pensato proprio per chi, partito da zero, decide di approfondire.</p>
+<div class="callout" style="border-color:#d9752f; background:#fbead9;"><div><svg height="54" viewbox="0 0 120 120" width="54" xmlns="http://www.w3.org/2000/svg">
+<circle cx="60" cy="60" fill="#d9752f" r="58"></circle>
+<circle cx="60" cy="60" fill="none" r="58" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"></circle>
+<path d="M60 24 L68 52 L96 60 L68 68 L60 96 L52 68 L24 60 L52 52 Z" fill="none" stroke="#fff" stroke-linejoin="round" stroke-width="4.5"></path>
+</svg></div><div class="callout-text">
+<p><strong>Da ricordare.</strong> In un centro anziani, il successo di un corso di informatica non si misura in competenze tecniche acquisite, ma in autonomia e fiducia ritrovate.</p>
+</div></div></div>
+</article>
+<article class="chapter" id="cap8">
+  <div class="chapter-head">
+    <div class="cicon"><svg width="100" height="100" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<circle cx="60" cy="60" r="58" fill="#d9752f"/>
+<circle cx="60" cy="60" r="58" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"/>
+<circle cx="44" cy="42" r="12" fill="none" stroke="#fff" stroke-width="4.5"/>
+<path d="M22 90 C22 72 32 62 44 62 C56 62 66 72 66 90" fill="none" stroke="#fff" stroke-width="4.5" stroke-linecap="round"/>
+<circle cx="80" cy="48" r="9" fill="none" stroke="#fff" stroke-width="4"/>
+<path d="M64 90 C64 76 72 68 82 68 C92 68 100 76 100 90" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+</svg></div>
+    <div><div class="chapter-eyebrow" style="color:#d9752f">Capitolo 8</div><h3>FeniceOS per la scuola e i centri sociali: inclusione digitale</h3></div>
+  </div>
+  <div class="chapter-body"><p>Se i centri anziani rappresentano il contesto più caratterizzante del progetto, le aule didattiche e i centri per il sociale ne costituiscono il naturale ambito di espansione, con esigenze in parte simili e in parte specifiche.</p>
+<p><strong>Nelle aule scolastiche.</strong> Molti istituti scolastici, specialmente quelli con risorse economiche limitate, si trovano a dover scegliere tra rinunciare a un laboratorio di informatica funzionante o investire cifre significative nel rinnovo periodico delle macchine. FeniceOS offre una terza via: recuperare hardware dismesso — da aziende, enti pubblici, donazioni private — e trasformarlo in una dotazione informatica completa, funzionante e sicura. Questo approccio ha anche un valore didattico aggiuntivo, spesso sottovalutato: introduce gli studenti, fin da giovani, al concetto stesso di economia circolare (Capitolo 2) e di software libero, non come nozione teorica ma come esperienza pratica quotidiana.</p>
+<p><strong>Nei centri per il sociale.</strong> I centri di aggregazione sociale, i doposcuola, i progetti rivolti a fasce di popolazione in condizioni di fragilità economica trovano in FeniceOS uno strumento coerente con la propria missione: l'inclusione digitale è, sempre più, parte integrante dell'inclusione sociale tout court, perché l'accesso a servizi pubblici, opportunità di lavoro, informazione e relazioni passa oggi in larghissima parte attraverso strumenti digitali.</p>
+<p><strong>Un principio comune ai due contesti.</strong> Sia a scuola sia nei centri sociali, FeniceOS non pretende di sostituirsi a percorsi didattici già esistenti, ma di rimuovere un vincolo — quello dei costi hardware — che troppo spesso limita, prima ancora che le scelte pedagogiche, le possibilità materiali di offrire un'educazione digitale di qualità.</p>
+<div class="callout" style="border-color:#d9752f; background:#fbead9;"><div><svg height="54" viewbox="0 0 120 120" width="54" xmlns="http://www.w3.org/2000/svg">
+<circle cx="60" cy="60" fill="#d9752f" r="58"></circle>
+<circle cx="60" cy="60" fill="none" r="58" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"></circle>
+<path d="M60 24 L68 52 L96 60 L68 68 L60 96 L52 68 L24 60 L52 52 Z" fill="none" stroke="#fff" stroke-linejoin="round" stroke-width="4.5"></path>
+</svg></div><div class="callout-text">
+<p><strong>Da ricordare.</strong> L'inclusione digitale non comincia con l'ultimo modello di computer. Comincia con la possibilità, per chiunque, di avere accesso a uno strumento funzionante — indipendentemente dalla propria condizione economica.</p>
+</div></div></div>
+</article>
+</section><section class="part" id="part3">
+  <div class="part-banner" style="background:linear-gradient(120deg,#2f6b8f,#1b3a4b)">
+    <div class="kick">Parte III</div><h2>Didattica</h2><p>Percorsi per principianti, funzioni avanzate, metodologia per chi insegna.</p>
+  </div>
+  
+<article class="chapter" id="cap9">
+  <div class="chapter-head">
+    <div class="cicon"><svg width="100" height="100" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<circle cx="60" cy="60" r="58" fill="#2f6b8f"/>
+<circle cx="60" cy="60" r="58" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"/>
+<ellipse cx="42" cy="42" rx="10" ry="15" fill="none" stroke="#fff" stroke-width="4"/>
+<ellipse cx="78" cy="66" rx="10" ry="15" fill="none" stroke="#fff" stroke-width="4"/>
+<circle cx="42" cy="24" r="4" fill="#fff"/><circle cx="78" cy="48" r="4" fill="#fff"/>
+</svg></div>
+    <div><div class="chapter-eyebrow" style="color:#2f6b8f">Capitolo 9</div><h3>Primi passi con il computer: per chi comincia da zero</h3></div>
+  </div>
+  <div class="chapter-body"><p>Questo capitolo si rivolge esplicitamente a chi non ha mai usato un computer, o lo ha fatto solo in modo saltuario e insicuro. Non presuppone alcuna conoscenza pregressa.</p>
+<p><strong>Lezione 1 — Conoscere le parti del computer.</strong> Un computer è composto da elementi che è utile saper riconoscere e nominare: lo schermo (o monitor), su cui compaiono le informazioni; la tastiera, con cui si scrivono lettere, numeri e comandi; il mouse (o il touchpad, sui portatili), con cui si sposta un puntatore sullo schermo e si selezionano gli elementi; l'unità centrale, che contiene i componenti che fanno funzionare tutto il resto. Su FeniceOS, avviato da chiavetta USB, non serve preoccuparsi di "dove sono i file del sistema": tutto è già pronto all'accensione.</p>
+<p><strong>Lezione 2 — Accendere, avviare, spegnere.</strong> Si preme il pulsante di accensione; si attende che il sistema si avvii (con FeniceOS, questo significa che il computer legge i dati dalla chiavetta USB inserita); compare la schermata principale, chiamata desktop. Per spegnere correttamente, non si stacca mai la spina: si usa sempre il menu di spegnimento previsto dal sistema, per evitare di danneggiare dati o la stessa chiavetta USB.</p>
+<p><strong>Lezione 3 — Il mouse: clic, doppio clic, trascinamento.</strong> Il clic singolo (tasto sinistro) seleziona un elemento. Il doppio clic, cioè due clic ravvicinati, apre un elemento (un'icona, un programma). Il tasto destro apre un menu di opzioni aggiuntive relative all'elemento su cui si clicca. Il trascinamento consiste nel tenere premuto il tasto sinistro mentre si sposta il mouse, per spostare un oggetto sullo schermo.</p>
+<p><strong>Lezione 4 — La tastiera: le zone principali.</strong> I tasti lettera e numero al centro; i tasti freccia per spostarsi nel testo; il tasto Invio (Enter) per confermare o andare a capo; il tasto Canc (Backspace/Delete) per cancellare; la barra spaziatrice per inserire uno spazio. Non serve memorizzare tutto subito: la familiarità arriva con la pratica ripetuta.</p>
+<p><strong>Lezione 5 — Aprire e chiudere un programma.</strong> Ogni programma (per scrivere, per navigare in internet, per vedere le foto) si apre con un doppio clic sulla sua icona e si chiude cliccando sulla "x" solitamente presente in un angolo della finestra. Le finestre possono essere spostate, ingrandite, ridotte: piccoli esperimenti guidati aiutano a familiarizzare con questi movimenti senza timore di "rompere" qualcosa.</p>
+<p><strong>Lezione 6 — Scrivere un testo semplice.</strong> Aprire un programma di videoscrittura, digitare qualche parola, imparare a cancellare e correggere, salvare il documento dandogli un nome riconoscibile. Questo singolo esercizio, ripetuto con pazienza, costruisce contemporaneamente competenze con tastiera, mouse e gestione dei file.</p>
+<div class="callout" style="border-color:#2f6b8f; background:#e3edf3;"><div><svg height="54" viewbox="0 0 120 120" width="54" xmlns="http://www.w3.org/2000/svg">
+<circle cx="60" cy="60" fill="#2f6b8f" r="58"></circle>
+<circle cx="60" cy="60" fill="none" r="58" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"></circle>
+<circle cx="60" cy="38" fill="none" r="12" stroke="#fff" stroke-width="4.5"></circle>
+<path d="M36 90 C36 68 46 58 60 58 C74 58 84 68 84 90" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="4.5"></path>
+<path d="M40 74 H26 M26 74 V64 M26 74 L34 82" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"></path>
+</svg></div><div class="callout-text">
+<p><strong>Suggerimento per chi insegna.</strong> In questa fase, ogni piccolo successo va riconosciuto esplicitamente. L'obiettivo delle prime lezioni non è la velocità, ma la costruzione di fiducia.</p>
+</div></div></div>
+</article>
+<article class="chapter" id="cap10">
+  <div class="chapter-head">
+    <div class="cicon"><svg width="100" height="100" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<circle cx="60" cy="60" r="58" fill="#2f6b8f"/>
+<circle cx="60" cy="60" r="58" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"/>
+<rect x="22" y="40" width="76" height="42" rx="5" fill="none" stroke="#fff" stroke-width="4.5"/>
+<path d="M32 52 H36 M42 52 H46 M52 52 H56 M62 52 H66 M72 52 H76 M82 52 H86 M32 62 H36 M42 62 H46 M52 62 H56 M62 62 H66 M72 62 H76 M82 62 H86 M38 72 H82" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/>
+</svg></div>
+    <div><div class="chapter-eyebrow" style="color:#2f6b8f">Capitolo 10</div><h3>Usare FeniceOS: guida pratica passo-passo</h3></div>
+  </div>
+  <div class="chapter-body"><p>Questo capitolo accompagna, passo dopo passo, l'uso quotidiano di FeniceOS una volta acquisita familiarità con le basi del capitolo precedente.</p>
+<p><strong>Avviare FeniceOS da chiavetta USB.</strong> Si inserisce la chiavetta nella porta USB del computer prima di accenderlo (o si riavvia il computer con la chiavetta già inserita). A seconda del computer, potrebbe essere necessario premere un tasto specifico durante l'accensione (spesso F12, F2, Esc o Canc, a seconda del produttore) per scegliere di avviare da USB anziché dal disco interno. Chi organizza i corsi predispone solitamente questa configurazione in anticipo, così che l'utente debba solo accendere il computer.</p>
+<p><strong>Il desktop di FeniceOS.</strong> All'avvio compare l'ambiente grafico, con icone per i programmi principali chiaramente identificabili. La disposizione è pensata per essere immediatamente comprensibile, coerentemente con i principi della Tecnologia Gentile.</p>
+<p><strong>Navigare in internet.</strong> Si apre il browser (il programma per navigare sul web) con un doppio clic sulla sua icona. Nella barra in alto si può digitare l'indirizzo di un sito, oppure una ricerca (ad esempio, il nome di ciò che si sta cercando). I risultati compaiono in elenco: un clic su un risultato apre la pagina corrispondente.</p>
+<p><strong>Gestire la posta elettronica.</strong> Che si utilizzi un programma di posta dedicato o si acceda alla propria casella tramite browser, i passaggi fondamentali restano: leggere i messaggi ricevuti, scrivere un nuovo messaggio (indicando destinatario, oggetto e testo), rispondere a un messaggio esistente, allegare un file (ad esempio una foto).</p>
+<p><strong>Fare una videochiamata.</strong> Si apre il programma o il sito dedicato alla videochiamata; si verifica che webcam e microfono siano riconosciuti; si avvia o si accetta la chiamata cliccando sull'apposito pulsante. Questa singola competenza è, per molti partecipanti dei centri anziani, l'obiettivo più desiderato di tutto il percorso.</p>
+<p><strong>Scrivere, salvare e ritrovare un documento.</strong> Si apre il programma di videoscrittura; si scrive il testo; si salva scegliendo un nome chiaro e una cartella riconoscibile (ad esempio una cartella "Documenti" creata appositamente); per ritrovarlo in seguito, si apre la stessa cartella e si cerca il file dal nome assegnato.</p>
+<p><strong>Gestire le fotografie.</strong> Le foto, ad esempio trasferite da una fotocamera o da uno smartphone, possono essere visualizzate tramite il programma di gestione immagini incluso in FeniceOS, organizzate in cartelle, stampate se necessario.</p>
+<p><strong>Spegnere in sicurezza.</strong> Si utilizza sempre il menu di spegnimento previsto dal sistema, mai lo spegnimento forzato tramite il tasto di accensione, per evitare la perdita di dati non salvati.</p>
+<div class="callout" style="border-color:#2f6b8f; background:#e3edf3;"><div><svg height="54" viewbox="0 0 120 120" width="54" xmlns="http://www.w3.org/2000/svg">
+<circle cx="60" cy="60" fill="#2f6b8f" r="58"></circle>
+<circle cx="60" cy="60" fill="none" r="58" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"></circle>
+<circle cx="60" cy="38" fill="none" r="12" stroke="#fff" stroke-width="4.5"></circle>
+<path d="M36 90 C36 68 46 58 60 58 C74 58 84 68 84 90" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="4.5"></path>
+<path d="M40 74 H26 M26 74 V64 M26 74 L34 82" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"></path>
+</svg></div><div class="callout-text">
+<p><strong>Suggerimento per chi insegna.</strong> Ogni sessione pratica dovrebbe partire da un obiettivo concreto e riconoscibile ("oggi impariamo a fare una videochiamata") piuttosto che da un elenco astratto di funzioni: la motivazione pratica accelera l'apprendimento.</p>
+</div></div></div>
+</article>
+<article class="chapter" id="cap11">
+  <div class="chapter-head">
+    <div class="cicon"><svg width="100" height="100" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<circle cx="60" cy="60" r="58" fill="#2f6b8f"/>
+<circle cx="60" cy="60" r="58" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"/>
+<rect x="24" y="30" width="72" height="60" rx="5" fill="none" stroke="#fff" stroke-width="4.5"/>
+<path d="M36 50 L48 60 L36 70 M56 72 H76" stroke="#fff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</svg></div>
+    <div><div class="chapter-eyebrow" style="color:#2f6b8f">Capitolo 11</div><h3>Funzioni avanzate: per utenti esperti</h3></div>
+  </div>
+  <div class="chapter-body"><p>Non tutti i partecipanti si fermano alle competenze di base. Questo capitolo è dedicato a chi, dopo aver acquisito sicurezza con l'uso quotidiano, desidera approfondire — e a chi, semplicemente, arriva a FeniceOS già con un buon livello di esperienza informatica.</p>
+<p><strong>Il terminale: una finestra sul "motore" del sistema.</strong> Il terminale è un'interfaccia testuale che permette di impartire comandi diretti al sistema operativo, senza passare dalle icone grafiche. Per un principiante può apparire intimidatorio, ma per un utente più avanzato rappresenta uno strumento di grande precisione e velocità. Comandi di base utili da conoscere includono, ad esempio, quelli per elencare i file di una cartella, spostarsi tra le cartelle, copiare o spostare file, verificare lo stato del sistema.</p>
+<p><strong>Personalizzazione dell'ambiente grafico.</strong> FeniceOS, come ogni distribuzione basata su Linux, consente un elevato grado di personalizzazione: sfondi, temi grafici, disposizione delle icone, scorciatoie da tastiera possono essere adattati alle preferenze dell'utente.</p>
+<p><strong>Gestione del software.</strong> Essendo basato su Debian, FeniceOS utilizza il sistema di gestione pacchetti APT, che consente di installare, aggiornare o rimuovere programmi in modo centralizzato, verificato e sicuro — una modalità molto più controllata rispetto alla ricerca e installazione di software da fonti non verificate, tipica di altri ambienti.</p>
+<p><strong>Rete e connettività avanzata.</strong> Configurazione di reti Wi-Fi con impostazioni specifiche, condivisione di file tra dispositivi sulla stessa rete locale, gestione di stampanti di rete: competenze utili in contesti come uffici di associazioni, biblioteche o centri sociali dotati di più postazioni.</p>
+<p><strong>Sicurezza informatica di base e avanzata.</strong> Comprendere il funzionamento degli aggiornamenti di sicurezza, riconoscere tentativi di phishing (messaggi ingannevoli che imitano comunicazioni ufficiali per sottrarre dati personali), utilizzare password robuste e, dove disponibile, l'autenticazione a due fattori.</p>
+<p><strong>Comprendere il processo di build di FeniceOS.</strong> Per gli utenti più avanzati, in particolare volontari e formatori interessati a contribuire al progetto, comprendere la pipeline debootstrap → chroot → mksquashfs → xorriso (descritta nel Capitolo 6) apre la possibilità di partecipare attivamente allo sviluppo, alla personalizzazione o al mantenimento di FeniceOS per la propria realtà locale.</p>
+<p><strong>Contribuire a un progetto open source.</strong> FeniceOS, come ogni progetto basato su software libero, può beneficiare del contributo della propria comunità: segnalazione di problemi, proposte di miglioramento, traduzione di materiali didattici, sviluppo di nuove funzionalità.</p>
+<div class="callout" style="border-color:#2f6b8f; background:#e3edf3;"><div><svg height="54" viewbox="0 0 120 120" width="54" xmlns="http://www.w3.org/2000/svg">
+<circle cx="60" cy="60" fill="#2f6b8f" r="58"></circle>
+<circle cx="60" cy="60" fill="none" r="58" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"></circle>
+<circle cx="60" cy="38" fill="none" r="12" stroke="#fff" stroke-width="4.5"></circle>
+<path d="M36 90 C36 68 46 58 60 58 C74 58 84 68 84 90" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="4.5"></path>
+<path d="M40 74 H26 M26 74 V64 M26 74 L34 82" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"></path>
+</svg></div><div class="callout-text">
+<p><strong>Suggerimento per chi insegna.</strong> Il passaggio dalle competenze di base a quelle avanzate dovrebbe sempre partire da un interesse espresso dall'utente, non da un programma imposto dall'alto: la motivazione all'approfondimento è la migliore garanzia di apprendimento duraturo.</p>
+</div></div></div>
+</article>
+<article class="chapter" id="cap12">
+  <div class="chapter-head">
+    <div class="cicon"><svg width="100" height="100" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<circle cx="60" cy="60" r="58" fill="#2f6b8f"/>
+<circle cx="60" cy="60" r="58" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"/>
+<circle cx="60" cy="38" r="12" fill="none" stroke="#fff" stroke-width="4.5"/>
+<path d="M36 90 C36 68 46 58 60 58 C74 58 84 68 84 90" fill="none" stroke="#fff" stroke-width="4.5" stroke-linecap="round"/>
+<path d="M40 74 H26 M26 74 V64 M26 74 L34 82" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</svg></div>
+    <div><div class="chapter-eyebrow" style="color:#2f6b8f">Capitolo 12</div><h3>Consigli per chi insegna: metodologia per anziani e principianti</h3></div>
+  </div>
+  <div class="chapter-body"><p>Questo capitolo si rivolge direttamente a chi conduce i corsi, che siano volontari di un centro anziani, insegnanti, animatori sociali.</p>
+<p><strong>Rispettare i tempi.</strong> L'apprendimento in età avanzata, o comunque in assenza di esperienza pregressa, richiede tempi più distesi di quelli che chi insegna, magari già esperto, potrebbe considerare "normali". La ripetizione non è un segno di difficoltà: è parte fisiologica del processo di apprendimento.</p>
+<p><strong>Usare un linguaggio senza gergo, ma senza sminuire.</strong> Evitare termini tecnici non spiegati ("clicca sull'icona nel tray") non significa parlare in modo infantilizzante. Significa scegliere parole comuni per descrivere concetti nuovi, spiegando il termine tecnico quando viene introdotto per la prima volta, così che la persona costruisca gradualmente anche un proprio vocabolario.</p>
+<p><strong>Procedere per piccoli passi, con obiettivi concreti.</strong> Come indicato nei capitoli precedenti, ogni lezione dovrebbe avere un obiettivo pratico e riconoscibile, piuttosto che un elenco astratto di nozioni.</p>
+<p><strong>Normalizzare l'errore.</strong> "Ho sbagliato" deve poter essere detto senza imbarazzo. Chi insegna dovrebbe esplicitamente segnalare, fin dall'inizio, che sbagliare fa parte del percorso, e che — grazie alla natura live di FeniceOS — non c'è quasi mai il rischio concreto di "rompere" qualcosa in modo irreversibile.</p>
+<p><strong>Favorire la pratica ripetuta più della teoria.</strong> Specialmente nelle fasi iniziali, mostrare e far ripetere è più efficace che spiegare in astratto.</p>
+<p><strong>Valorizzare l'apprendimento tra pari.</strong> In un gruppo, chi ha acquisito una competenza può spiegarla a chi non l'ha ancora acquisita: questo rafforza sia chi insegna informalmente, sia il clima di gruppo, sia — spesso in modo sorprendente — la memorizzazione stessa della competenza da parte di chi la spiega.</p>
+<p><strong>Usare i quiz come momento ludico, non come esame.</strong> La Parte V di questo manuale offre un ricco insieme di quiz pensati non per valutare, ma per consolidare l'apprendimento in modo piacevole e a bassa pressione, individualmente o in gruppo.</p>
+<p><strong>Prevedere momenti di consolidamento.</strong> Rivedere periodicamente quanto appreso, senza introdurre sempre nuovi contenuti, aiuta a stabilizzare le competenze acquisite prima di procedere oltre.</p>
+<div class="callout" style="border-color:#2f6b8f; background:#e3edf3;"><div><svg height="54" viewbox="0 0 120 120" width="54" xmlns="http://www.w3.org/2000/svg">
+<circle cx="60" cy="60" fill="#2f6b8f" r="58"></circle>
+<circle cx="60" cy="60" fill="none" r="58" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"></circle>
+<path d="M60 24 L68 52 L96 60 L68 68 L60 96 L52 68 L24 60 L52 52 Z" fill="none" stroke="#fff" stroke-linejoin="round" stroke-width="4.5"></path>
+</svg></div><div class="callout-text">
+<p><strong>Da ricordare.</strong> Il compito di chi insegna non è trasferire quante più nozioni possibile nel minor tempo possibile, ma costruire, insieme alla persona che apprende, un rapporto di fiducia duraturo con la tecnologia.</p>
+</div></div></div>
+</article>
+</section><section class="part" id="part4">
+  <div class="part-banner" style="background:linear-gradient(120deg,#7a4f9e,#1b3a4b)">
+    <div class="kick">Parte IV</div><h2>L'universo informatico</h2><p>Ieri, oggi e domani: storia, presente e intelligenza artificiale.</p>
+  </div>
+  
+<article class="chapter" id="cap13">
+  <div class="chapter-head">
+    <div class="cicon"><svg width="100" height="100" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<circle cx="60" cy="60" r="58" fill="#7a4f9e"/>
+<circle cx="60" cy="60" r="58" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"/>
+<path d="M28 30 H70 V90 H28 C24 90 24 30 28 30 Z" fill="none" stroke="#fff" stroke-width="4.5" stroke-linejoin="round"/>
+<path d="M28 30 C24 30 24 90 28 90" fill="none" stroke="#fff" stroke-width="4"/>
+<circle cx="84" cy="68" r="20" fill="#1b3a4b" stroke="#fff" stroke-width="4.5"/>
+<path d="M84 58 V68 L92 74" stroke="#fff" stroke-width="4" stroke-linecap="round" fill="none"/>
+</svg></div>
+    <div><div class="chapter-eyebrow" style="color:#7a4f9e">Capitolo 13</div><h3>Storia dell'informatica: dalle origini al personal computer</h3></div>
+  </div>
+  <div class="chapter-body"><p>Comprendere da dove viene l'informatica aiuta a capire meglio dove si trova oggi, e perché certe scelte — come quelle alla base di FeniceOS — abbiano senso storico oltre che tecnico.</p>
+<p><strong>Le origini del calcolo automatico.</strong> Molto prima dei computer elettronici, l'idea di macchine capaci di calcolare automaticamente attraversa secoli di storia: dall'abaco alle macchine calcolatrici meccaniche del Seicento e Settecento, fino al lavoro pionieristico di Charles Babbage nell'Ottocento, che progettò (senza mai completarla) la cosiddetta "macchina analitica", considerata da molti storici un antenato concettuale del computer moderno. Ada Lovelace, che collaborò con Babbage, è oggi riconosciuta come autrice di quello che viene spesso descritto come il primo algoritmo pensato per essere eseguito da una macchina.</p>
+<p><strong>La nascita dei computer elettronici (anni '40).</strong> Durante e subito dopo la Seconda guerra mondiale nascono i primi calcolatori elettronici programmabili, enormi macchine che occupavano intere stanze, come l'ENIAC negli Stati Uniti. In questo stesso periodo, Alan Turing pone le basi teoriche della moderna informatica, con il concetto di macchina universale capace, in linea di principio, di eseguire qualunque calcolo esprimibile in modo algoritmico.</p>
+<p><strong>L'era dei mainframe (anni '50-'60).</strong> I computer restano per circa due decenni strumenti riservati a grandi aziende, università e istituzioni governative: macchine costosissime, gestite da personale specializzato, accessibili solo indirettamente dalla maggior parte delle persone.</p>
+<p><strong>La rivoluzione del personal computer (anni '70-'80).</strong> L'invenzione del microprocessore rende possibile, per la prima volta, la costruzione di computer piccoli ed economici abbastanza da entrare nelle case e negli uffici. Aziende come Apple, con l'Apple II, e successivamente IBM, con il suo Personal Computer, rendono l'informatica accessibile su scala di massa. È in questo periodo che nascono anche i primi sistemi operativi pensati per un pubblico ampio.</p>
+<p><strong>La nascita di Linux (1991).</strong> Nel 1991 lo studente finlandese Linus Torvalds rende pubblico un nuovo nucleo (kernel) di sistema operativo, che chiama Linux, distribuito con licenza libera. Da quel nucleo, nel tempo, nasceranno centinaia di distribuzioni diverse — tra cui Debian, fondamenta di FeniceOS — costruite da comunità di sviluppatori di tutto il mondo, spesso in modo completamente gratuito e collaborativo.</p>
+<p><strong>Gli anni '90 e la diffusione di internet.</strong> L'invenzione del World Wide Web da parte di Tim Berners-Lee, nel 1989-1991, apre la strada alla trasformazione di internet — nato negli anni '60-'70 come progetto militare e accademico — in uno strumento di comunicazione di massa, con una crescita esplosiva nel corso degli anni '90.</p>
+<p><strong>Perché questa storia conta per FeniceOS.</strong> L'intera storia del software libero, da Linux in avanti, è la storia di una scelta alternativa rispetto ai modelli commerciali chiusi: quella di costruire tecnologia in modo collaborativo, trasparente e accessibile. FeniceOS si colloca esplicitamente in questa tradizione, ereditandone i principi tecnici (Debian, un progetto guidato dalla comunità dal 1993) e i principi etici (trasparenza, accessibilità, assenza di barriere economiche).</p></div>
+</article>
+<article class="chapter" id="cap14">
+  <div class="chapter-head">
+    <div class="cicon"><svg width="100" height="100" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<circle cx="60" cy="60" r="58" fill="#7a4f9e"/>
+<circle cx="60" cy="60" r="58" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"/>
+<circle cx="60" cy="60" r="34" fill="none" stroke="#fff" stroke-width="4.5"/>
+<ellipse cx="60" cy="60" rx="14" ry="34" fill="none" stroke="#fff" stroke-width="3.5"/>
+<path d="M26 60 H94 M31 42 H89 M31 78 H89" stroke="#fff" stroke-width="3.5" fill="none"/>
+</svg></div>
+    <div><div class="chapter-eyebrow" style="color:#7a4f9e">Capitolo 14</div><h3>L'informatica di oggi: internet, cloud, mobile, software libero</h3></div>
+  </div>
+  <div class="chapter-body"><p><strong>Internet come infrastruttura quotidiana.</strong> Se negli anni '90 internet era un'esperienza per pochi, oggi è un'infrastruttura tanto pervasiva quanto l'elettricità o l'acqua corrente: servizi pubblici, sanità, lavoro, istruzione, relazioni sociali passano, in misura crescente, attraverso la connessione digitale. È proprio questa pervasività a rendere l'esclusione digitale — di cui si è parlato nel Capitolo 3 — un problema sociale di prima grandezza, e non un semplice disagio tecnico.</p>
+<p><strong>Il cloud computing.</strong> Sempre più dati e programmi non risiedono più fisicamente sul computer dell'utente, ma su server remoti, accessibili tramite internet: è il concetto di "cloud" (nuvola). Documenti, foto, posta elettronica sono oggi spesso conservati e sincronizzati su server distanti, accessibili da qualunque dispositivo connesso. Questo modello offre comodità significative, ma pone anche questioni rilevanti in termini di privacy, sicurezza e dipendenza da singoli fornitori di servizio.</p>
+<p><strong>La centralità del mobile.</strong> Gli smartphone hanno spostato buona parte dell'uso quotidiano dell'informatica dal computer da tavolo o portatile al dispositivo tascabile, sempre connesso. Questo cambiamento ha reso, paradossalmente, ancora più necessaria la competenza sul computer tradizionale in molti contesti — dalla compilazione di moduli complessi alla produttività professionale — dove lo smartphone resta uno strumento meno efficace.</p>
+<p><strong>Il software libero e open source, oggi.</strong> Ciò che negli anni '90 era considerato un fenomeno di nicchia è oggi parte infrastrutturale di gran parte del mondo digitale: la maggioranza dei server che fanno funzionare internet utilizza sistemi Linux; progetti come Debian, alla base di FeniceOS, sostengono silenziosamente buona parte dell'infrastruttura digitale mondiale, anche quando l'utente finale non ne è consapevole.</p>
+<p><strong>Sicurezza e privacy come competenze quotidiane.</strong> Riconoscere un tentativo di phishing, comprendere l'importanza di password robuste e diversificate, capire cosa significhi realmente "accettare i cookie" di un sito: sono competenze che, fino a pochi anni fa, riguardavano solo specialisti, e che oggi sono parte della cittadinanza digitale di base.</p>
+<p><strong>Il divario digitale non è (solo) generazionale.</strong> È un errore comune pensare che l'esclusione digitale riguardi solo le persone anziane. Riguarda anche chi non può permettersi dispositivi aggiornati, chi vive in aree con connettività limitata, chi non ha mai avuto accesso a percorsi formativi adeguati, indipendentemente dall'età anagrafica.</p>
+<div class="callout" style="border-color:#7a4f9e; background:#ece2f3;"><div><svg height="54" viewbox="0 0 120 120" width="54" xmlns="http://www.w3.org/2000/svg">
+<circle cx="60" cy="60" fill="#7a4f9e" r="58"></circle>
+<circle cx="60" cy="60" fill="none" r="58" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"></circle>
+<path d="M60 24 L68 52 L96 60 L68 68 L60 96 L52 68 L24 60 L52 52 Z" fill="none" stroke="#fff" stroke-linejoin="round" stroke-width="4.5"></path>
+</svg></div><div class="callout-text">
+<p><strong>Da ricordare.</strong> L'informatica di oggi non si misura solo in dispositivi posseduti, ma in competenze acquisite. Un centro anziani dotato di FeniceOS e di un buon percorso didattico può colmare, concretamente, parte di questo divario.</p>
+</div></div></div>
+</article>
+<article class="chapter" id="cap15">
+  <div class="chapter-head">
+    <div class="cicon"><svg width="100" height="100" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<circle cx="60" cy="60" r="58" fill="#7a4f9e"/>
+<circle cx="60" cy="60" r="58" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"/>
+<circle cx="60" cy="60" r="33" fill="none" stroke="#fff" stroke-width="4.5"/>
+<circle cx="42" cy="46" r="4" fill="#fff"/><circle cx="60" cy="38" r="4" fill="#fff"/><circle cx="78" cy="46" r="4" fill="#fff"/>
+<circle cx="38" cy="68" r="4" fill="#fff"/><circle cx="60" cy="80" r="4" fill="#fff"/><circle cx="82" cy="68" r="4" fill="#fff"/>
+<circle cx="60" cy="58" r="5" fill="#fff"/>
+<path d="M42 46 L60 58 M60 38 L60 58 M78 46 L60 58 M38 68 L60 58 M60 80 L60 58 M82 68 L60 58" stroke="#fff" stroke-width="3" fill="none"/>
+</svg></div>
+    <div><div class="chapter-eyebrow" style="color:#7a4f9e">Capitolo 15</div><h3>Il futuro e l'intelligenza artificiale: opportunità e domande aperte</h3></div>
+  </div>
+  <div class="chapter-body"><p><strong>Cos'è, in termini semplici, l'intelligenza artificiale.</strong> Con "intelligenza artificiale" si intendono oggi, nella maggior parte dei casi concreti, sistemi software addestrati su enormi quantità di dati per riconoscere schemi (pattern) e produrre risposte, previsioni o contenuti — testi, immagini, traduzioni, raccomandazioni — senza essere stati programmati istruzione per istruzione per ogni singolo compito. Non si tratta, nonostante il nome evocativo, di macchine dotate di coscienza o comprensione nel senso in cui la intendiamo per un essere umano, ma di sofisticati sistemi statistici capaci di compiti sempre più ampi.</p>
+<p><strong>Opportunità concrete, anche per il pubblico di questo manuale.</strong> Per una persona anziana, un assistente vocale basato su intelligenza artificiale può facilitare l'accesso a informazioni senza dover padroneggiare un'interfaccia grafica complessa. Strumenti di traduzione automatica abbattono barriere linguistiche. Sistemi di riconoscimento vocale possono aiutare chi ha difficoltà motorie a usare un computer scrivendo con la voce anziché con la tastiera. In ambito didattico, l'intelligenza artificiale può generare materiali personalizzati, adattati al ritmo di apprendimento del singolo.</p>
+<p><strong>Rischi e domande aperte.</strong> L'intelligenza artificiale pone questioni che questo manuale, coerente con i principi della Tecnologia Gentile, non può eludere:</p>
+<ul>
+<li><em>Comprensibilità.</em> Molti sistemi di IA funzionano come "scatole nere": producono risultati senza che sia sempre chiaro il ragionamento sottostante, in tensione diretta con il principio di comprensibilità del Capitolo 1.</li>
+<li><em>Disinformazione.</em> La capacità di generare testi e immagini realistici rende più difficile, per chiunque, distinguere contenuti autentici da contenuti generati o manipolati — una competenza critica sempre più necessaria.</li>
+<li><em>Dipendenza da grandi infrastrutture.</em> I sistemi di IA più avanzati richiedono enormi risorse computazionali, concentrate spesso in poche grandi aziende: una dinamica che va tenuta sotto osservazione critica alla luce dei principi di accessibilità e decentralizzazione cari al software libero.</li>
+<li><em>Impatto ambientale.</em> L'addestramento e l'utilizzo su larga scala di sistemi di intelligenza artificiale comporta un consumo energetico significativo, un tema che si collega direttamente alle riflessioni sulla sostenibilità del Capitolo 2.</li>
+<li><em>Nuove forme di divario digitale.</em> Il rischio è che l'intelligenza artificiale, se non accompagnata da un'adeguata alfabetizzazione, allarghi ulteriormente il divario tra chi sa utilizzarla consapevolmente e chi ne resta semplicemente soggetto, senza comprenderne il funzionamento né poterne valutare criticamente gli output.</li>
+</ul>
+<p><strong>Una posizione equilibrata.</strong> Questo manuale non propone né un rifiuto acritico né un'adozione entusiasta e incondizionata dell'intelligenza artificiale. Propone, coerentemente con tutto il percorso fin qui tracciato, un approccio critico e informato: comprendere cosa questi strumenti possano realmente fare, cosa non possano fare, quali interessi economici ne guidino lo sviluppo, e come possano essere messi al servizio dell'inclusione — invece che, come talvolta accade, della sua ulteriore erosione.</p>
+<p><strong>FeniceOS e il futuro.</strong> Un progetto come FeniceOS, fondato su software libero, trasparenza e riuso, rappresenta un modello alternativo anche rispetto alle dinamiche più problematiche dello sviluppo tecnologico contemporaneo: dimostra che è possibile costruire strumenti potenti e utili senza per questo dover rinunciare a princìpi di sostenibilità, trasparenza e accessibilità — gli stessi princìpi che, guardando al futuro, dovrebbero guidare anche lo sviluppo e l'adozione dell'intelligenza artificiale.</p>
+<div class="callout" style="border-color:#7a4f9e; background:#ece2f3;"><div><svg height="54" viewbox="0 0 120 120" width="54" xmlns="http://www.w3.org/2000/svg">
+<circle cx="60" cy="60" fill="#7a4f9e" r="58"></circle>
+<circle cx="60" cy="60" fill="none" r="58" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"></circle>
+<path d="M60 24 L68 52 L96 60 L68 68 L60 96 L52 68 L24 60 L52 52 Z" fill="none" stroke="#fff" stroke-linejoin="round" stroke-width="4.5"></path>
+</svg></div><div class="callout-text">
+<p><strong>Da ricordare.</strong> Il futuro dell'informatica non è scritto in anticipo. Le scelte tecniche, economiche ed etiche che facciamo oggi — come singoli utenti, come educatori, come sviluppatori — contribuiscono a determinare quale futuro digitale costruiamo, e per chi.</p>
+</div></div></div>
+</article>
+</section><section class="part" id="part5">
+  <div class="part-banner" style="background:linear-gradient(120deg,#c78a2e,#1b3a4b)">
+    <div class="kick">Parte V</div><h2>Quiz e verifica</h2><p>Domande diversificate per livello e per tema, con le soluzioni riservate a chi conduce.</p>
+  </div>
+  
+<article class="chapter" id="cap16">
+  <div class="chapter-head">
+    <div class="cicon"><svg width="100" height="100" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<circle cx="60" cy="60" r="58" fill="#c78a2e"/>
+<circle cx="60" cy="60" r="58" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"/>
+<circle cx="60" cy="46" r="26" fill="none" stroke="#fff" stroke-width="4.5"/>
+<path d="M50 40 C50 32 70 32 70 42 C70 50 60 48 60 58" stroke="#fff" stroke-width="5" stroke-linecap="round" fill="none"/>
+<circle cx="60" cy="70" r="3.5" fill="#fff"/>
+<rect x="34" y="86" width="16" height="16" rx="3" fill="none" stroke="#fff" stroke-width="4"/>
+<rect x="70" y="86" width="16" height="16" rx="3" fill="none" stroke="#fff" stroke-width="4"/>
+</svg></div>
+    <div><div class="chapter-eyebrow" style="color:#c78a2e">Capitolo 16</div><h3>Come usare i quiz di questo manuale</h3></div>
+  </div>
+  <div class="chapter-body"><p>I quiz che seguono non sono pensati come un esame, ma come uno strumento didattico ludico, coerente con la metodologia descritta nel Capitolo 12. Alcuni suggerimenti pratici per chi li utilizza in aula o al centro anziani:</p>
+<ul>
+<li><strong>Individualmente o in gruppo.</strong> I quiz funzionano bene sia come esercizio personale di autoverifica, sia come gioco di squadra, con punteggio condiviso e clima di sfida amichevole.</li>
+<li><strong>A voce alta o per iscritto.</strong> In gruppi con partecipanti meno a proprio agio con la scrittura, i quiz possono essere condotti oralmente, con chi conduce che legge le domande e raccoglie le risposte.</li>
+<li><strong>Nessuna penalizzazione per l'errore.</strong> Coerentemente con quanto indicato nel Capitolo 12, l'errore va trattato come parte naturale del percorso, mai come un fallimento.</li>
+<li><strong>Livelli progressivi.</strong> I quiz sono organizzati per livello di difficoltà crescente (Base, Intermedio, Avanzato), più due sezioni tematiche trasversali (Storia/Presente/Futuro/IA, ed Economia circolare/Etica/Obsolescenza programmata) che possono essere proposte a qualunque livello.</li>
+<li><strong>Tipologie diverse.</strong> Per mantenere alta l'attenzione e stimolare diverse modalità di ragionamento, i quiz alternano domande a risposta multipla, Vero/Falso, abbinamento e domande aperte di riflessione (queste ultime pensate per la discussione di gruppo, non per una risposta "esatta" univoca).</li>
+<li><strong>Il Foglio delle risposte</strong> si trova in Appendice, con la soluzione e una breve spiegazione per ciascuna domanda: è pensato per essere stampato o consultato separatamente da chi conduce l'attività.</li>
+</ul>
+<hr/></div>
+</article>
+<article class="chapter" id="cap17">
+  <div class="chapter-head">
+    <div class="cicon"><svg width="100" height="100" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<circle cx="60" cy="60" r="58" fill="#c78a2e"/>
+<circle cx="60" cy="60" r="58" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"/>
+<circle cx="60" cy="46" r="26" fill="none" stroke="#fff" stroke-width="4.5"/>
+<path d="M50 40 C50 32 70 32 70 42 C70 50 60 48 60 58" stroke="#fff" stroke-width="5" stroke-linecap="round" fill="none"/>
+<circle cx="60" cy="70" r="3.5" fill="#fff"/>
+<rect x="34" y="86" width="16" height="16" rx="3" fill="none" stroke="#fff" stroke-width="4"/>
+<rect x="70" y="86" width="16" height="16" rx="3" fill="none" stroke="#fff" stroke-width="4"/>
+</svg></div>
+    <div><div class="chapter-eyebrow" style="color:#c78a2e">Capitolo 17</div><h3>Quiz Livello Base</h3></div>
+  </div>
+  <div class="chapter-body"><p class="quiz-intro"><em>Pensato per chi si avvicina per la prima volta al computer o a FeniceOS.</em></p>
+<div class="qcard"><div class="qtop"><div class="qnum">D1</div>
+<div class="qbody"><div class="qstem">Come si chiama il dispositivo che si usa per spostare il puntatore sullo schermo?</div><div class="opts"><div class="opt"><span class="optlet">A)</span><span>Tastiera</span></div><div class="opt"><span class="optlet">B)</span><span>Mouse</span></div><div class="opt"><span class="optlet">C)</span><span>Monitor</span></div><div class="opt"><span class="optlet">D)</span><span>Stampante</span></div></div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D2</div>
+<div class="qbody"><div class="qstem">Vero o Falso: per spegnere correttamente il computer bisogna sempre staccare direttamente la spina.</div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D3</div>
+<div class="qbody"><div class="qstem">Quale tasto si usa per andare a capo o confermare un'azione durante la scrittura?</div><div class="opts"><div class="opt"><span class="optlet">A)</span><span>Barra spaziatrice</span></div><div class="opt"><span class="optlet">B)</span><span>Tasto Canc</span></div><div class="opt"><span class="optlet">C)</span><span>Invio (Enter)</span></div><div class="opt"><span class="optlet">D)</span><span>Tasto Maiuscolo</span></div></div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D4</div>
+<div class="qbody"><div class="qstem">Che cos'è un "doppio clic"?</div><div class="opts"><div class="opt"><span class="optlet">A)</span><span>Premere il tasto destro del mouse</span></div><div class="opt"><span class="optlet">B)</span><span>Premere due volte, in rapida successione, il tasto sinistro del mouse</span></div><div class="opt"><span class="optlet">C)</span><span>Tenere premuto il tasto sinistro e spostare il mouse</span></div><div class="opt"><span class="optlet">D)</span><span>Premere contemporaneamente due tasti della tastiera</span></div></div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D5</div>
+<div class="qbody"><div class="qstem">Vero o Falso: FeniceOS si avvia da una chiavetta USB, senza bisogno di essere installato sul disco del computer.</div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D6</div>
+<div class="qbody"><div class="qstem">Abbina ogni elemento alla sua funzione: 1) Monitor — 2) Tastiera — 3) Mouse — 4) Unità centrale. Funzioni: a) contiene i componenti che fanno funzionare il computer; b) mostra le informazioni sullo schermo; c) permette di scrivere lettere e numeri; d) sposta il puntatore e seleziona gli elementi.</div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D7</div>
+<div class="qbody"><div class="qstem">Per aprire un programma da un'icona sul desktop, di solito si effettua:</div><div class="opts"><div class="opt"><span class="optlet">A)</span><span>Un singolo clic con il tasto destro</span></div><div class="opt"><span class="optlet">B)</span><span>Un doppio clic con il tasto sinistro</span></div><div class="opt"><span class="optlet">C)</span><span>Una pressione prolungata del tasto Invio</span></div><div class="opt"><span class="optlet">D)</span><span>Uno scorrimento con due dita</span></div></div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D8</div>
+<div class="qbody"><div class="qstem">Vero o Falso: se si sbaglia qualcosa usando FeniceOS da chiavetta USB, è praticamente impossibile "rompere" il computer in modo permanente.</div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D9</div>
+<div class="qbody"><div class="qstem">Come si chiama il programma che si usa per navigare su internet?</div><div class="opts"><div class="opt"><span class="optlet">A)</span><span>Foglio di calcolo</span></div><div class="opt"><span class="optlet">B)</span><span>Browser</span></div><div class="opt"><span class="optlet">C)</span><span>Editor di testo</span></div><div class="opt"><span class="optlet">D)</span><span>Terminale</span></div></div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D10</div>
+<div class="qbody"><div class="qstem">Che cosa serve fare, prima di chiudere un documento appena scritto, per non perdere il lavoro svolto?</div><div class="opts"><div class="opt"><span class="optlet">A)</span><span>Stamparlo</span></div><div class="opt"><span class="optlet">B)</span><span>Salvarlo</span></div><div class="opt"><span class="optlet">C)</span><span>Ingrandirlo</span></div><div class="opt"><span class="optlet">D)</span><span>Rinominare il computer</span></div></div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D11</div>
+<div class="qbody"><div class="qstem">Racconta un'occasione della tua vita quotidiana in cui saper usare un computer o uno smartphone ti sarebbe stato, o ti è stato, utile.<span class="qtag">domanda aperta</span></div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D12</div>
+<div class="qbody"><div class="qstem">Vero o Falso: per fare una videochiamata è necessario che il computer riconosca correttamente webcam e microfono.</div></div></div></div></div>
+</article>
+<article class="chapter" id="cap18">
+  <div class="chapter-head">
+    <div class="cicon"><svg width="100" height="100" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<circle cx="60" cy="60" r="58" fill="#c78a2e"/>
+<circle cx="60" cy="60" r="58" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"/>
+<circle cx="60" cy="46" r="26" fill="none" stroke="#fff" stroke-width="4.5"/>
+<path d="M50 40 C50 32 70 32 70 42 C70 50 60 48 60 58" stroke="#fff" stroke-width="5" stroke-linecap="round" fill="none"/>
+<circle cx="60" cy="70" r="3.5" fill="#fff"/>
+<rect x="34" y="86" width="16" height="16" rx="3" fill="none" stroke="#fff" stroke-width="4"/>
+<rect x="70" y="86" width="16" height="16" rx="3" fill="none" stroke="#fff" stroke-width="4"/>
+</svg></div>
+    <div><div class="chapter-eyebrow" style="color:#c78a2e">Capitolo 18</div><h3>Quiz Livello Intermedio</h3></div>
+  </div>
+  <div class="chapter-body"><p class="quiz-intro"><em>Pensato per chi ha già acquisito familiarità con l'uso quotidiano di FeniceOS.</em></p>
+<div class="qcard"><div class="qtop"><div class="qnum">D13</div>
+<div class="qbody"><div class="qstem">Su quale distribuzione Linux è basato FeniceOS?</div><div class="opts"><div class="opt"><span class="optlet">A)</span><span>Ubuntu</span></div><div class="opt"><span class="optlet">B)</span><span>Debian 12 "Bookworm"</span></div><div class="opt"><span class="optlet">C)</span><span>Fedora</span></div><div class="opt"><span class="optlet">D)</span><span>Arch Linux</span></div></div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D14</div>
+<div class="qbody"><div class="qstem">Vero o Falso: FeniceOS è progettato per funzionare anche su computer con meno di 500 MB di RAM disponibile.</div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D15</div>
+<div class="qbody"><div class="qstem">Che cosa significa che FeniceOS è un sistema "live"?</div><div class="opts"><div class="opt"><span class="optlet">A)</span><span>Che si aggiorna automaticamente ogni giorno</span></div><div class="opt"><span class="optlet">B)</span><span>Che funziona direttamente da chiavetta USB senza essere installato</span></div><div class="opt"><span class="optlet">C)</span><span>Che richiede una connessione internet permanente</span></div><div class="opt"><span class="optlet">D)</span><span>Che mostra contenuti in diretta streaming</span></div></div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D16</div>
+<div class="qbody"><div class="qstem">FeniceOS è pensato per essere compatibile con quali due standard di avvio dei computer?</div><div class="opts"><div class="opt"><span class="optlet">A)</span><span>DOS e Windows</span></div><div class="opt"><span class="optlet">B)</span><span>BIOS e UEFI</span></div><div class="opt"><span class="optlet">C)</span><span>Mac OS e iOS</span></div><div class="opt"><span class="optlet">D)</span><span>Android e iOS</span></div></div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D17</div>
+<div class="qbody"><div class="qstem">Che cos'è il "phishing"?</div><div class="opts"><div class="opt"><span class="optlet">A)</span><span>Un tipo di virus che rallenta il computer</span></div><div class="opt"><span class="optlet">B)</span><span>Un tentativo di truffa online che imita comunicazioni ufficiali per sottrarre dati personali</span></div><div class="opt"><span class="optlet">C)</span><span>Un metodo per velocizzare la connessione internet</span></div><div class="opt"><span class="optlet">D)</span><span>Un componente hardware del computer</span></div></div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D18</div>
+<div class="qbody"><div class="qstem">Vero o Falso: nel "cloud computing", i file dell'utente sono conservati esclusivamente sul disco fisso del proprio computer.</div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D19</div>
+<div class="qbody"><div class="qstem">A cosa serve, in generale, un aggiornamento di sicurezza del sistema operativo?</div><div class="opts"><div class="opt"><span class="optlet">A)</span><span>A cambiare i colori del desktop</span></div><div class="opt"><span class="optlet">B)</span><span>A correggere vulnerabilità e proteggere il sistema da minacce note</span></div><div class="opt"><span class="optlet">C)</span><span>A rallentare intenzionalmente il computer</span></div><div class="opt"><span class="optlet">D)</span><span>A cancellare i file personali</span></div></div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D20</div>
+<div class="qbody"><div class="qstem">Abbina ogni termine al suo significato: 1) Software libero — 2) Open source — 3) Obsolescenza programmata — 4) Economia circolare. Significati: a) pratica industriale che limita artificialmente la vita utile di un prodotto; b) modello che privilegia riduzione, riuso e riparazione degli oggetti; c) software il cui codice sorgente è pubblico e modificabile da chiunque; d) software distribuito con licenza che garantisce libertà d'uso, studio, modifica e condivisione.</div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D21</div>
+<div class="qbody"><div class="qstem">Che cos'è una password robusta?</div><div class="opts"><div class="opt"><span class="optlet">A)</span><span>Una parola facile da ricordare, come il proprio nome</span></div><div class="opt"><span class="optlet">B)</span><span>Una combinazione lunga e complessa di caratteri, diversa per ogni servizio</span></div><div class="opt"><span class="optlet">C)</span><span>La stessa password usata per tutti i propri account</span></div><div class="opt"><span class="optlet">D)</span><span>Una sequenza di numeri consecutivi</span></div></div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D22</div>
+<div class="qbody"><div class="qstem">Vero o Falso: il software libero non permette mai a un'azienda di offrire assistenza a pagamento su di esso.</div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D23</div>
+<div class="qbody"><div class="qstem">Perché, secondo te, un computer "vecchio" può ancora essere utile se dotato del sistema operativo giusto?<span class="qtag">domanda aperta</span></div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D24</div>
+<div class="qbody"><div class="qstem">Quale strumento consente, su Debian e quindi su FeniceOS, di installare o aggiornare i programmi in modo centralizzato e sicuro?</div><div class="opts"><div class="opt"><span class="optlet">A)</span><span>Il Bluetooth</span></div><div class="opt"><span class="optlet">B)</span><span>Il sistema di gestione pacchetti APT</span></div><div class="opt"><span class="optlet">C)</span><span>La stampante di rete</span></div><div class="opt"><span class="optlet">D)</span><span>Il correttore ortografico</span></div></div></div></div></div></div>
+</article>
+<article class="chapter" id="cap19">
+  <div class="chapter-head">
+    <div class="cicon"><svg width="100" height="100" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<circle cx="60" cy="60" r="58" fill="#c78a2e"/>
+<circle cx="60" cy="60" r="58" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"/>
+<circle cx="60" cy="46" r="26" fill="none" stroke="#fff" stroke-width="4.5"/>
+<path d="M50 40 C50 32 70 32 70 42 C70 50 60 48 60 58" stroke="#fff" stroke-width="5" stroke-linecap="round" fill="none"/>
+<circle cx="60" cy="70" r="3.5" fill="#fff"/>
+<rect x="34" y="86" width="16" height="16" rx="3" fill="none" stroke="#fff" stroke-width="4"/>
+<rect x="70" y="86" width="16" height="16" rx="3" fill="none" stroke="#fff" stroke-width="4"/>
+</svg></div>
+    <div><div class="chapter-eyebrow" style="color:#c78a2e">Capitolo 19</div><h3>Quiz Livello Avanzato</h3></div>
+  </div>
+  <div class="chapter-body"><p class="quiz-intro"><em>Pensato per utenti esperti o per chi ha completato il percorso avanzato del Capitolo 11.</em></p>
+<div class="qcard"><div class="qtop"><div class="qnum">D25</div>
+<div class="qbody"><div class="qstem">Che cos'è il "terminale" in un sistema Linux come FeniceOS?</div><div class="opts"><div class="opt"><span class="optlet">A)</span><span>Un accessorio hardware per collegare periferiche</span></div><div class="opt"><span class="optlet">B)</span><span>Un'interfaccia testuale per impartire comandi diretti al sistema</span></div><div class="opt"><span class="optlet">C)</span><span>Il nome del produttore della scheda madre</span></div><div class="opt"><span class="optlet">D)</span><span>Un tipo di virus informatico</span></div></div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D26</div>
+<div class="qbody"><div class="qstem">Nella pipeline di costruzione di FeniceOS, quale strumento viene utilizzato per creare da zero un sistema Debian minimo?</div><div class="opts"><div class="opt"><span class="optlet">A)</span><span>xorriso</span></div><div class="opt"><span class="optlet">B)</span><span>mksquashfs</span></div><div class="opt"><span class="optlet">C)</span><span>debootstrap</span></div><div class="opt"><span class="optlet">D)</span><span>chroot</span></div></div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D27</div>
+<div class="qbody"><div class="qstem">Vero o Falso: "chroot" indica l'ambiente in cui si lavora "dentro" a un sistema in costruzione, come se ci si trovasse fisicamente al suo interno.</div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D28</div>
+<div class="qbody"><div class="qstem">A cosa serve, nella pipeline di build di FeniceOS, lo strumento mksquashfs?</div><div class="opts"><div class="opt"><span class="optlet">A)</span><span>A scaricare i pacchetti software da internet</span></div><div class="opt"><span class="optlet">B)</span><span>A comprimere il sistema in un unico file compatto ed efficiente</span></div><div class="opt"><span class="optlet">C)</span><span>A configurare la connessione di rete</span></div><div class="opt"><span class="optlet">D)</span><span>A tradurre l'interfaccia in altre lingue</span></div></div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D29</div>
+<div class="qbody"><div class="qstem">Quale strumento trasforma il sistema compresso in un'immagine ISO avviabile, pronta per una chiavetta USB?</div><div class="opts"><div class="opt"><span class="optlet">A)</span><span>xorriso</span></div><div class="opt"><span class="optlet">B)</span><span>APT</span></div><div class="opt"><span class="optlet">C)</span><span>systemd</span></div><div class="opt"><span class="optlet">D)</span><span>grep</span></div></div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D30</div>
+<div class="qbody"><div class="qstem">Che cos'è l'autenticazione a due fattori?</div><div class="opts"><div class="opt"><span class="optlet">A)</span><span>Un metodo di accesso che richiede due password identiche</span></div><div class="opt"><span class="optlet">B)</span><span>Un metodo di sicurezza che richiede, oltre alla password, una seconda prova d'identità (ad esempio un codice temporaneo)</span></div><div class="opt"><span class="optlet">C)</span><span>Una tecnica per velocizzare l'avvio del sistema</span></div><div class="opt"><span class="optlet">D)</span><span>Un tipo di connessione Wi-Fi</span></div></div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D31</div>
+<div class="qbody"><div class="qstem">Vero o Falso: in un progetto open source come FeniceOS, in linea di principio chiunque può proporre correzioni, miglioramenti o segnalare problemi.</div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D32</div>
+<div class="qbody"><div class="qstem">Quali competenze, tra quelle avanzate presentate nel Capitolo 11, ti sembrano più utili da trasmettere a un volontario che vuole diventare formatore in un centro anziani? Perché?<span class="qtag">domanda aperta</span></div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D33</div>
+<div class="qbody"><div class="qstem">Che cosa distingue, in generale, il modello di sviluppo di Debian da quello di un sistema operativo commerciale chiuso?</div><div class="opts"><div class="opt"><span class="optlet">A)</span><span>Debian è più costoso</span></div><div class="opt"><span class="optlet">B)</span><span>Debian è sviluppato e mantenuto in modo comunitario e trasparente, senza costi di licenza</span></div><div class="opt"><span class="optlet">C)</span><span>Debian richiede hardware più recente</span></div><div class="opt"><span class="optlet">D)</span><span>Debian non riceve mai aggiornamenti</span></div></div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D34</div>
+<div class="qbody"><div class="qstem">Quale delle seguenti è una buona pratica per contribuire alla sicurezza di una rete condivisa tra più postazioni FeniceOS in un centro sociale?</div><div class="opts"><div class="opt"><span class="optlet">A)</span><span>Usare la stessa password su tutte le postazioni</span></div><div class="opt"><span class="optlet">B)</span><span>Non installare mai aggiornamenti, per non "rischiare"</span></div><div class="opt"><span class="optlet">C)</span><span>Applicare regolarmente gli aggiornamenti di sicurezza e configurare correttamente gli accessi alla rete</span></div><div class="opt"><span class="optlet">D)</span><span>Disattivare qualunque forma di autenticazione</span></div></div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D35</div>
+<div class="qbody"><div class="qstem">Vero o Falso: la compatibilità dual boot BIOS/UEFI di FeniceOS è necessaria proprio perché il progetto è destinato a girare su hardware eterogeneo e spesso datato.</div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D36</div>
+<div class="qbody"><div class="qstem">In che modo un utente avanzato può contribuire concretamente allo sviluppo di FeniceOS, oltre che utilizzandolo?</div><div class="opts"><div class="opt"><span class="optlet">A)</span><span>Solo acquistando nuovo hardware</span></div><div class="opt"><span class="optlet">B)</span><span>Segnalando problemi, proponendo miglioramenti, contribuendo a documentazione o traduzioni</span></div><div class="opt"><span class="optlet">C)</span><span>Non è possibile contribuire in alcun modo</span></div><div class="opt"><span class="optlet">D)</span><span>Solo se si è dipendenti di un'azienda informatica</span></div></div></div></div></div></div>
+</article>
+<article class="chapter" id="cap20">
+  <div class="chapter-head">
+    <div class="cicon"><svg width="100" height="100" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<circle cx="60" cy="60" r="58" fill="#c78a2e"/>
+<circle cx="60" cy="60" r="58" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"/>
+<circle cx="60" cy="60" r="33" fill="none" stroke="#fff" stroke-width="4.5"/>
+<circle cx="42" cy="46" r="4" fill="#fff"/><circle cx="60" cy="38" r="4" fill="#fff"/><circle cx="78" cy="46" r="4" fill="#fff"/>
+<circle cx="38" cy="68" r="4" fill="#fff"/><circle cx="60" cy="80" r="4" fill="#fff"/><circle cx="82" cy="68" r="4" fill="#fff"/>
+<circle cx="60" cy="58" r="5" fill="#fff"/>
+<path d="M42 46 L60 58 M60 38 L60 58 M78 46 L60 58 M38 68 L60 58 M60 80 L60 58 M82 68 L60 58" stroke="#fff" stroke-width="3" fill="none"/>
+</svg></div>
+    <div><div class="chapter-eyebrow" style="color:#c78a2e">Capitolo 20</div><h3>Quiz speciale: Storia, Presente, Futuro e Intelligenza Artificiale</h3></div>
+  </div>
+  <div class="chapter-body"><p class="quiz-intro"><em>Un percorso trasversale attraverso l'universo informatico di ieri, oggi e domani.</em></p>
+<p class="quiz-intro"><strong>Sezione Ieri</strong></p>
+<div class="qcard"><div class="qtop"><div class="qnum">D37</div>
+<div class="qbody"><div class="qstem">Chi è generalmente considerato, insieme a Charles Babbage, tra i pionieri concettuali della programmazione, per aver scritto quello che è spesso descritto come il primo algoritmo pensato per una macchina?</div><div class="opts"><div class="opt"><span class="optlet">A)</span><span>Alan Turing</span></div><div class="opt"><span class="optlet">B)</span><span>Ada Lovelace</span></div><div class="opt"><span class="optlet">C)</span><span>Tim Berners-Lee</span></div><div class="opt"><span class="optlet">D)</span><span>Linus Torvalds</span></div></div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D38</div>
+<div class="qbody"><div class="qstem">In quale decennio nascono i primi calcolatori elettronici programmabili su larga scala, come l'ENIAC?</div><div class="opts"><div class="opt"><span class="optlet">A)</span><span>Anni '20</span></div><div class="opt"><span class="optlet">B)</span><span>Anni '40</span></div><div class="opt"><span class="optlet">C)</span><span>Anni '70</span></div><div class="opt"><span class="optlet">D)</span><span>Anni '90</span></div></div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D39</div>
+<div class="qbody"><div class="qstem">Vero o Falso: per circa due decenni, dopo la loro invenzione, i computer sono rimasti strumenti accessibili quasi esclusivamente a grandi aziende, università ed enti governativi.</div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D40</div>
+<div class="qbody"><div class="qstem">Che cosa ha reso possibile, tecnicamente, la nascita del personal computer negli anni '70-'80?</div><div class="opts"><div class="opt"><span class="optlet">A)</span><span>L'invenzione del microprocessore</span></div><div class="opt"><span class="optlet">B)</span><span>L'invenzione del mouse</span></div><div class="opt"><span class="optlet">C)</span><span>La diffusione della fibra ottica</span></div><div class="opt"><span class="optlet">D)</span><span>L'invenzione dello smartphone</span></div></div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D41</div>
+<div class="qbody"><div class="qstem">In che anno Linus Torvalds rese pubblico per la prima volta il kernel Linux?</div><div class="opts"><div class="opt"><span class="optlet">A)</span><span>1981</span></div><div class="opt"><span class="optlet">B)</span><span>1991</span></div><div class="opt"><span class="optlet">C)</span><span>2001</span></div><div class="opt"><span class="optlet">D)</span><span>2011</span></div></div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D42</div>
+<div class="qbody"><div class="qstem">Quale invenzione o cambiamento tecnologico, tra quelli descritti nel Capitolo 13, ti ha sorpreso di più? Perché?<span class="qtag">domanda aperta</span></div></div></div></div>
+<p class="quiz-intro"><strong>Sezione Oggi</strong></p>
+<div class="qcard"><div class="qtop"><div class="qnum">D43</div>
+<div class="qbody"><div class="qstem">Che cosa si intende, nel linguaggio comune, con il termine "cloud"?</div><div class="opts"><div class="opt"><span class="optlet">A)</span><span>Un tipo di virus informatico</span></div><div class="opt"><span class="optlet">B)</span><span>Dati e programmi conservati e accessibili tramite server remoti collegati a internet</span></div><div class="opt"><span class="optlet">C)</span><span>Un componente fisico del computer</span></div><div class="opt"><span class="optlet">D)</span><span>Un sistema per raffreddare il processore</span></div></div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D44</div>
+<div class="qbody"><div class="qstem">Vero o Falso: la maggior parte dei server che fanno funzionare internet oggi utilizza sistemi operativi basati su Linux.</div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D45</div>
+<div class="qbody"><div class="qstem">Quale delle seguenti affermazioni sul divario digitale è corretta?</div><div class="opts"><div class="opt"><span class="optlet">A)</span><span>Riguarda esclusivamente le persone anziane</span></div><div class="opt"><span class="optlet">B)</span><span>Riguarda solo chi vive in zone rurali</span></div><div class="opt"><span class="optlet">C)</span><span>Può riguardare chiunque non abbia accesso a dispositivi adeguati o a percorsi formativi, indipendentemente dall'età</span></div><div class="opt"><span class="optlet">D)</span><span>È un problema ormai completamente risolto</span></div></div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D46</div>
+<div class="qbody"><div class="qstem">Che cos'è il software open source, in termini semplici?</div><div class="opts"><div class="opt"><span class="optlet">A)</span><span>Software il cui codice sorgente è pubblico e può essere esaminato o modificato da chiunque</span></div><div class="opt"><span class="optlet">B)</span><span>Software disponibile solo in versione dimostrativa</span></div><div class="opt"><span class="optlet">C)</span><span>Software che funziona solo su smartphone</span></div><div class="opt"><span class="optlet">D)</span><span>Software che richiede sempre un abbonamento mensile</span></div></div></div></div></div>
+<p class="quiz-intro"><strong>Sezione Domani e Intelligenza Artificiale</strong></p>
+<div class="qcard"><div class="qtop"><div class="qnum">D47</div>
+<div class="qbody"><div class="qstem">In termini semplici, come funziona la maggior parte dei sistemi di intelligenza artificiale oggi diffusi?</div><div class="opts"><div class="opt"><span class="optlet">A)</span><span>Seguono istruzioni scritte una per una da un programmatore per ogni singolo caso</span></div><div class="opt"><span class="optlet">B)</span><span>Sono addestrati su grandi quantità di dati per riconoscere schemi e generare risposte o contenuti</span></div><div class="opt"><span class="optlet">C)</span><span>Copiano semplicemente risposte già scritte da esseri umani in un archivio</span></div><div class="opt"><span class="optlet">D)</span><span>Funzionano solo se collegati a un unico grande computer centrale nel mondo</span></div></div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D48</div>
+<div class="qbody"><div class="qstem">Vero o Falso: i moderni sistemi di intelligenza artificiale possiedono coscienza e comprensione nello stesso senso in cui le intendiamo per un essere umano.</div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D49</div>
+<div class="qbody"><div class="qstem">Quale delle seguenti è una preoccupazione realistica legata ai sistemi di intelligenza artificiale, secondo quanto discusso nel Capitolo 15?</div><div class="opts"><div class="opt"><span class="optlet">A)</span><span>La difficoltà di distinguere contenuti autentici da contenuti generati, con rischio di disinformazione</span></div><div class="opt"><span class="optlet">B)</span><span>L'impossibilità totale di usarli per qualunque scopo utile</span></div><div class="opt"><span class="optlet">C)</span><span>Il fatto che non consumino alcuna risorsa energetica</span></div><div class="opt"><span class="optlet">D)</span><span>L'obbligo legale universale di utilizzarli</span></div></div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D50</div>
+<div class="qbody"><div class="qstem">In che modo l'intelligenza artificiale può concretamente aiutare l'inclusione digitale, ad esempio per una persona anziana?</div><div class="opts"><div class="opt"><span class="optlet">A)</span><span>Rendendo obbligatorio l'uso dello smartphone</span></div><div class="opt"><span class="optlet">B)</span><span>Attraverso assistenti vocali e riconoscimento vocale che semplificano l'interazione con il dispositivo</span></div><div class="opt"><span class="optlet">C)</span><span>Eliminando completamente la necessità di qualunque formazione</span></div><div class="opt"><span class="optlet">D)</span><span>Sostituendo del tutto il contatto umano nei centri anziani</span></div></div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D51</div>
+<div class="qbody"><div class="qstem">Che cosa si intende per sistema di IA che funziona come "scatola nera"?</div><div class="opts"><div class="opt"><span class="optlet">A)</span><span>Un sistema che produce risultati senza che il ragionamento sottostante sia sempre trasparente o comprensibile</span></div><div class="opt"><span class="optlet">B)</span><span>Un computer di colore nero</span></div><div class="opt"><span class="optlet">C)</span><span>Un sistema che funziona solo offline</span></div><div class="opt"><span class="optlet">D)</span><span>Un tipo di virus informatico</span></div></div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D52</div>
+<div class="qbody"><div class="qstem">Secondo te, quali regole o principi dovrebbero guidare lo sviluppo futuro dell'intelligenza artificiale, alla luce dei valori della Tecnologia Gentile discussi nel Capitolo 1?<span class="qtag">domanda aperta</span></div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D53</div>
+<div class="qbody"><div class="qstem">Vero o Falso: l'addestramento e l'utilizzo su larga scala di sistemi di intelligenza artificiale comportano un consumo energetico che può essere significativo.</div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D54</div>
+<div class="qbody"><div class="qstem">Qual è, secondo l'impostazione di questo manuale, l'approccio più equilibrato verso l'intelligenza artificiale?</div><div class="opts"><div class="opt"><span class="optlet">A)</span><span>Un rifiuto totale e acritico</span></div><div class="opt"><span class="optlet">B)</span><span>Un'adozione entusiasta e senza alcuna riflessione critica</span></div><div class="opt"><span class="optlet">C)</span><span>Un approccio critico e informato, che ne comprenda potenzialità e rischi</span></div><div class="opt"><span class="optlet">D)</span><span>Un disinteresse completo verso l'argomento</span></div></div></div></div></div></div>
+</article>
+<article class="chapter" id="cap21">
+  <div class="chapter-head">
+    <div class="cicon"><svg width="100" height="100" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<circle cx="60" cy="60" r="58" fill="#c78a2e"/>
+<circle cx="60" cy="60" r="58" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"/>
+<path d="M60 28 L72 50 L60 50 Z M60 28 A32 32 0 0 1 88 46" fill="none" stroke="#fff" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M92 62 L92 88 L68 88 Z M92 62 A32 32 0 0 1 78 90" fill="none" stroke="#fff" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M28 62 L46 88 L58 78 Z M28 62 A32 32 0 0 1 46 34" fill="none" stroke="#fff" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+</svg></div>
+    <div><div class="chapter-eyebrow" style="color:#c78a2e">Capitolo 21</div><h3>Quiz su economia circolare, etica e obsolescenza programmata</h3></div>
+  </div>
+  <div class="chapter-body"><div class="qcard"><div class="qtop"><div class="qnum">D55</div>
+<div class="qbody"><div class="qstem">Che cos'è l'economia circolare, in sintesi?</div><div class="opts"><div class="opt"><span class="optlet">A)</span><span>Un modello economico basato su "estrarre, produrre, buttare"</span></div><div class="opt"><span class="optlet">B)</span><span>Un modello che privilegia riduzione, riutilizzo, riparazione e rigenerazione degli oggetti</span></div><div class="opt"><span class="optlet">C)</span><span>Un tipo di criptovaluta</span></div><div class="opt"><span class="optlet">D)</span><span>Una forma di finanziamento bancario</span></div></div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D56</div>
+<div class="qbody"><div class="qstem">Vero o Falso: un computer che non riesce più a far girare un sistema operativo pesante è, quasi sempre, da considerarsi un rifiuto da smaltire immediatamente.</div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D57</div>
+<div class="qbody"><div class="qstem">Quale delle seguenti NON è generalmente considerata una forma di obsolescenza programmata?</div><div class="opts"><div class="opt"><span class="optlet">A)</span><span>Obsolescenza tecnica (componenti volutamente meno resistenti)</span></div><div class="opt"><span class="optlet">B)</span><span>Obsolescenza software (aggiornamenti che rendono inutilizzabile un dispositivo funzionante)</span></div><div class="opt"><span class="optlet">C)</span><span>Obsolescenza percepita (il desiderio indotto di possedere l'ultimo modello)</span></div><div class="opt"><span class="optlet">D)</span><span>Manutenzione ordinaria programmata di un dispositivo</span></div></div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D58</div>
+<div class="qbody"><div class="qstem">Che cosa si intende con "e-waste"?</div><div class="opts"><div class="opt"><span class="optlet">A)</span><span>Energia elettrica sprecata</span></div><div class="opt"><span class="optlet">B)</span><span>Rifiuti elettronici derivanti dallo smaltimento di dispositivi digitali</span></div><div class="opt"><span class="optlet">C)</span><span>Un tipo di software gratuito</span></div><div class="opt"><span class="optlet">D)</span><span>Un formato di file audio</span></div></div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D59</div>
+<div class="qbody"><div class="qstem">Abbina ogni principio della Tecnologia Gentile al suo significato: 1) Comprensibilità — 2) Accessibilità — 3) Sostenibilità — 4) Rispetto. Significati: a) non escludere per età, reddito o disabilità; b) uno strumento che si spiega da sé; c) durare, essere riparabile, non sprecare; d) non infantilizzare né pretendere competenze non ancora acquisite.</div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D60</div>
+<div class="qbody"><div class="qstem">Perché il riuso di hardware dismesso è considerato, in questo manuale, anche una scelta etica e non solo tecnica?</div><div class="opts"><div class="opt"><span class="optlet">A)</span><span>Perché riduce i costi per l'azienda produttrice</span></div><div class="opt"><span class="optlet">B)</span><span>Perché riduce sprechi ambientali e abbatte le barriere economiche di accesso alla tecnologia per fasce di popolazione fragili</span></div><div class="opt"><span class="optlet">C)</span><span>Perché rende il computer più veloce di uno nuovo</span></div><div class="opt"><span class="optlet">D)</span><span>Perché è obbligatorio per legge in ogni paese</span></div></div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D61</div>
+<div class="qbody"><div class="qstem">Vero o Falso: la trasparenza del software libero, che consente a chiunque di verificarne il funzionamento, è considerata in questo manuale anche un valore etico, oltre che tecnico.</div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D62</div>
+<div class="qbody"><div class="qstem">Pensa a un oggetto elettronico che hai sostituito negli ultimi anni: secondo te, la sostituzione era dovuta a un guasto reale o ad altri fattori (lentezza software, mancanza di aggiornamenti, desiderio di novità)?<span class="qtag">domanda aperta</span></div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D63</div>
+<div class="qbody"><div class="qstem">Quale delle seguenti azioni contribuisce concretamente a contrastare l'obsolescenza programmata?</div><div class="opts"><div class="opt"><span class="optlet">A)</span><span>Sostituire un dispositivo non appena esce un modello più recente</span></div><div class="opt"><span class="optlet">B)</span><span>Donare hardware dismesso a progetti di rigenerazione come FeniceOS invece di accantonarlo o smaltirlo</span></div><div class="opt"><span class="optlet">C)</span><span>Ignorare completamente gli aggiornamenti di sicurezza</span></div><div class="opt"><span class="optlet">D)</span><span>Acquistare sempre e solo dispositivi non riparabili</span></div></div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D64</div>
+<div class="qbody"><div class="qstem">Che cosa rende, secondo questo manuale, un'informatica realmente "inclusiva"?</div><div class="opts"><div class="opt"><span class="optlet">A)</span><span>Il prezzo più alto possibile del dispositivo</span></div><div class="opt"><span class="optlet">B)</span><span>L'assenza di barriere di età, reddito, e la possibilità reale di formazione per chiunque</span></div><div class="opt"><span class="optlet">C)</span><span>L'uso esclusivo da parte di specialisti informatici</span></div><div class="opt"><span class="optlet">D)</span><span>La presenza di pubblicità mirate</span></div></div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D65</div>
+<div class="qbody"><div class="qstem">Vero o Falso: secondo il Capitolo 4, un dispositivo "vecchio" e un dispositivo "rotto" sono, quasi sempre, la stessa cosa.</div></div></div></div>
+<div class="qcard"><div class="qtop"><div class="qnum">D66</div>
+<div class="qbody"><div class="qstem">In che modo, secondo te, un progetto come FeniceOS mette in pratica contemporaneamente i princìpi di economia circolare, etica del digitale e contrasto all'obsolescenza programmata descritti in questa Parte I del manuale?<span class="qtag">domanda aperta</span></div></div></div></div></div>
+</article>
+</section><section class="part" id="approfondimenti">
+  <div class="part-banner" style="background:linear-gradient(120deg,#1b3a4b,#0e222d)">
+    <div class="kick">Approfondimenti</div><h2>Bibliografia &amp; nota sull'autore</h2><p>Riferimenti e informazioni sul progetto FeniceOS e sul suo ideatore.</p>
+  </div>
+  <article class="chapter">
+    <div class="chapter-body">
+      <h3 style="margin-bottom:10px;">Bibliografia e riferimenti</h3>
+      <ul>
+<li>D'Auria, Danilo. <em>Tecnologia Gentile: Informatica Sostenibile.</em> Pubblicato su Amazon. Il testo a cui questo manuale si ispira direttamente per i fondamenti di etica, sostenibilità e contrasto all'obsolescenza programmata applicati all'informatica.</li>
+<li>Documentazione e principi del Progetto Debian (debian.org), distribuzione su cui è costruito FeniceOS.</li>
+<li>Materiali e principi generali sul software libero e open source, e sulla storia di Linux a partire dal 1991.</li>
+<li>Concetti di economia circolare applicati al settore elettronico, secondo l'impostazione generale "ridurre, riutilizzare, riparare, rigenerare, riciclare".</li>
+</ul>
+<p><em>Nota: questo manuale è un'opera didattica e divulgativa originale, redatta a partire dai contenuti e dai principi discussi nell'ambito del progetto FeniceOS. Non sostituisce fonti tecniche specialistiche per approfondimenti avanzati su singoli argomenti.</em></p>
+      <h3 style="margin:20px 0 10px 0;">Nota sull'autore e sul progetto FeniceOS</h3>
+      <p>Danilo D'Auria è ideatore e sviluppatore di FeniceOS, distribuzione Linux live basata su Debian 12, pensata per la rigenerazione di hardware informatico e per l'inclusione digitale in contesti come centri anziani, aule scolastiche e centri per il sociale. È inoltre autore del libro "Tecnologia Gentile: Informatica Sostenibile", pubblicato su Amazon, nel quale approfondisce i principi di etica, sostenibilità e contrasto all'obsolescenza programmata applicati al mondo dell'informatica — principi che questo manuale traduce in un percorso didattico concreto, corredato da quiz e materiali pratici.</p>
+    </div>
+  </article>
+</section></main>
+</div>
+
+<footer class="sitefooter">
+  <div class="mark"><svg width="60" height="60" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<circle cx="60" cy="60" r="58" fill="#c9622a"/>
+<circle cx="60" cy="60" r="58" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"/>
+<path d="M60 24 L68 52 L96 60 L68 68 L60 96 L52 68 L24 60 L52 52 Z" fill="none" stroke="#fff" stroke-width="4.5" stroke-linejoin="round"/>
+</svg></div>
+  FeniceOS &mdash; Tecnologia Gentile per Tutte le Età &middot; A cura di Danilo D'Auria<br>
+  Manuale didattico digitale con quiz interattivi
+</footer>
+
+<button class="backtotop" id="backtotop" aria-label="Torna su" title="Torna su">&#8593;</button>
+
+<script>
+(function(){
+  var btn = document.getElementById('backtotop');
+  window.addEventListener('scroll', function(){
+    btn.classList.toggle('show', window.scrollY > 500);
+  });
+  btn.addEventListener('click', function(){ window.scrollTo({top:0, behavior:'smooth'}); });
+
+  var themeBtn = document.getElementById('themeBtn');
+  function applyTheme(t){
+    if(t) document.documentElement.setAttribute('data-theme', t);
+    else document.documentElement.removeAttribute('data-theme');
+  }
+  var saved = null;
+  try { saved = localStorage.getItem('feniceos-theme'); } catch(e){}
+  if(saved) applyTheme(saved);
+  themeBtn.addEventListener('click', function(){
+    var cur = document.documentElement.getAttribute('data-theme');
+    var next = cur === 'dark' ? 'light' : (cur === 'light' ? null : 'dark');
+    applyTheme(next);
+    try { localStorage.setItem('feniceos-theme', next || ''); } catch(e){}
+  });
+
+  // ---- accessibilità: dimensione testo regolabile e alto contrasto
+  var root = document.documentElement;
+  var BASE_FS = 18, MIN_STEP = -3, MAX_STEP = 7;
+  var a11y = { step: 0, contrast: false };
+  try {
+    var savedA11y = localStorage.getItem('feniceos-a11y');
+    if(savedA11y) a11y = Object.assign(a11y, JSON.parse(savedA11y));
+  } catch(e){}
+  function saveA11y(){ try { localStorage.setItem('feniceos-a11y', JSON.stringify(a11y)); } catch(e){} }
+  function applyFont(){ root.style.fontSize = (BASE_FS + a11y.step * 2) + 'px'; }
+  function applyContrast(){
+    if(a11y.contrast) root.setAttribute('data-contrast','high');
+    else root.removeAttribute('data-contrast');
+    document.getElementById('contrastBtn').setAttribute('aria-pressed', a11y.contrast ? 'true':'false');
+  }
+  document.getElementById('fontMinus').addEventListener('click', function(){
+    a11y.step = Math.max(MIN_STEP, a11y.step-1); applyFont(); saveA11y();
+  });
+  document.getElementById('fontPlus').addEventListener('click', function(){
+    a11y.step = Math.min(MAX_STEP, a11y.step+1); applyFont(); saveA11y();
+  });
+  document.getElementById('contrastBtn').addEventListener('click', function(){
+    a11y.contrast = !a11y.contrast; applyContrast(); saveA11y();
+  });
+  applyFont(); applyContrast();
+
+  // evidenzia capitolo attivo nella sidebar durante lo scroll
+  var links = Array.prototype.slice.call(document.querySelectorAll('.side a[data-cap]'));
+  var chapters = links.map(function(a){ return document.getElementById('cap'+a.dataset.cap); });
+  function onScroll(){
+    var pos = window.scrollY + 120;
+    var activeIdx = 0;
+    for(var i=0;i<chapters.length;i++){
+      if(chapters[i] && chapters[i].offsetTop <= pos) activeIdx = i;
+    }
+    links.forEach(function(a,i){ a.classList.toggle('active', i===activeIdx); });
+  }
+  window.addEventListener('scroll', onScroll);
+  onScroll();
+})();
+</script>
+<div style="max-width:860px;margin:2rem auto;padding:1rem 1.2rem;border-radius:12px;background:#fbead9;border-left:5px solid #d9752f;font:15px/1.5 system-ui,sans-serif;color:#201c18"><b>Le soluzioni dei quiz</b> sono riservate a chi conduce l'attività. Per mettersi alla prova con il tempo e farsi correggere: <a href="../quiz/?quiz=manuale">Quiz del Manuale con il timer</a>. &middot; <a href="../">Torna al Grande Quiz</a><br><small>© Danilo D'Auria — contenuti CC BY-NC-SA 4.0</small></div></body>
+</html>

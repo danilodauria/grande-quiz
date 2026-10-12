@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FeniceOS — Presentazione Interattiva per la Lezione</title>
+<meta name="description" content="Presentazione interattiva offline: spiegazione del Manuale FeniceOS a slide e quiz a squadre da proiettare in aula. Un progetto di Danilo D'Auria.">
+<style>__CSS__</style>
+</head>
+<body data-theme="light">
+
+<div class="utilbar">
+  <button class="utilbtn" id="btnTheme" title="Cambia tema chiaro/scuro">Tema</button>
+  <button class="utilbtn" id="btnContrast" title="Alto contrasto">Contrasto</button>
+  <button class="utilbtn" id="btnFullscreen" title="Schermo intero">Schermo intero</button>
+</div>
+
+<!-- ===================== MENU ===================== -->
+<div class="screen" id="screen-menu">
+  <div class="menu-phoenix">__PHOENIX__</div>
+  <div class="menu-kicker">Un progetto FeniceOS</div>
+  <h1 class="menu-title">Tecnologia Gentile<br>per Tutte le Età</h1>
+  <p class="menu-subtitle">Presentazione interattiva per la lezione in aula — completamente offline, senza bisogno di internet. Proietta sullo schermo grande e coinvolgi il pubblico, sia nella spiegazione sia nel quiz.</p>
+  <div class="menu-cards">
+    <div class="menu-card">
+      <span class="ic">📖</span>
+      <h3>Modalità Slide</h3>
+      <p>Spiegazione a slide dei 15 capitoli del Manuale Fondamenti: filosofia, il progetto FeniceOS, didattica e l'universo informatico.</p>
+      <button id="btnGoSlides">Inizia la spiegazione</button>
+    </div>
+    <div class="menu-card quizcard">
+      <span class="ic">🏆</span>
+      <h3>Quiz a Squadre</h3>
+      <p>264 domande da "Il Grande Quiz dell'Informatica", pronte per un quiz dal vivo con punteggio a squadre proiettato sullo schermo.</p>
+      <button id="btnGoQuiz">Imposta il quiz</button>
+    </div>
+  </div>
+  <p class="menu-foot">Funziona su Windows, Mac e Linux, in qualunque browser — anche senza connessione a internet.</p>
+</div>
+
+<!-- ===================== SLIDE MODE ===================== -->
+<div class="screen hidden" id="screen-slides">
+  <div class="clickzone left" id="zoneLeft"></div>
+  <div class="clickzone right" id="zoneRight"></div>
+  <div class="slide-stage" id="slideStage"></div>
+  <div class="slide-nav">
+    <button class="navbtn" id="btnMenuFromSlides">☰ Menu</button>
+    <button class="navbtn" id="btnPrev">← Precedente</button>
+    <div class="slide-progress">
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+      <span class="progress-label" id="progressLabel">1/1</span>
+    </div>
+    <button class="navbtn" id="btnNext">Successiva →</button>
+    <button class="navbtn" id="btnToc">Indice</button>
+  </div>
+</div>
+
+<div class="toc-overlay hidden" id="tocOverlay">
+  <div class="toc-panel">
+    <h3>Indice della presentazione</h3>
+    <div id="tocList"></div>
+    <button class="toc-close" id="tocClose">Chiudi</button>
+  </div>
+</div>
+
+<!-- ===================== QUIZ SETUP ===================== -->
+<div class="screen hidden" id="screen-quizsetup">
+  <div class="setup-card">
+    <h2>Imposta il quiz a squadre</h2>
+    <p class="hint">264 domande disponibili, tratte da "Il Grande Quiz dell'Informatica". Scegli squadre, argomenti e quante domande giocare.</p>
+
+    <div class="setup-section">
+      <label class="title">Squadre</label>
+      <div class="team-count-controls" style="margin-bottom:12px;">
+        <button class="roundbtn" id="teamMinus">−</button>
+        <span id="teamCountLabel" style="font-weight:700; font-size:1.1rem;">2 squadre</span>
+        <button class="roundbtn" id="teamPlus">+</button>
+      </div>
+      <div class="team-rows" id="teamRows"></div>
+    </div>
+
+    <div class="setup-section">
+      <label class="title">Argomento</label>
+      <div class="chip-row" id="partChips"></div>
+    </div>
+
+    <div class="setup-section">
+      <label class="title">Livello di difficoltà</label>
+      <div class="chip-row" id="levelChips"></div>
+    </div>
+
+    <div class="setup-section">
+      <label class="title">Numero di domande</label>
+      <div class="chip-row" id="countChips"></div>
+    </div>
+
+    <button class="setup-start" id="btnStartQuiz">Inizia il quiz</button>
+    <button class="navbtn" id="btnMenuFromSetup" style="margin-top:14px; width:100%;">☰ Torna al menu</button>
+  </div>
+</div>
+
+<!-- ===================== QUIZ PLAY ===================== -->
+<div class="screen hidden" id="screen-quizplay">
+  <div class="scoreboard" id="scoreboard"></div>
+  <div class="quiz-stage">
+    <div class="quiz-meta">
+      <span class="quiz-tag" id="quizTag"></span>
+      <span class="quiz-counter" id="quizCounter"></span>
+    </div>
+    <div class="quiz-card">
+      <div class="qstem" id="qstem"></div>
+      <div id="qoptions"></div>
+      <div class="quiz-explain hidden" id="qexplain"></div>
+    </div>
+  </div>
+  <div class="quiz-controls">
+    <button class="bigbtn ghost" id="btnMenuFromQuiz">☰ Menu</button>
+    <button class="bigbtn reveal" id="btnReveal">Rivela risposta (Spazio)</button>
+    <button class="bigbtn hidden" id="btnNextQ">Prossima domanda →</button>
+  </div>
+  <div class="award-hint hidden" id="awardHint"></div>
+</div>
+
+<!-- ===================== QUIZ RESULTS ===================== -->
+<div class="screen hidden" id="screen-quizresults">
+  <h1 class="menu-title" style="color:var(--dark);">Risultati finali</h1>
+  <div class="podium" id="podium"></div>
+  <div style="display:flex; gap:14px; margin-top:10px;">
+    <button class="bigbtn" id="btnReplay">Nuova partita</button>
+    <button class="bigbtn ghost" id="btnResultsMenu">☰ Torna al menu</button>
+  </div>
+</div>
+
+<div class="kbd-hint" id="kbdHint"></div>
+
+<script id="slides-data" type="application/json">__SLIDES_DATA__</script>
+<script id="quiz-data" type="application/json">__QUIZ_DATA__</script>
+<script>__JS__</script>
+</body>
+</html>

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<title>Il Grande Quiz dell'Informatica – Libretto di istruzioni</title>
+<meta name="author" content="Danilo D'Auria">
+<link rel="stylesheet" href="stile-manuale.css">
+<style>
+.cover .sopra { height: 150mm; background: linear-gradient(160deg, #22495d 0%, #1b3a4b 50%, #12262f 100%); }
+.cover .sotto2 { height: 147mm; }
+.cover .prof { top: 50mm; width: 70mm; height: 70mm; }
+.indice-rapido { margin-top: 6mm; font-size: 10pt; }
+.indice-rapido li { margin: 1.3mm 0; }
+.bt { display: inline-block; font: 700 8.6pt "Noto Sans"; padding: .1em .65em; border-radius: 6px; border: 1px solid #c9d1d9; background: #f6f8fa; color: #24292f; white-space: nowrap; }
+.bt.verde { background: #1f883d; border-color: #1a7f37; color: #fff; }
+.bt.blu { background: #0969da; border-color: #0969da; color: #fff; }
+.bt.ara { background: #d9752f; border-color: #b85f1f; color: #fff; }
+.menu { font-weight: 700; color: #0f3d63; }
+.una { display: inline-block; font: 700 7pt "Noto Sans"; letter-spacing: .12em; padding: .15em .6em; border-radius: 99px; vertical-align: middle; background: #fdf6dc; color: #a16207; margin-left: .4em; }
+.ogni { display: inline-block; font: 700 7pt "Noto Sans"; letter-spacing: .12em; padding: .15em .6em; border-radius: 99px; vertical-align: middle; background: #e8f6ec; color: #15803d; margin-left: .4em; }
+.schema { display: grid; grid-template-columns: 1fr 8mm 1fr 8mm 1fr; align-items: center; margin: 4mm 0 2mm; font-size: 8.5pt; }
+.schema .c { border: 1.4px solid var(--blu); border-radius: 8px; padding: 2.5mm; background: #fff; text-align: center; min-height: 30mm; }
+.schema .c.priv { border-color: #b91c1c; background: #fdf2f2; }
+.schema .c b { display: block; color: var(--blu); font-size: 9.5pt; margin-bottom: 1mm; }
+.schema .c.priv b { color: #b91c1c; }
+.schema .f { text-align: center; color: var(--ara); font-size: 15pt; font-weight: 700; }
+.finestra { border: 1px solid #c9d1d9; border-radius: 8px; overflow: hidden; margin: .7em 0 1em; break-inside: avoid; font-size: 8.8pt; }
+.finestra .bar { background: #24292f; color: #fff; padding: 1.6mm 3mm; font: 700 8pt "Noto Sans"; }
+.finestra .dentro { padding: 3mm 4mm; background: #fff; }
+.finestra .riga { display: flex; gap: 3mm; align-items: center; margin: 1.5mm 0; }
+.finestra .campo { border: 1px solid #c9d1d9; border-radius: 5px; padding: .5mm 2mm; min-width: 45mm; background: #f6f8fa; font-family: "DejaVu Sans Mono", monospace; font-size: 8pt; }
+.finestra .eti { width: 32mm; color: #57606a; }
+.annota { color: #b91c1c; font-weight: 700; }
+.box.rosso { background: #fdf2f2; border-color: #b91c1c; }
+.box.rosso .t { color: #b91c1c; }
+table.registro td { height: 9mm; }
+.cifre { font: 700 13pt "DejaVu Sans Mono"; letter-spacing: .2em; }
+</style>
+</head>
+<body>
+
+<section class="cover">
+  <div class="sopra">
+    <div class="ka">UN PROGETTO FENICEOS · DI DANILO D'AURIA</div>
+    <h1>Il Grande Quiz<br>dell'Informatica</h1>
+    <div class="sotto">Libretto di istruzioni<br>da conservare<br><small>pubblicazione, cassaforte, uso in aula</small></div>
+    <img class="prof" src="fenice.svg" alt="">
+  </div>
+  <div class="sotto2">
+    <ol class="indice-rapido">
+      <li><b>Come è fatto</b>: il sito pubblico, la cartella privata, la cassaforte</li>
+      <li><b>Mettere al sicuro</b> la cartella privata <span class="una">SUBITO</span></li>
+      <li><b>Pubblicare il sito</b> su GitHub <span class="una">UNA VOLTA</span></li>
+      <li><b>Creare la cassaforte</b>: password e Google Authenticator <span class="una">UNA VOLTA</span></li>
+      <li><b>Usare il quiz</b> in aula, con il timer</li>
+      <li><b>Correggere</b> nell'area riservata</li>
+      <li><b>Aggiornare</b> in futuro <span class="ogni">OGNI VOLTA</span></li>
+      <li>Sicurezza · Se qualcosa va storto · Promemoria · Licenza</li>
+    </ol>
+    <div class="firma">
+      <div><b>Danilo D'Auria</b><small>Ideatore e autore dell'opera</small></div>
+      <div class="v">v1.0.0<small>Ottobre 2026</small></div>
+    </div>
+  </div>
+</section>
+<div class="segnaposto"></div>
+
+<div class="pagina">
+
+<h2 style="margin-top:2mm">1 · Come è fatto</h2>
+<p>Il Grande Quiz vive in <b>tre posti</b>. Il principio è uno solo: <b>le soluzioni non sono mai in chiaro su Internet</b>.</p>
+<div class="schema">
+  <div class="c"><b>🌐 Il sito pubblico</b>danilodauria.github.io/grande-quiz — quiz con il timer, scheda, schermo, manuale, vademecum, download. <b>Senza soluzioni.</b></div>
+  <div class="f">+</div>
+  <div class="c"><b>🔒 La cassaforte</b>Il file <code>cassaforte.bin</code>, dentro il sito ma <b>cifrato</b> (AES-256): soluzioni, correttore, presentazione a squadre, PDF delle risposte.</div>
+  <div class="f">←</div>
+  <div class="c priv"><b>🗝️ La cartella privata</b><code>grande-quiz-PRIVATO</code>: le soluzioni in chiaro. <b>Solo sul vostro PC e su una chiavetta. Mai su GitHub.</b></div>
+</div>
+<p>La cassaforte si apre con <b>la vostra password</b> e poi con il <b>codice a 6 cifre di Google Authenticator</b> sul vostro telefono.
+La password e il collegamento con Authenticator li scegliete voi con lo strumento «Crea la cassaforte»: nessun altro li conosce.</p>
+<div class="box"><span class="t">Detto con onestà</span>Il sito non ha un server: è fatto di sole pagine. Per questo il <b>vero lucchetto è la password</b>
+(cifratura AES-256 con 600.000 passaggi): senza di lei le soluzioni sono illeggibili anche per chi scarica il file. Il codice di Authenticator è un
+<b>secondo controllo</b> che l'area riservata chiede sempre, ma chi conoscesse la password e fosse un esperto potrebbe aggirarlo. Quindi: <b>password lunga e solo vostra</b>.</div>
+
+<h3>Le due cartelle che ricevete</h3>
+<table><thead><tr><th style="width:30%">Cartella</th><th>Contiene</th><th style="width:26%">Dove va</th></tr></thead><tbody>
+<tr><td><code>grande-quiz</code></td><td>Il sito completo (cartella <code>docs</code>), i sorgenti senza soluzioni, gli strumenti, le prove automatiche, licenze. È già un repository git.</td><td><code>Documenti\GitHub\grande-quiz</code> → GitHub (pubblico)</td></tr>
+<tr><td><code>grande-quiz-PRIVATO</code></td><td><code>contenuto-riservato.json</code> (serve per creare la cassaforte), le soluzioni in Markdown, i PDF delle risposte.</td><td><b>Solo</b> sul PC (es. <code>Documenti\grande-quiz-PRIVATO</code>) <b>e su una chiavetta di riserva</b></td></tr>
+</tbody></table>
+
+<h2>2 · Mettere al sicuro la cartella privata <span class="una">SUBITO</span></h2>
+<ol class="passi">
+<li>Spostate <code>grande-quiz-PRIVATO</code> in <code>Documenti</code> (non dentro <code>Documenti\GitHub</code>: lì GitHub Desktop potrebbe vederla).</li>
+<li>Copiatela anche su una <b>chiavetta</b> da tenere in un cassetto: è la vostra copia di sicurezza delle soluzioni.</li>
+<li>Non inviatela per email, non mettetela in cartelle condivise o in un cloud pubblico.</li>
+</ol>
+<div class="box rosso"><span class="t">Regola d'oro</span>Nel repository <code>grande-quiz</code> non si mette <b>mai</b> <code>contenuto-riservato.json</code> né i file delle soluzioni.
+Il file <code>.gitignore</code> del repository li blocca comunque, e le prove automatiche controllano che nel sito non ci sia nessuna soluzione.</div>
+
+<h2>3 · Pubblicare il sito su GitHub <span class="una">UNA VOLTA</span></h2>
+<p>Come per il Professore Digitale, ma più semplice: niente Release e niente file grandi.</p>
+<h3>3a · Creare il repository vuoto</h3>
+<ol class="passi">
+<li>Su <code>github.com</code> → <span class="bt">+</span> → <span class="menu">New repository</span>.</li>
+<li>Compilate così:
+<div class="finestra"><div class="bar">Create a new repository</div><div class="dentro">
+<div class="riga"><span class="eti">Repository name</span><span class="campo">grande-quiz</span> <span class="annota">← esattamente così</span></div>
+<div class="riga"><span class="eti">Description</span><span class="campo">Il Grande Quiz dell'Informatica — Danilo D'Auria</span></div>
+<div class="riga"><span class="eti">Visibilità</span><span><b>Public</b></span> <span class="annota">← il sito gratuito funziona solo così</span></div>
+<div class="riga"><span class="eti">README / .gitignore / License</span><span><b>niente</b></span> <span class="annota">← ci sono già</span></div>
+</div></div></li>
+<li><span class="bt verde">Create repository</span>.</li>
+</ol>
+<h3>3b · Caricare con GitHub Desktop</h3>
+<ol class="passi">
+<li>Spostate la cartella <code>grande-quiz</code> in <code>Documenti\GitHub</code>.</li>
+<li>GitHub Desktop: <span class="menu">File → Add local repository…</span> → <span class="bt">Choose…</span> → <code>Documenti\GitHub\grande-quiz</code> → <span class="bt blu">Add repository</span>.</li>
+<li>In alto: <span class="bt">⬆ Publish branch</span> (la cartella sa già dove spedire). Attendete la fine (circa 10 MB).</li>
+</ol>
+<h3>3c · Accendere il sito</h3>
+<ol class="passi">
+<li>Su <code>github.com/danilodauria/grande-quiz</code> → <span class="menu">⚙ Settings</span> → <span class="menu">Pages</span>.</li>
+<li><b>Build and deployment → Source</b>: <b>Deploy from a branch</b>. Sotto: <b>Branch</b> <code>main</code> e cartella <code>/docs</code> → <span class="bt">Save</span>.</li>
+<li>Dopo 1–3 minuti il sito è online: <code>https://danilodauria.github.io/grande-quiz/</code>. (Qui non servono regole né Actions particolari.)</li>
+</ol>
+
+<h2>4 · Creare la cassaforte delle soluzioni <span class="una">UNA VOLTA</span></h2>
+<p>Serve il telefono con <b>Google Authenticator</b> installato (Play Store o App Store, gratuito) e la cartella privata.</p>
+<ol class="passi">
+<li>Aprite con doppio clic <code>Documenti\GitHub\grande-quiz\docs\riservato\crea-cassaforte.html</code>
+(oppure dal sito: <span class="menu">Area riservata</span> → link «Crea la cassaforte»). Funziona anche senza Internet.</li>
+<li><b>Passo 1</b> — <span class="bt">Scegli contenuto-riservato.json</span> → dalla cartella <code>grande-quiz-PRIVATO</code>. Deve comparire «264 soluzioni del Grande Quiz, 66 del Quiz del Manuale…».</li>
+<li><b>Passo 2</b> — sul telefono: Authenticator → <b>+</b> → <b>Scansiona un codice QR</b> → inquadrate il QR sullo schermo. Compare <b>GrandeQuiz (Danilo)</b>.
+Scrivete nel campo le 6 cifre che vedete: deve comparire «Collegamento riuscito».</li>
+<li>Sempre al passo 2: <b>scrivete a mano il codice di emergenza</b> (tipo <span class="cifre">XXXXX-XXXXX-XXXXX-XXXXX</span>) qui sotto e spuntate «L'ho scritto».
+<table style="margin-top:2mm"><tbody><tr><td style="width:40%">Codice di emergenza:</td><td style="height:10mm"></td></tr></tbody></table></li>
+<li><b>Passo 3</b> — scegliete la <b>password</b>: una frase lunga che ricordate, almeno 12 caratteri, meglio 16+ (es. quattro parole e un numero). Ripetetela.
+<b>Non scrivetela in questo libretto</b> e non c'è modo di recuperarla.</li>
+<li><b>Passo 4</b> — <span class="bt ara">🔒 Crea la cassaforte</span>. Il file <code>cassaforte.bin</code> finisce nella cartella <b>Download</b>; lo strumento lo riapre subito per verificarlo.</li>
+<li>Copiate <code>cassaforte.bin</code> in <code>Documenti\GitHub\grande-quiz\docs\riservato\</code>.</li>
+<li>GitHub Desktop: in basso a sinistra scrivete <i>Cassaforte delle soluzioni</i> → <span class="bt blu">Commit to main</span> → <span class="bt">⬆ Push origin</span>.</li>
+<li>Dopo 1–2 minuti, sul sito: <span class="menu">Area riservata</span> → password → le 6 cifre. Si apre il cruscotto: <b>la cassaforte funziona</b>.</li>
+</ol>
+
+<h2>5 · Usare il quiz in aula</h2>
+<p>Dal sito o dal pacchetto offline (cartella estratta, doppio clic su <code>index.html</code>): <span class="menu">Quiz</span>. La maschera guida in sei passi:</p>
+<table><thead><tr><th style="width:22%">Passo</th><th>Cosa si sceglie</th></tr></thead><tbody>
+<tr><td>1 · Quiz</td><td>Il Grande Quiz (264 domande) oppure il Quiz del Manuale FeniceOS (66: anche abbinamenti e domande aperte).</td></tr>
+<tr><td>2 · Modalità</td><td><b>Quiz a tempo</b> (una domanda alla volta), <b>Scheda risposte</b> (tutte insieme, come su carta), <b>Schermo domande</b> (da proiettare).</td></tr>
+<tr><td>3 · Domande</td><td>Tutte, per capitolo o per livello; tutte quelle scelte o solo alcune a caso; nell'ordine del libro o mescolate.</td></tr>
+<tr><td>4 · Tempo</td><td><b>Secondi per ogni domanda: da 10 secondi a 5 minuti</b> (cursore o scelte rapide 20 s – 5 min). Allo scadere: si passa avanti oppure solo un avviso. Suono negli ultimi 5 secondi, pausa, possibilità di tornare indietro. Per la scheda: tempo complessivo da 5 a 240 minuti.</td></tr>
+<tr><td>5 · Partecipante</td><td>Nome e cognome (obbligatorio), data, centro, gruppo, livello, note.</td></tr>
+<tr><td>6 · Pronti</td><td>Riepilogo e <span class="bt ara">▶ Inizia la prova</span>.</td></tr>
+</tbody></table>
+<p>Durante la prova il cerchio in alto mostra i secondi: verde, poi <b>arancione</b> negli ultimi 10, <b>rosso</b> negli ultimi 5. Con la tastiera: A–D (o 1–4), V/F, Invio.
+Se si chiude la pagina per errore, al ritorno compare «C'è una prova in corso» → <b>Riprendi</b>, con il tempo che era rimasto.</p>
+<p>Alla fine: <span class="bt ara">Esporta le risposte (.json)</span>. Il file (es. <code>GrandeQuiz_Risposte_Giulia_Bianchi_2026-10-12_1030.json</code>) contiene solo le risposte, i tempi
+e i dati del partecipante, <b>mai le soluzioni</b>. Raccoglietelo con una chiavetta, per email o in una cartella condivisa.</p>
+
+<h2>6 · Correggere nell'area riservata</h2>
+<ol class="passi">
+<li><span class="menu">Area riservata</span> → password → le 6 cifre di Authenticator (o il codice di emergenza, se avete perso il telefono).</li>
+<li><b>Correttore automatico</b>: trascinate tutti i file <code>.json</code> nel riquadro (anche decine insieme). Compare la classifica con giuste, percentuale e punteggi per livello.
+Funziona anche con le schede esportate dalla vecchia «Scheda Risposte Interattiva».</li>
+<li>Cliccate un nome: <b>scheda di valutazione</b> con errori, risposte mancanti, risposte giuste e spiegazioni; le domande aperte sono a parte, da valutare a voce.
+<span class="bt">Stampa la scheda</span> per consegnarla.</li>
+<li><span class="bt">Esporta il riepilogo (CSV per Excel)</span> per il registro dell'ente.</li>
+<li>Dal cruscotto si aprono anche: <b>Presentazione e quiz a squadre</b> (da proiettare), <b>Grande Quiz con soluzioni e spiegazioni</b>, <b>Manuale interattivo con le risposte</b>,
+e si scaricano i <b>PDF delle risposte</b>.</li>
+<li>Alla fine: <span class="bt">🔒 Chiudi l'area riservata</span>. Si richiude comunque da sola dopo 20 minuti senza attività. Dopo 3 password sbagliate l'area aspetta prima di riprovare.</li>
+</ol>
+
+<h2>7 · Aggiornare in futuro <span class="ogni">OGNI VOLTA</span></h2>
+<p>Quando vi preparo una nuova versione (domande nuove o corrette, migliorie) ricevete le due cartelle aggiornate.</p>
+<ol class="passi">
+<li><b>Sito</b>: chiudete GitHub Desktop, rinominate <code>Documenti\GitHub\grande-quiz</code> in <code>grande-quiz-vecchia</code>, mettete al suo posto la nuova, riaprite GitHub Desktop → <span class="bt">⬆ Push origin</span>.</li>
+<li><b>Cassaforte</b> (solo se sono cambiate le soluzioni): <code>crea-cassaforte.html</code> → nuovo <code>contenuto-riservato.json</code> → al passo 2 scegliete
+<b>«Tengo il collegamento di prima»</b>, caricate la vecchia <code>cassaforte.bin</code> con la vecchia password: Authenticator e codice di emergenza restano gli stessi.
+Scegliete la password (anche la stessa) → nuova <code>cassaforte.bin</code> in <code>docs\riservato\</code> → Commit → Push.</li>
+<li><b>Cartella privata</b>: sostituite quella vecchia sul PC e sulla chiavetta.</li>
+</ol>
+<p class="small">Per rigenerare da soli il sito dai sorgenti (con Python 3): <code>python3 strumenti/costruisci.py --privato ..\grande-quiz-PRIVATO</code>, poi le prove:
+<code>python3 tests/test_sito.py --privato ..\grande-quiz-PRIVATO</code> (servono Playwright e Chromium).</p>
+
+<h2>8 · Sicurezza, in breve</h2>
+<ul class="check">
+<li>Password lunga, solo vostra, mai scritta in file sul PC né in questo libretto.</li>
+<li>Google Authenticator sul telefono; <b>codice di emergenza</b> scritto a mano e conservato con il libretto.</li>
+<li>La cartella <code>grande-quiz-PRIVATO</code> solo sul PC e su una chiavetta; mai su GitHub, email o cloud pubblici.</li>
+<li>Password dimenticata: nessun recupero, ma nessun danno — rifate la cassaforte con <code>contenuto-riservato.json</code> (capitolo 4).</li>
+<li>Telefono perso: entrate con il codice di emergenza, poi rifate la cassaforte collegando il telefono nuovo (passo 2 «Primo collegamento»).</li>
+<li>Account GitHub con la verifica in due passaggi attiva (vedi il libretto del Professore, capitolo 9).</li>
+</ul>
+
+<h2>Se qualcosa va storto</h2>
+<table><thead><tr><th style="width:36%">Cosa succede</th><th>Cosa fare</th></tr></thead><tbody>
+<tr><td>Area riservata: «non è ancora stata creata»</td><td>Manca <code>docs/riservato/cassaforte.bin</code> nel sito: capitolo 4, punti 7–8.</td></tr>
+<tr><td>Aprendo con doppio clic: «sceglietela voi»</td><td>Normale fuori da Internet: <span class="bt">Scegli il file cassaforte.bin</span> → <code>docs\riservato\cassaforte.bin</code>.</td></tr>
+<tr><td>«Codice non valido» con le 6 cifre giuste</td><td>Ora del telefono o del PC sbagliata: impostatela automatica. Il codice vale 30 secondi (accettato anche quello prima e dopo).</td></tr>
+<tr><td>«Troppi tentativi: riprovate tra…»</td><td>Dopo 3 password sbagliate l'attesa cresce (fino a 5 minuti). Aspettate e riprovate con calma.</td></tr>
+<tr><td>Il correttore dice «non è un file di risposte»</td><td>Il file non viene dal Grande Quiz o è stato modificato. Fatelo riesportare al partecipante.</td></tr>
+<tr><td>La presentazione non si apre</td><td>Il browser ha bloccato la nuova scheda: consentite le finestre (pop-up) per il sito.</td></tr>
+<tr><td>Il sito dà 404</td><td>Capitolo 3c: Pages su <code>main</code> e <code>/docs</code>; repository <b>Public</b>; attendete 2–3 minuti.</td></tr>
+<tr><td>GitHub Desktop rifiuta il Push</td><td>Vedi la tabella «Se qualcosa va storto» del libretto del Professore Digitale: stessi casi, stesse soluzioni.</td></tr>
+</tbody></table>
+
+<h2>Promemoria</h2>
+<table><tbody>
+<tr><td style="width:34%"><b>Sito</b></td><td><code>https://danilodauria.github.io/grande-quiz/</code></td></tr>
+<tr><td><b>Area riservata</b></td><td><code>https://danilodauria.github.io/grande-quiz/riservato/</code></td></tr>
+<tr><td><b>Repository</b></td><td><code>https://github.com/danilodauria/grande-quiz</code></td></tr>
+<tr><td><b>Cartella del sito sul PC</b></td><td><code>Documenti\GitHub\grande-quiz</code></td></tr>
+<tr><td><b>Cartella privata</b></td><td><code>Documenti\grande-quiz-PRIVATO</code> + chiavetta di riserva</td></tr>
+<tr><td><b>Voce in Authenticator</b></td><td>GrandeQuiz (Danilo)</td></tr>
+</tbody></table>
+
+<h2>Licenza e paternità dell'opera</h2>
+<p>Domande, testi, schede, manuali e grafica sono opera di <b>Danilo D'Auria</b>, © 2026, con licenza
+<b>Creative Commons BY-NC-SA 4.0</b>: chiunque può usarli e adattarli <b>citando l'autore</b>, <b>senza scopo di lucro</b> e
+<b>condividendo con la stessa licenza</b>. Il codice delle pagine è MIT. Il nome dell'autore compare in ogni pagina del sito, nei file
+esportati, nelle schede di valutazione e nel pacchetto offline. Citazione consigliata:</p>
+<div class="box">«Il Grande Quiz dell'Informatica» di Danilo D'Auria — un progetto FeniceOS — licenza CC BY-NC-SA 4.0 — https://danilodauria.github.io/grande-quiz/</div>
+
+<h2 style="break-before:page">Registro delle pubblicazioni</h2>
+<table class="registro"><thead><tr><th style="width:13%">Versione</th><th style="width:14%">Data</th><th style="width:12%">Push ✔</th><th style="width:15%">Cassaforte ✔</th><th style="width:12%">Prova ✔</th><th>Note</th></tr></thead><tbody>
+<tr><td>1.0.0</td><td></td><td></td><td></td><td></td><td>Prima pubblicazione</td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+</tbody></table>
+</div>
+
+<div class="segnaposto fine"></div>
+<section class="back">
+  <img class="prof" src="fenice.svg" alt="">
+  <div class="dentro">
+    <h1>Tecnologia gentile,<br>per tutti.</h1>
+    <p>Il Grande Quiz dell'Informatica · un progetto FeniceOS · contenuti CC BY-NC-SA 4.0.</p>
+  </div>
+  <div class="piede"><div><b>Danilo D'Auria</b><br>Tecnico IT &amp; Divulgatore Digitale per il Sociale<br>danilodauria.site@gmail.com</div>
+  <div style="text-align:right">Ideatore di FeniceOS<br>Ottobre 2026</div></div>
+</section>
+</body>
+</html>

@@ -1,0 +1,1190 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><style>@page { size: A4; margin: 0; }
+* { box-sizing: border-box; }
+/* NOTA TECNICA: questo motore di stampa applica internamente un fattore di
+   auto-adattamento che riduce tutte le misure fisiche (mm/px) di circa il
+   23%, causando margini asimmetrici e testo più piccolo del dichiarato.
+   Il seguente "zoom" compensa esattamente questo effetto, cosicché ogni
+   misura in mm/px nel foglio di stile corrisponda alla sua dimensione
+   fisica reale sulla pagina stampata. NON RIMUOVERE. */
+html { margin:0; padding:0; zoom: 1.302; }
+body { margin:0; padding:0; }
+body {
+  font-family: "DejaVu Sans", "Liberation Sans", sans-serif;
+  color: #201c18;
+  font-size: 18.5px;
+  line-height: 1.72;
+  background: #ffffff;
+}
+h1,h2,h3,h4 { font-family: "DejaVu Serif", "Liberation Serif", serif; font-weight: bold; margin: 0; }
+p { margin: 0 0 13px 0; text-align: justify; orphans: 3; widows: 3; }
+* { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+strong { color: #1b3a4b; }
+a { color: inherit; text-decoration: none; }
+.cover strong, .backcover strong { color: #b5602f; }
+
+/* ---------- utility page ---------- */
+.page {
+  width: 210mm; position: relative;
+  padding: 10mm;
+  page-break-after: always;
+  background: #ffffff;
+  overflow: hidden;
+}
+.page:last-child { page-break-after: auto; }
+/* pagine "singole" (frontespizio, prefazione, indice, divisori) devono riempire un intero foglio */
+.page.fill { min-height: 297mm; }
+
+/* ---------- COVER ---------- */
+.cover {
+  width: 210mm; height: 297mm; position: relative;
+  background: #ffffff;
+  page-break-after: always;
+  overflow: hidden;
+}
+.cover-inner { position:relative; z-index:2; height:100%; width:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; padding: 26mm 22mm; text-align:center; color:#201c18; margin:0 auto; }
+.cover-kicker { letter-spacing: 4px; font-size: 14px; text-transform: uppercase; color: #b5602f; margin-bottom: 18px; font-weight:bold;}
+.cover-mark { margin: 6px 0 26px 0; }
+.cover-title { font-family: "DejaVu Serif", serif; font-size: 56px; font-weight:bold; line-height:1.14; margin-bottom: 18px; color:#1b3a4b; }
+.cover-title .accent { color:#d9752f; }
+.cover-subtitle { font-size: 20px; max-width: 470px; line-height:1.55; color:#4a4137; margin: 0 auto 34px auto; }
+.cover-divider { width:72px; height:4px; background:#d9752f; border-radius:3px; margin: 4px auto 30px auto; }
+.cover-author { font-size: 17px; letter-spacing:1px; color:#1b3a4b; font-weight:bold; }
+.cover-author small { display:block; font-size:14px; color:#6b5f52; margin-top:6px; letter-spacing:0.5px; font-weight:normal; }
+
+/* ---------- BACK COVER ---------- */
+.backcover {
+  width:210mm; height:297mm; position:relative;
+  background: #ffffff;
+  color:#201c18; page-break-after: auto; overflow:hidden;
+}
+.backcover-inner { position:relative; z-index:2; height:100%; width:100%; padding:15mm 22mm; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; }
+.backcover .mark-small { margin: 0 auto 10px auto; }
+.backcover h3 { font-family:"DejaVu Serif",serif; font-size:20px; color:#1b3a4b; margin-bottom:8px; line-height:1.28; }
+.backcover .blurb { margin-top: 3mm; max-width:155mm; }
+.backcover p { color:#2e2822; font-size:14.5px; line-height:1.48; text-align: justify; margin-bottom:9px;}
+.backcover .author-line { margin-top:14px; padding-top:8px; border-top:1px solid #e7dcc4; font-size:12px; line-height:1.4; color:#4a4137; font-style:italic; max-width:155mm; text-align:center; }
+.backcover .isbn-row { margin-top:8px; font-size:11px; color:#7a6a53; letter-spacing:0.5px; text-align:center; }
+.backcover .isbn-row span:first-child { margin-right:14px; padding-right:14px; border-right:1px solid #d8c9ad; }
+.backcover .pullquote { margin: 5mm auto; padding: 8px 18px; border-top: 2px solid #d9752f; border-bottom: 2px solid #d9752f; color:#b5602f; font-family:"DejaVu Serif",serif; font-style:italic; font-size:15.5px; line-height:1.35; max-width: 145mm; text-align:center; }
+
+/* ---------- FRONTESPIZIO / PREFAZIONE ---------- */
+.frontespizio { text-align:center; padding-top: 55mm; }
+.frontespizio .badge-mark { margin: 0 auto 24px auto; }
+.frontespizio h1 { font-size:42px; color:#1b3a4b; margin-bottom:8px; }
+.frontespizio .sub { font-size:18px; color:#6b5f52; max-width:460px; line-height:1.5; margin: 10px auto 30px auto; }
+.frontespizio .rule { width:76px; height:3px; background:#d9752f; margin: 20px auto; }
+.frontespizio .authorblock { font-size:16.5px; color:#2e2822; line-height:1.9; }
+.frontespizio .authorblock b { color:#1b3a4b; }
+
+.prefazione h1 { font-size:30px; color:#1b3a4b; margin-bottom:6px; }
+.prefazione .kick { color:#d9752f; font-weight:bold; letter-spacing:2px; font-size:13px; text-transform:uppercase; margin-bottom:12px; }
+.prefazione p { margin-bottom: 14px; }
+.prefazione .sign { text-align:right; font-style:italic; margin-top: 20px; color:#1b3a4b; font-size:17px; }
+
+/* ---------- INDICE ---------- */
+.toc h1 { font-size:30px; color:#1b3a4b; margin-bottom: 6px;}
+.toc .kick { color:#d9752f; font-weight:bold; letter-spacing:2px; font-size:13px; text-transform:uppercase; margin-bottom:20px; }
+.toc-part { margin-top: 20px; }
+.toc-part-title { font-family:"DejaVu Serif",serif; font-weight:bold; font-size:16.5px; color:#fff; padding:7px 14px; border-radius:4px; display:inline-block; margin-bottom:10px; }
+.toc-row { display:flex; justify-content:space-between; padding:7px 4px 7px 16px; border-bottom:1px dotted #d8c9ad; font-size:16.5px; }
+.toc-row .n { color:#8a7a5e; margin-right:10px; font-weight:bold; }
+
+/* ---------- PART DIVIDER ---------- */
+.part-divider { background:#fff; color:#201c18; display:flex; flex-direction:column; justify-content:center; align-items:center; height:297mm; position:relative; overflow:hidden; text-align:center; }
+.part-divider .pnum { font-family:"DejaVu Serif",serif; font-size:120px; font-weight:bold; opacity:0.16; margin-bottom:-20px; }
+.part-divider .kick { letter-spacing:4px; font-size:15px; text-transform:uppercase; font-weight:bold; margin-bottom:12px; }
+.part-divider h1 { font-family:"DejaVu Serif",serif; font-size:44px; max-width: 150mm; line-height:1.18; margin-bottom:18px; color:#1b3a4b; }
+.part-divider .rule { width:72px; height:4px; border-radius:3px; margin: 4px auto 24px auto; }
+.part-divider .desc { max-width:135mm; font-size:18px; line-height:1.6; color:#4a4137; margin:0 auto; }
+.part-divider .chlist { margin-top:26px; font-size:16.5px; line-height:2.1; color:#2e2822; }
+.part-divider .chlist span { font-weight:bold; margin-right:10px; display:inline-block; min-width:20px; }
+
+/* ---------- CHAPTER ---------- */
+.chapter { margin-bottom: 9mm; }
+.chapter-head { display:flex; align-items:center; gap:18px; margin-bottom:16px; padding-bottom:14px; border-bottom: 2px solid #e7dcc4; }
+.chapter-icon svg { display:block; }
+.chapter-eyebrow { font-size:13px; font-weight:bold; letter-spacing:2px; text-transform:uppercase; margin-bottom:3px; }
+.chapter-head h2 { font-size:27px; color:#1b3a4b; line-height:1.25; }
+.chapter-body ul, .chapter-body ol { margin: 8px 0 16px 0; padding-left: 26px; }
+.chapter-body li { margin-bottom:9px; text-align:justify; }
+.chapter-body em { color:#7a4a2a; }
+
+.callout { display:flex; gap:16px; align-items:flex-start; border-left: 5px solid; border-radius: 6px; padding: 15px 18px; margin: 16px 0; }
+.callout-icon svg { display:block; }
+.callout-text p { margin:0; font-size:16.5px; }
+.callout-text strong { display:block; margin-bottom:3px; font-size:16px; }
+
+/* ---------- QUIZ ---------- */
+.quiz-intro { font-style:italic; color:#6b5f52; margin-bottom:16px; font-size:17px; }
+.quiz-section { font-family:"DejaVu Serif",serif; font-weight:bold; font-size:18px; color:#fff; background:#c78a2e; display:inline-block; padding:7px 18px; border-radius:4px; margin: 16px 0 12px 0; }
+.quiz-card { display:flex; gap:14px; background:#fff; border:1px solid #e9dfc6; border-radius:8px; padding:16px 18px; margin-bottom:13px; page-break-inside: avoid; }
+.qnum { flex: 0 0 auto; width:46px; height:46px; border-radius:50%; background:#1b3a4b; color:#fff; font-weight:bold; font-size:15px; display:flex; align-items:center; justify-content:center; font-family:"DejaVu Serif",serif; }
+.qbody { flex:1; }
+.qstem { font-size:17.5px; margin-bottom:9px; }
+.qtag { display:inline-block; margin-left:6px; font-size:12px; text-transform:uppercase; letter-spacing:0.5px; color:#7a4f9e; border:1px solid #7a4f9e; border-radius:10px; padding:2px 9px; vertical-align:middle; }
+.opts { display:flex; flex-wrap:wrap; margin-top:6px; }
+.opt { font-size:16.5px; display:flex; width:100%; padding:4px 8px 4px 0; }
+.optlet { font-weight:bold; color:#c78a2e; flex:0 0 auto; margin-right:8px; }
+.opttext { flex:1 1 auto; min-width:0; }
+
+/* ---------- ANSWERS ---------- */
+.ans-block { margin-bottom: 18px; page-break-inside: avoid;}
+.ans-head { display:flex; align-items:center; gap:12px; border-left:5px solid; padding: 7px 0 7px 14px; margin-bottom:10px; }
+.ans-head h3 { font-size:18.5px; color:#1b3a4b; }
+.ans-icon svg { display:block; }
+.ans-grid { display:flex; flex-wrap:wrap; }
+.ans-row { font-size:15px; display:flex; padding:5px 10px 5px 0; border-bottom:1px dotted #e6dcc2; width:100%; }
+.ans-num { font-weight:bold; color:#1b3a4b; flex:0 0 auto; margin-right:8px; }
+.ans-text { flex:1 1 auto; min-width:0; }
+
+/* ---------- BACK MATTER ---------- */
+.backmatter h2 { font-size:23px; color:#1b3a4b; margin: 6px 0 12px 0; }
+.backmatter ul { padding-left:22px; }
+.backmatter li { margin-bottom:10px; }
+.colophon { text-align:center; color:#8a7a5e; font-size:13px; margin-top: 26mm; line-height:1.9; }
+</style></head><body>
+<div class="page fill"><div class="frontespizio">
+<div class="badge-mark"><svg width="175" height="175" viewBox="0 0 380 380" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <linearGradient id="featherGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" stop-color="#f2b25c"/>
+    <stop offset="100%" stop-color="#e07a3e"/>
+  </linearGradient>
+  <radialGradient id="glow" cx="50%" cy="45%" r="60%">
+    <stop offset="0%" stop-color="#ffe1b0" stop-opacity="0.9"/>
+    <stop offset="100%" stop-color="#ffe1b0" stop-opacity="0"/>
+  </radialGradient>
+</defs>
+<circle cx="190" cy="200" r="175" fill="url(#glow)"/>
+<path d="M190,210 Q109.7,238.5 49.0,245.9" fill="none" stroke="url(#featherGrad)" stroke-width="6.0" stroke-linecap="round" opacity="0.55"/><path d="M190,210 Q96.7,225.7 31.1,223.0" fill="none" stroke="url(#featherGrad)" stroke-width="7.0" stroke-linecap="round" opacity="0.68"/><path d="M190,210 Q88.0,210.3 21.1,196.2" fill="none" stroke="url(#featherGrad)" stroke-width="8.0" stroke-linecap="round" opacity="0.82"/><path d="M190,210 Q84.8,192.8 20.9,166.9" fill="none" stroke="url(#featherGrad)" stroke-width="9.0" stroke-linecap="round" opacity="0.95"/><path d="M190,210 Q98.7,178.2 48.0,144.6" fill="none" stroke="url(#featherGrad)" stroke-width="8.0" stroke-linecap="round" opacity="0.82"/><path d="M190,210 Q116.2,167.0 80.2,128.5" fill="none" stroke="url(#featherGrad)" stroke-width="7.0" stroke-linecap="round" opacity="0.68"/><path d="M190,210 Q136.0,159.6 115.0,119.1" fill="none" stroke="url(#featherGrad)" stroke-width="6.0" stroke-linecap="round" opacity="0.55"/>
+<path d="M190,210 Q270.3,238.5 331.0,245.9" fill="none" stroke="url(#featherGrad)" stroke-width="6.0" stroke-linecap="round" opacity="0.55"/><path d="M190,210 Q283.3,225.7 348.9,223.0" fill="none" stroke="url(#featherGrad)" stroke-width="7.0" stroke-linecap="round" opacity="0.68"/><path d="M190,210 Q292.0,210.3 358.9,196.2" fill="none" stroke="url(#featherGrad)" stroke-width="8.0" stroke-linecap="round" opacity="0.82"/><path d="M190,210 Q295.2,192.8 359.1,166.9" fill="none" stroke="url(#featherGrad)" stroke-width="9.0" stroke-linecap="round" opacity="0.95"/><path d="M190,210 Q281.3,178.2 332.0,144.6" fill="none" stroke="url(#featherGrad)" stroke-width="8.0" stroke-linecap="round" opacity="0.82"/><path d="M190,210 Q263.8,167.0 299.8,128.5" fill="none" stroke="url(#featherGrad)" stroke-width="7.0" stroke-linecap="round" opacity="0.68"/><path d="M190,210 Q244.0,159.6 265.0,119.1" fill="none" stroke="url(#featherGrad)" stroke-width="6.0" stroke-linecap="round" opacity="0.55"/>
+<path d="M190 200 C170 250 175 300 190 335 C205 300 210 250 190 200 Z" fill="url(#featherGrad)" opacity="0.85"/>
+<ellipse cx="190" cy="185" rx="26" ry="34" fill="#f2b25c"/>
+<path d="M190 152 C182 138 168 132 156 134 C164 146 174 152 190 158 C206 152 216 146 224 134 C212 132 198 138 190 152 Z" fill="#f2b25c"/>
+<circle cx="190" cy="148" r="15" fill="#f2b25c"/>
+<path d="M190 138 L202 132 L192 146 Z" fill="#1b3a4b"/>
+<circle cx="185" cy="145" r="2.6" fill="#1b3a4b"/>
+</svg></div>
+<h1>Il Grande Quiz<br>dell'Informatica</h1>
+<div class="sub">Domande e Risposte per l'Alfabetizzazione Digitale, dalle Basi ai Livelli Esperti<br>264 domande organizzate per capitolo e per livello progressivo</div>
+<div class="rule"></div>
+<div class="authorblock"><b>Danilo D'Auria</b><br>Ideatore e sviluppatore di FeniceOS<br>Autore di &laquo;Tecnologia Gentile: Informatica Sostenibile&raquo;</div>
+</div></div><div class="page fill"><div class="prefazione">
+<div class="kick">Prefazione</div>
+<h1>La parola all'autore</h1>
+<div style="margin-top:16px;"><p>Quando ho scritto <em>Tecnologia Gentile: Informatica Sostenibile</em>, e poi il manuale che presenta FeniceOS, mi sono reso conto di una cosa semplice: leggere e capire un concetto è solo metà del percorso. L'altra metà è <strong>metterlo alla prova</strong>, tornarci sopra, sbagliare, riprovare — finché quel concetto non diventa davvero proprio.</p>
+<p>Da questa convinzione nasce <em>Il Grande Quiz dell'Informatica</em>: un manuale che non racconta la teoria, ma la interroga. Dodici capitoli coprono l'intero universo informatico che conosciamo oggi — dalla storia del computer all'intelligenza artificiale, passando per hardware, sistemi operativi, internet, sicurezza, cloud e molto altro — e ciascuno propone tre livelli progressivi di difficoltà, per accompagnare davvero chiunque, da chi comincia da zero a chi vuole mettersi alla prova sul serio.</p>
+<p>Non è un esame. È un allenamento, individuale o di gruppo, pensato per centri anziani, scuole e centri per il sociale — gli stessi luoghi per cui è nato il progetto FeniceOS — ma utile a chiunque voglia consolidare, in modo piacevole e senza pressione, le proprie competenze digitali.</p>
+<p>Buone domande, e buone risposte.</p></div>
+<div class="sign">Danilo D'Auria</div>
+</div></div><div class="page fill"><div class="toc">
+<div class="kick">Indice generale</div>
+<h1>264 domande, quattro parti, un solo percorso</h1>
+<div class="toc-part"><div class="toc-part-title" style="background:#3f7a4f">Parte I &mdash; Le Basi e la Storia dell'Informatica</div><div class="toc-row"><span><span class="n">01</span>Come usare questo manuale</span></div><div class="toc-row"><span><span class="n">02</span>Storia dell'informatica: dalle origini a oggi</span></div><div class="toc-row"><span><span class="n">03</span>Hardware e componenti del computer</span></div><div class="toc-row"><span><span class="n">04</span>Sistemi operativi e file system</span></div></div><div class="toc-part"><div class="toc-part-title" style="background:#d9752f">Parte II &mdash; Software, Rete e Comunicazione</div><div class="toc-row"><span><span class="n">05</span>Software, applicazioni e produttività</span></div><div class="toc-row"><span><span class="n">06</span>Internet e navigazione</span></div><div class="toc-row"><span><span class="n">07</span>Comunicazione digitale e social</span></div><div class="toc-row"><span><span class="n">08</span>Sicurezza informatica e privacy</span></div></div><div class="toc-part"><div class="toc-part-title" style="background:#2f6b8f">Parte III &mdash; Cloud, Mobile e Intelligenza Artificiale</div><div class="toc-row"><span><span class="n">09</span>Cloud, backup e dispositivi mobili</span></div><div class="toc-row"><span><span class="n">10</span>Intelligenza artificiale: presente e futuro</span></div></div><div class="toc-part"><div class="toc-part-title" style="background:#7a4f9e">Parte IV &mdash; Sostenibilità, Etica e FeniceOS</div><div class="toc-row"><span><span class="n">11</span>Economia circolare ed etica del digitale</span></div><div class="toc-row"><span><span class="n">12</span>FeniceOS e il mondo Linux: uso consapevole</span></div></div><div class="toc-part"><div class="toc-part-title" style="background:#1b3a4b">Approfondimenti</div><div class="toc-row"><span><span class="n">&mdash;</span>Nota sull'autore e sul progetto FeniceOS</span></div><div class="toc-row"><span><span class="n">&mdash;</span>Il Foglio delle Risposte (volume separato)</span></div></div>
+</div></div><div class="page part-divider">
+<div class="pnum" style="color:#3f7a4f">I</div>
+<div class="kick" style="color:#3f7a4f">Parte I</div>
+<h1>Le Basi e la Storia dell'Informatica</h1>
+<div class="rule" style="background:#3f7a4f"></div>
+<div class="desc">Dal primo approccio al quiz alla storia del computer, dall'hardware ai sistemi operativi: le fondamenta di ogni percorso di alfabetizzazione digitale.</div>
+<div class="chlist"><div><span style="color:#3f7a4f">01</span>Come usare questo manuale</div><div><span style="color:#3f7a4f">02</span>Storia dell'informatica: dalle origini a oggi</div><div><span style="color:#3f7a4f">03</span>Hardware e componenti del computer</div><div><span style="color:#3f7a4f">04</span>Sistemi operativi e file system</div></div>
+</div><div class="page">
+<section class="chapter" id="cap1">
+  <div class="chapter-head">
+    <div class="chapter-icon"><svg width="112" height="112" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<circle cx="60" cy="60" r="58" fill="#3f7a4f"/>
+<circle cx="60" cy="60" r="58" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"/>
+<circle cx="60" cy="46" r="26" fill="none" stroke="#fff" stroke-width="4.5"/>
+<path d="M50 40 C50 32 70 32 70 42 C70 50 60 48 60 58" stroke="#fff" stroke-width="5" stroke-linecap="round" fill="none"/>
+<circle cx="60" cy="70" r="3.5" fill="#fff"/>
+<rect x="34" y="86" width="16" height="16" rx="3" fill="none" stroke="#fff" stroke-width="4"/>
+<rect x="70" y="86" width="16" height="16" rx="3" fill="none" stroke="#fff" stroke-width="4"/>
+</svg></div>
+    <div>
+      <div class="chapter-eyebrow" style="color:#3f7a4f">Capitolo 1</div>
+      <h2>Come usare questo manuale</h2>
+    </div>
+  </div>
+  <div class="chapter-body">
+    <p>Questo non è un manuale da leggere e basta: è un manuale da <strong>usare</strong>, domanda dopo domanda. Ogni capitolo affronta un tema del mondo informatico — dalla storia del computer alla sicurezza, dal cloud all'intelligenza artificiale — e per ciascun tema propone <strong>tre livelli progressivi</strong>: Base, Intermedio ed Esperto. All'interno di ogni livello, le domande sono a loro volta ordinate dalle più semplici alle più impegnative, così da accompagnare chi risponde passo dopo passo, senza salti bruschi di difficoltà.</p>
+<p>Alcuni criteri pratici per un uso efficace, in aula, al centro anziani o al centro sociale:</p>
+<ul>
+<li><strong>Si parte sempre dal livello Base.</strong> Anche chi si sente già esperto può ripartire da lì: consolidare le basi non è mai tempo perso, ed è il modo più sicuro per costruire fiducia in chi comincia da zero.</li>
+<li><strong>Il livello Intermedio è pensato per chi ha già una minima familiarità pratica</strong> con il computer o con FeniceOS, mentre il livello Esperto propone domande più tecniche o di approfondimento, adatte a chi vuole davvero mettersi alla prova.</li>
+<li><strong>Non esiste una soglia di promozione o bocciatura.</strong> Ogni domanda sbagliata è un'occasione per approfondire, non un fallimento: l'obiettivo è imparare, non giudicare.</li>
+<li><strong>Individualmente o in gruppo.</strong> I quiz funzionano bene sia come autoverifica personale, sia come attività di gruppo con punteggio condiviso, sia come gioco a squadre con clima di sfida amichevole.</li>
+<li><strong>A voce alta o per iscritto.</strong> Con chi è meno a proprio agio con la scrittura, le domande possono essere lette e discusse oralmente, con chi conduce che raccoglie le risposte.</li>
+<li><strong>Il Foglio delle Risposte</strong> è un volume separato, pensato per essere consultato da chi conduce l'attività, con la soluzione corretta per ogni singola domanda, numerata in corrispondenza di questo manuale.</li>
+</ul>
+<p>Buon lavoro, e buon divertimento — a qualunque livello si cominci.</p>
+<hr/>
+  </div>
+</section></div><div class="page">
+<section class="chapter" id="cap2">
+  <div class="chapter-head">
+    <div class="chapter-icon"><svg width="112" height="112" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<circle cx="60" cy="60" r="58" fill="#3f7a4f"/>
+<circle cx="60" cy="60" r="58" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"/>
+<path d="M28 30 H70 V90 H28 C24 90 24 30 28 30 Z" fill="none" stroke="#fff" stroke-width="4.5" stroke-linejoin="round"/>
+<path d="M28 30 C24 30 24 90 28 90" fill="none" stroke="#fff" stroke-width="4"/>
+<circle cx="84" cy="68" r="20" fill="#1b3a4b" stroke="#fff" stroke-width="4.5"/>
+<path d="M84 58 V68 L92 74" stroke="#fff" stroke-width="4" stroke-linecap="round" fill="none"/>
+</svg></div>
+    <div>
+      <div class="chapter-eyebrow" style="color:#3f7a4f">Capitolo 2</div>
+      <h2>Storia dell'informatica: dalle origini a oggi</h2>
+    </div>
+  </div>
+  <div class="chapter-body">
+    <p class="quiz-intro"><em>Un viaggio tra le tappe che hanno reso possibile il mondo digitale di oggi.</em></p>
+<p class="quiz-intro"><strong>Sezione Livello Base</strong></p>
+<div class="quiz-card"><div class="qnum">D1</div>
+<div class="qbody"><div class="qstem">Chi è considerato l'inventore del World Wide Web?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Bill Gates</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Tim Berners-Lee</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Steve Jobs</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Alan Turing</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D2</div>
+<div class="qbody"><div class="qstem">Vero o Falso: i primissimi computer, a metà del Novecento, occupavano intere stanze.</div></div></div>
+<div class="quiz-card"><div class="qnum">D3</div>
+<div class="qbody"><div class="qstem">Come si chiamava il supporto magnetico usato per salvare i dati prima della diffusione di CD e chiavette USB?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Dischetto (floppy disk)</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Nastro ottico</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Scheda perforata</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Modem</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D4</div>
+<div class="qbody"><div class="qstem">In quale decennio sono diventati diffusi i primi personal computer pensati per la casa e il piccolo ufficio?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Anni '50</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Anni '60</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Anni '70-'80</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Anni 2000</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D5</div>
+<div class="qbody"><div class="qstem">Vero o Falso: Internet e il World Wide Web sono esattamente la stessa cosa, con due nomi diversi.</div></div></div>
+<div class="quiz-card"><div class="qnum">D6</div>
+<div class="qbody"><div class="qstem">Quale azienda ha creato il sistema operativo Windows?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Apple</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Microsoft</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Google</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">IBM</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D7</div>
+<div class="qbody"><div class="qstem">Che cos'era, storicamente, una "scheda perforata"?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Un primo supporto per inserire dati e programmi nei computer</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Un componente audio</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Una password scritta su carta</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un tipo di stampante</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D8</div>
+<div class="qbody"><div class="qstem">Vero o Falso: i primi telefoni cellulari, negli anni '80 e '90, permettevano già di navigare su internet come uno smartphone di oggi.</div></div></div>
+<p class="quiz-intro"><strong>Sezione Livello Intermedio</strong></p>
+<div class="quiz-card"><div class="qnum">D9</div>
+<div class="qbody"><div class="qstem">Chi ha ideato il concetto teorico di "macchina universale", alla base dell'informatica moderna?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Alan Turing</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Bill Gates</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Guglielmo Marconi</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Thomas Edison</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D10</div>
+<div class="qbody"><div class="qstem">In che anno Linus Torvalds rese pubblico per la prima volta il kernel Linux?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">1981</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">1991</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">2001</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">2011</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D11</div>
+<div class="qbody"><div class="qstem">Vero o Falso: il progetto Debian, la distribuzione Linux alla base di FeniceOS, nasce nel 1993.</div></div></div>
+<div class="quiz-card"><div class="qnum">D12</div>
+<div class="qbody"><div class="qstem">Come si chiamava uno dei primi browser web diffusi su larga scala, nella prima metà degli anni '90?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Google Chrome</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Mosaic/Netscape Navigator</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Internet Explorer 11</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Safari</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D13</div>
+<div class="qbody"><div class="qstem">Che cosa si intende, in genere, per "rivoluzione del personal computer" degli anni '70-'80?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">La diffusione di computer da tavolo accessibili anche a privati e piccole aziende</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">L'invenzione di internet</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">La nascita degli smartphone</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">L'arrivo del cloud computing</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D14</div>
+<div class="qbody"><div class="qstem">Vero o Falso: negli anni '80 e '90 il software era distribuito quasi sempre su floppy disk o CD-ROM, non scaricato da internet.</div></div></div>
+<div class="quiz-card"><div class="qnum">D15</div>
+<div class="qbody"><div class="qstem">Quale sviluppo ha segnato l'inizio della diffusione di massa di internet presso il grande pubblico?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">L'invenzione del World Wide Web e dei primi browser grafici, nei primi anni '90</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Il lancio del primo smartphone</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">La nascita di Linux</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">L'invenzione del microprocessore</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D16</div>
+<div class="qbody"><div class="qstem">Chi, insieme a Charles Babbage, è ricordata tra le pioniere della programmazione per aver scritto quello che è spesso descritto come il primo algoritmo pensato per essere eseguito da una macchina?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Alan Turing</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Ada Lovelace</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Tim Berners-Lee</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Linus Torvalds</span></div></div></div></div>
+<p class="quiz-intro"><strong>Sezione Livello Esperto</strong></p>
+<div class="quiz-card"><div class="qnum">D17</div>
+<div class="qbody"><div class="qstem">Come si chiamava il progetto di rete sviluppato a partire dagli anni '60, considerato l'antenato diretto di internet?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">ARPANET</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">BITNET</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">FidoNet</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Usenet</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D18</div>
+<div class="qbody"><div class="qstem">Vero o Falso: i termini "software libero" e "open source", pur condividendo gran parte delle libertà pratiche concesse all'utente, nascono da un'enfasi storica e filosofica diversa (etica e di libertà il primo, più pragmatica e metodologica il secondo).</div></div></div>
+<div class="quiz-card"><div class="qnum">D19</div>
+<div class="qbody"><div class="qstem">Quale sistema operativo, sviluppato nei laboratori Bell a partire dalla fine degli anni '60, ha influenzato profondamente Linux, macOS e molti altri sistemi moderni?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">UNIX</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">MS-DOS</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">CP/M</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">OS/2</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D20</div>
+<div class="qbody"><div class="qstem">In quale decennio si è affermato il termine "personal computer" per indicare macchine pensate per un singolo utente, in contrapposizione ai grandi mainframe aziendali?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Anni '50</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Anni '70</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Anni 2000</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Anni 2010</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D21</div>
+<div class="qbody"><div class="qstem">Vero o Falso: il primo microprocessore commerciale su singolo chip, l'Intel 4004, fu introdotto nel 1971.</div></div></div>
+<div class="quiz-card"><div class="qnum">D22</div>
+<div class="qbody"><div class="qstem">Che cosa indica, in informatica, il termine "mainframe"?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Un piccolo dispositivo indossabile</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Un grande computer centralizzato, usato da aziende e istituzioni per elaborazioni massicce</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Un tipo di virus informatico</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un componente della tastiera</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D23</div>
+<div class="qbody"><div class="qstem">Quale sistema operativo libero, il cui sviluppo iniziò nel 1991 a opera di uno studente universitario finlandese, è oggi alla base di gran parte dei server di internet, degli smartphone Android e di distribuzioni come Debian?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Linux</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Windows</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">macOS</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">MS-DOS</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D24</div>
+<div class="qbody"><div class="qstem">Vero o Falso: l'espressione informale "guerra dei browser", usata per gli anni '90-2000, si riferisce alla forte competizione commerciale tra diversi produttori di browser web per conquistare quote di utenti.</div></div></div>
+  </div>
+</section></div><div class="page">
+<section class="chapter" id="cap3">
+  <div class="chapter-head">
+    <div class="chapter-icon"><svg width="112" height="112" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<circle cx="60" cy="60" r="58" fill="#3f7a4f"/>
+<circle cx="60" cy="60" r="58" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"/>
+<rect x="26" y="32" width="68" height="46" rx="4" fill="none" stroke="#fff" stroke-width="5"/>
+<path d="M46 92 H74 M60 78 V92" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round"/>
+<path d="M38 55 L52 44 L64 58 L82 40" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></div>
+    <div>
+      <div class="chapter-eyebrow" style="color:#3f7a4f">Capitolo 3</div>
+      <h2>Hardware e componenti del computer</h2>
+    </div>
+  </div>
+  <div class="chapter-body">
+    <p class="quiz-intro"><em>Conoscere i "mattoni" fisici di ogni dispositivo, dal più semplice al più avanzato.</em></p>
+<p class="quiz-intro"><strong>Sezione Livello Base</strong></p>
+<div class="quiz-card"><div class="qnum">D25</div>
+<div class="qbody"><div class="qstem">Quale componente è comunemente considerato il "cervello" del computer, che esegue le istruzioni dei programmi?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Il monitor</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Il processore (CPU)</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">La tastiera</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">L'altoparlante</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D26</div>
+<div class="qbody"><div class="qstem">Vero o Falso: il mouse serve a spostare il puntatore sullo schermo e a selezionare gli elementi.</div></div></div>
+<div class="quiz-card"><div class="qnum">D27</div>
+<div class="qbody"><div class="qstem">Come si chiama il componente che mostra le immagini e il testo del computer?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Monitor</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Modem</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Masterizzatore</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Microfono</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D28</div>
+<div class="qbody"><div class="qstem">A che cosa serve principalmente la tastiera?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">A raffreddare il computer</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">A inserire testo, numeri e comandi</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">A collegarsi a internet</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">A stampare documenti</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D29</div>
+<div class="qbody"><div class="qstem">Vero o Falso: la RAM conserva i dati anche dopo che il computer viene spento.</div></div></div>
+<div class="quiz-card"><div class="qnum">D30</div>
+<div class="qbody"><div class="qstem">Come si chiama il dispositivo che permette di stampare documenti su carta?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Scanner</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Stampante</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Webcam</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Router</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D31</div>
+<div class="qbody"><div class="qstem">Quale tipo di porta si usa oggi comunemente per collegare chiavette, mouse e molti altri dispositivi esterni?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Porta USB</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Presa elettrica</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Presa audio</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Slot per SIM</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D32</div>
+<div class="qbody"><div class="qstem">Vero o Falso: un computer portatile (laptop) integra in un unico dispositivo schermo, tastiera e batteria.</div></div></div>
+<p class="quiz-intro"><strong>Sezione Livello Intermedio</strong></p>
+<div class="quiz-card"><div class="qnum">D33</div>
+<div class="qbody"><div class="qstem">Qual è la differenza principale tra la RAM e la memoria di archiviazione (disco o SSD)?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Non c'è alcuna differenza pratica</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">La RAM è veloce ma temporanea, il disco/SSD è più lento ma conserva i dati anche da spento</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">La RAM serve solo per la stampa</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Il disco/SSD serve solo per la connessione internet</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D34</div>
+<div class="qbody"><div class="qstem">Che cos'è un SSD, rispetto a un tradizionale hard disk meccanico (HDD)?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Una memoria a stato solido, senza parti meccaniche in movimento, generalmente più veloce</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Un tipo di RAM</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Una scheda video</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un cavo di alimentazione</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D35</div>
+<div class="qbody"><div class="qstem">Vero o Falso: aumentare la quantità di RAM può aiutare un computer a gestire meglio più programmi aperti contemporaneamente.</div></div></div>
+<div class="quiz-card"><div class="qnum">D36</div>
+<div class="qbody"><div class="qstem">A che cosa serve principalmente la scheda video (GPU)?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">A elaborare e visualizzare immagini e grafica, incluse quelle di giochi e video</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">A collegarsi al Wi-Fi</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">A caricare la batteria</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">A registrare l'audio</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D37</div>
+<div class="qbody"><div class="qstem">Che cosa indica la sigla "USB", riferita alle porte e ai cavi del computer?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Universal Serial Bus</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Unità di Sistema Base</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Utility di Sistema Bilanciata</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Unico Sistema Binario</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D38</div>
+<div class="qbody"><div class="qstem">Vero o Falso: la scheda madre (motherboard) è il componente a cui si collegano fisicamente processore, RAM e molte altre parti del computer.</div></div></div>
+<div class="quiz-card"><div class="qnum">D39</div>
+<div class="qbody"><div class="qstem">Che cosa permette di fare una scheda di rete Wi-Fi?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Collegare il computer a una rete senza fili</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Stampare a colori</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Aumentare la RAM</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Proteggere automaticamente da virus</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D40</div>
+<div class="qbody"><div class="qstem">Quale unità si usa comunemente per misurare la capacità di archiviazione di un disco?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Hertz (Hz)</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Gigabyte/Terabyte (GB/TB)</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Watt (W)</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Decibel (dB)</span></div></div></div></div>
+<p class="quiz-intro"><strong>Sezione Livello Esperto</strong></p>
+<div class="quiz-card"><div class="qnum">D41</div>
+<div class="qbody"><div class="qstem">Che cosa indica, in un processore moderno, il numero di "core" (nuclei)?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">La quantità di RAM installata</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Il numero di unità di elaborazione indipendenti presenti nello stesso chip, che permettono di svolgere più operazioni in parallelo</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">La velocità della connessione internet</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">La risoluzione dello schermo</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D42</div>
+<div class="qbody"><div class="qstem">Che cos'è il BIOS/UEFI di un computer?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Un programma che si avvia per primo all'accensione e inizializza l'hardware prima di passare il controllo al sistema operativo</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Un tipo di stampante</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Un componente audio</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un browser preinstallato</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D43</div>
+<div class="qbody"><div class="qstem">Vero o Falso: la frequenza di clock di un processore, espressa in gigahertz (GHz), è l'unico fattore che ne determina le prestazioni complessive.</div></div></div>
+<div class="quiz-card"><div class="qnum">D44</div>
+<div class="qbody"><div class="qstem">Che cosa si intende per "compatibilità hardware", quando si installa un sistema come FeniceOS su un computer datato?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">La capacità del sistema operativo di riconoscere e far funzionare correttamente i componenti di quella specifica macchina</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">La velocità della connessione internet</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Il colore del case</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">La marca della tastiera</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D45</div>
+<div class="qbody"><div class="qstem">A che cosa serve la memoria "cache" di un processore?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">A conservare permanentemente i file dell'utente</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">A memorizzare temporaneamente dati usati di frequente, per velocizzare l'accesso da parte della CPU</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">A collegarsi al Wi-Fi</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">A raffreddare il processore</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D46</div>
+<div class="qbody"><div class="qstem">Vero o Falso: due computer con lo stesso identico processore possono comunque offrire prestazioni percepite diverse, a seconda di RAM, tipo di disco e stato del sistema operativo installato.</div></div></div>
+<div class="quiz-card"><div class="qnum">D47</div>
+<div class="qbody"><div class="qstem">Che cosa distingue, dal punto di vista concettuale, un dispositivo hardware "obsoleto" da uno "guasto"?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Non c'è alcuna distinzione: sono sinonimi</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Un dispositivo obsoleto funziona ancora correttamente ma non soddisfa più i requisiti di software recenti, mentre uno guasto ha un malfunzionamento reale di un componente</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Un dispositivo obsoleto è sempre da buttare subito</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un dispositivo guasto è sempre riparabile gratuitamente</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D48</div>
+<div class="qbody"><div class="qstem">Quale, tra i seguenti, NON è generalmente un fattore che incide sulle prestazioni percepite di un computer?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Il colore esterno del case</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">La quantità di RAM</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Il tipo di disco (HDD o SSD)</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Il processore installato</span></div></div></div></div>
+  </div>
+</section></div><div class="page">
+<section class="chapter" id="cap4">
+  <div class="chapter-head">
+    <div class="chapter-icon"><svg width="112" height="112" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<circle cx="60" cy="60" r="58" fill="#3f7a4f"/>
+<circle cx="60" cy="60" r="58" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"/>
+<circle cx="46" cy="50" r="16" fill="none" stroke="#fff" stroke-width="4.5"/>
+<circle cx="46" cy="50" r="5" fill="#fff"/>
+<circle cx="78" cy="76" r="12" fill="none" stroke="#fff" stroke-width="4.5"/>
+<circle cx="78" cy="76" r="4" fill="#fff"/>
+<path d="M46 30 V34 M46 66 V70 M26 50 H30 M62 50 H66 M32 36 L35 39 M57 61 L60 64 M60 36 L57 39 M35 61 L32 64" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+</svg></div>
+    <div>
+      <div class="chapter-eyebrow" style="color:#3f7a4f">Capitolo 4</div>
+      <h2>Sistemi operativi e file system</h2>
+    </div>
+  </div>
+  <div class="chapter-body">
+    <p class="quiz-intro"><em>Il "direttore d'orchestra" che permette a tutto l'hardware di collaborare.</em></p>
+<p class="quiz-intro"><strong>Sezione Livello Base</strong></p>
+<div class="quiz-card"><div class="qnum">D49</div>
+<div class="qbody"><div class="qstem">Che cos'è, in parole semplici, un sistema operativo?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Un componente hardware</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Il software di base che gestisce le risorse del computer e permette di usare i programmi</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Un tipo di stampante</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un cavo di collegamento</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D50</div>
+<div class="qbody"><div class="qstem">Vero o Falso: Windows, macOS e Linux sono tutti esempi di sistemi operativi.</div></div></div>
+<div class="quiz-card"><div class="qnum">D51</div>
+<div class="qbody"><div class="qstem">Come si chiama l'elemento grafico, spesso una piccola immagine, che rappresenta un file o un programma sullo schermo?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Icona</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Cartella</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Finestra</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Barra delle applicazioni</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D52</div>
+<div class="qbody"><div class="qstem">A che cosa serve principalmente una "cartella" (o directory) nel sistema operativo?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">A organizzare e raggruppare i file</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">A collegarsi a internet</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">A stampare documenti</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">A registrare video</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D53</div>
+<div class="qbody"><div class="qstem">Vero o Falso: è possibile avere più programmi aperti contemporaneamente, ciascuno nella propria finestra.</div></div></div>
+<div class="quiz-card"><div class="qnum">D54</div>
+<div class="qbody"><div class="qstem">Che cosa succede, in genere, spostando un file nel "Cestino" di un sistema operativo?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Il file viene cancellato definitivamente e senza possibilità di recupero</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Il file viene spostato in un'area temporanea da cui può ancora essere ripristinato, finché il cestino non viene svuotato</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Il file viene stampato automaticamente</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Il file viene inviato via email</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D55</div>
+<div class="qbody"><div class="qstem">Come si chiama la barra, solitamente in basso o ai lati dello schermo, che mostra i programmi aperti e altre icone rapide?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Barra delle applicazioni (taskbar)</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Barra degli indirizzi</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Barra di ricerca del browser</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Indicatore della batteria</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D56</div>
+<div class="qbody"><div class="qstem">Vero o Falso: per spegnere correttamente il computer è preferibile usare la funzione "Arresta il sistema" invece di staccare direttamente la spina.</div></div></div>
+<p class="quiz-intro"><strong>Sezione Livello Intermedio</strong></p>
+<div class="quiz-card"><div class="qnum">D57</div>
+<div class="qbody"><div class="qstem">Che cos'è, tecnicamente, un "file system"?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Un programma per scrivere testi</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Il metodo con cui il sistema operativo organizza, denomina e recupera i file su un disco</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Un tipo di virus</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un componente hardware della tastiera</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D58</div>
+<div class="qbody"><div class="qstem">Che cosa indica, nel nome di un file, l'"estensione" (per esempio .pdf, .jpg, .docx)?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Il tipo di formato o contenuto del file</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">La dimensione esatta del file</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">La data di creazione</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Il nome dell'autore</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D59</div>
+<div class="qbody"><div class="qstem">Vero o Falso: FeniceOS, come molte distribuzioni Linux, può funzionare come sistema "live", cioè avviato direttamente da una chiavetta USB senza essere installato sul disco.</div></div></div>
+<div class="quiz-card"><div class="qnum">D60</div>
+<div class="qbody"><div class="qstem">Che cosa permette di fare, in un sistema operativo, la gestione degli "account utente"?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Separare impostazioni, file e permessi tra persone diverse che usano lo stesso computer</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Aumentare la RAM disponibile</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Collegare una stampante</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Cambiare fisicamente la lingua della tastiera</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D61</div>
+<div class="qbody"><div class="qstem">Quale, tra i seguenti, è un esempio di sistema operativo pensato per dispositivi mobili?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Debian</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Android</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">MS-DOS</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">FreeBSD server</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D62</div>
+<div class="qbody"><div class="qstem">Vero o Falso: in un sistema operativo Linux come FeniceOS, è possibile installare e aggiornare programmi tramite un sistema di gestione pacchetti centralizzato.</div></div></div>
+<div class="quiz-card"><div class="qnum">D63</div>
+<div class="qbody"><div class="qstem">A che cosa serve, in generale, un aggiornamento del sistema operativo?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">A correggere problemi di sicurezza e migliorare il funzionamento del sistema</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">A cancellare tutti i file personali</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">A rallentare volontariamente il computer</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">A cambiare automaticamente il colore dello sfondo</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D64</div>
+<div class="qbody"><div class="qstem">Che cosa si intende per interfaccia "grafica" (GUI) di un sistema operativo, in contrapposizione a quella "testuale" (riga di comando)?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Un'interfaccia che si usa tramite finestre, icone e mouse, invece che digitando comandi testuali</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Un tipo di stampante</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Un tipo di connessione internet</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un componente della scheda madre</span></div></div></div></div>
+<p class="quiz-intro"><strong>Sezione Livello Esperto</strong></p>
+<div class="quiz-card"><div class="qnum">D65</div>
+<div class="qbody"><div class="qstem">Che cos'è il "kernel" di un sistema operativo?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Il componente centrale che gestisce direttamente l'hardware e fa da intermediario con i programmi</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Un programma per la posta elettronica</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Un browser web</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un tipo di stampante</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D66</div>
+<div class="qbody"><div class="qstem">Che cosa significa, per un sistema operativo, essere "multiutente" e "multitasking"?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Può essere usato da più persone con account separati e può eseguire più processi contemporaneamente</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Può collegarsi solo a un tipo di stampante</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Ha un solo colore disponibile per il tema grafico</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Funziona solo su hardware recentissimo</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D67</div>
+<div class="qbody"><div class="qstem">Vero o Falso: nella maggior parte dei sistemi Linux, incluso Debian su cui si basa FeniceOS, il file system distingue le maiuscole dalle minuscole nei nomi dei file.</div></div></div>
+<div class="quiz-card"><div class="qnum">D68</div>
+<div class="qbody"><div class="qstem">Che cosa indica, in ambito Linux/Debian, il termine "repository" dei pacchetti software?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Un archivio centralizzato da cui il sistema scarica e aggiorna i programmi in modo verificato</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Una cartella personale dell'utente</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Un tipo di virus</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un componente audio</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D69</div>
+<div class="qbody"><div class="qstem">A che cosa serve, in un sistema operativo, il concetto di "permessi" sui file e sulle cartelle?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">A stabilire chi può leggere, modificare o eseguire un determinato file</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">A cambiare il colore delle icone</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">A misurare la velocità della connessione</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">A regolare il volume dell'audio</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D70</div>
+<div class="qbody"><div class="qstem">Vero o Falso: un sistema operativo "live" come FeniceOS, avviato da chiavetta USB, lascia di norma inalterato l'eventuale sistema operativo già installato sul disco del computer, salvo esplicita scelta di installazione.</div></div></div>
+<div class="quiz-card"><div class="qnum">D71</div>
+<div class="qbody"><div class="qstem">Che cosa si intende, in ambito Debian/Linux, per "distribuzione" (o "distro")?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Una specifica combinazione di kernel Linux, strumenti di sistema, gestione pacchetti e software preconfigurati, distribuita come un insieme coerente</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Un tipo di stampante di rete</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Un componente hardware della scheda video</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un protocollo di posta elettronica</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D72</div>
+<div class="qbody"><div class="qstem">Che cosa distingue concettualmente una directory "temporanea" (spesso indicata come /tmp nei sistemi Linux) dalla cartella personale dell'utente?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Nessuna differenza: sono la stessa cosa</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">La directory temporanea è pensata per file transitori che possono essere cancellati, mentre la cartella personale conserva stabilmente i documenti dell'utente</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">La cartella personale è sempre vuota</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">La directory temporanea richiede sempre una password diversa</span></div></div></div></div>
+  </div>
+</section></div><div class="page part-divider">
+<div class="pnum" style="color:#d9752f">II</div>
+<div class="kick" style="color:#d9752f">Parte II</div>
+<h1>Software, Rete e Comunicazione</h1>
+<div class="rule" style="background:#d9752f"></div>
+<div class="desc">Programmi, browser, email, messaggistica, social e sicurezza informatica: gli strumenti del vivere digitale quotidiano, messi alla prova domanda dopo domanda.</div>
+<div class="chlist"><div><span style="color:#d9752f">05</span>Software, applicazioni e produttività</div><div><span style="color:#d9752f">06</span>Internet e navigazione</div><div><span style="color:#d9752f">07</span>Comunicazione digitale e social</div><div><span style="color:#d9752f">08</span>Sicurezza informatica e privacy</div></div>
+</div><div class="page">
+<section class="chapter" id="cap5">
+  <div class="chapter-head">
+    <div class="chapter-icon"><svg width="112" height="112" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<circle cx="60" cy="60" r="58" fill="#d9752f"/>
+<circle cx="60" cy="60" r="58" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"/>
+<rect x="22" y="40" width="76" height="42" rx="5" fill="none" stroke="#fff" stroke-width="4.5"/>
+<path d="M32 52 H36 M42 52 H46 M52 52 H56 M62 52 H66 M72 52 H76 M82 52 H86 M32 62 H36 M42 62 H46 M52 62 H56 M62 62 H66 M72 62 H76 M82 62 H86 M38 72 H82" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/>
+</svg></div>
+    <div>
+      <div class="chapter-eyebrow" style="color:#d9752f">Capitolo 5</div>
+      <h2>Software, applicazioni e produttività</h2>
+    </div>
+  </div>
+  <div class="chapter-body">
+    <p class="quiz-intro"><em>Dai programmi di uso quotidiano al significato di "software libero".</em></p>
+<p class="quiz-intro"><strong>Sezione Livello Base</strong></p>
+<div class="quiz-card"><div class="qnum">D73</div>
+<div class="qbody"><div class="qstem">Che cos'è un "programma" (o applicazione)?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Un componente hardware</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Un insieme di istruzioni che permette al computer di svolgere un compito specifico</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Un cavo di collegamento</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un tipo di monitor</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D74</div>
+<div class="qbody"><div class="qstem">Vero o Falso: un elaboratore di testi (word processor) si usa per scrivere e formattare documenti.</div></div></div>
+<div class="quiz-card"><div class="qnum">D75</div>
+<div class="qbody"><div class="qstem">Come si chiama comunemente il programma usato per creare fogli di calcolo con numeri e formule?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Foglio di calcolo</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Browser</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Editor di testo semplice</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Lettore PDF</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D76</div>
+<div class="qbody"><div class="qstem">A cosa serve "salvare" un documento su cui si sta lavorando?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">A stamparlo automaticamente</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">A conservare il lavoro svolto in un file, così da non perderlo</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">A inviarlo via email</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">A cancellarlo</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D77</div>
+<div class="qbody"><div class="qstem">Vero o Falso: aprire un programma richiede di solito un doppio clic sulla sua icona (o un clic singolo, a seconda delle impostazioni).</div></div></div>
+<div class="quiz-card"><div class="qnum">D78</div>
+<div class="qbody"><div class="qstem">Che cos'è un lettore PDF?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Un programma che permette di aprire e leggere documenti in formato PDF</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Un componente hardware</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Un tipo di stampante</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un browser esclusivo per PDF</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D79</div>
+<div class="qbody"><div class="qstem">Come si chiama, in molti programmi, la funzione che permette di annullare l'ultima azione svolta per errore?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Salva</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Annulla (Ctrl+Z)</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Stampa</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Chiudi</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D80</div>
+<div class="qbody"><div class="qstem">Vero o Falso: il software libero è sempre e comunque gratuito, in ogni circostanza e senza eccezioni.</div></div></div>
+<p class="quiz-intro"><strong>Sezione Livello Intermedio</strong></p>
+<div class="quiz-card"><div class="qnum">D81</div>
+<div class="qbody"><div class="qstem">Che cosa distingue un software "proprietario" da uno "libero/open source"?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Nessuna differenza pratica</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Il software proprietario ha codice sorgente chiuso e uso regolato dal produttore, quello libero ha codice sorgente aperto e libertà d'uso, modifica e condivisione</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Il software libero funziona solo su Linux</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Il software proprietario è sempre gratuito</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D82</div>
+<div class="qbody"><div class="qstem">Vero o Falso: LibreOffice è una suite di produttività libera e gratuita, spesso preinstallata su distribuzioni Linux come FeniceOS.</div></div></div>
+<div class="quiz-card"><div class="qnum">D83</div>
+<div class="qbody"><div class="qstem">A cosa serve, in un programma, la funzione "esporta" o "salva con nome" verso un altro formato (per esempio da .odt a .pdf)?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">A creare una copia del documento in un formato diverso da quello originale</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">A cancellare il file originale</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">A stampare direttamente</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">A inviare automaticamente via email</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D84</div>
+<div class="qbody"><div class="qstem">Che cos'è un'applicazione installabile senza una complessa procedura permanente sul sistema?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Un'applicazione che richiede sempre l'acquisto di nuovo hardware</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Un software che può essere eseguito, in molti casi, senza una complessa procedura di installazione permanente</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Un tipo di virus</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un componente della tastiera</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D85</div>
+<div class="qbody"><div class="qstem">Vero o Falso: tenere aggiornati i programmi installati aiuta a ridurre il rischio di vulnerabilità di sicurezza.</div></div></div>
+<div class="quiz-card"><div class="qnum">D86</div>
+<div class="qbody"><div class="qstem">Che cosa indica il termine "interfaccia utente" (UI) di un programma?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">L'insieme degli elementi grafici e degli strumenti con cui la persona interagisce con il software</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Il codice sorgente nascosto del programma</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">La marca del computer</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">La velocità della connessione internet</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D87</div>
+<div class="qbody"><div class="qstem">A cosa serve, in generale, un "gestore di pacchetti" come quello usato da Debian e FeniceOS?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">A installare, aggiornare e rimuovere software in modo centralizzato e verificato</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">A gestire solo la stampa</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">A cambiare la lingua del sistema</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">A collegarsi automaticamente al Wi-Fi</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D88</div>
+<div class="qbody"><div class="qstem">Vero o Falso: un programma "compatibile" con un sistema operativo funziona correttamente su quel sistema, mentre uno "incompatibile" può non funzionare affatto o presentare errori.</div></div></div>
+<p class="quiz-intro"><strong>Sezione Livello Esperto</strong></p>
+<div class="quiz-card"><div class="qnum">D89</div>
+<div class="qbody"><div class="qstem">Che cosa si intende, in informatica, per "licenza" di un software?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Un documento che stabilisce le condizioni legali d'uso, modifica e distribuzione di un programma</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Un certificato di garanzia hardware</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Un tipo di file audio</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un componente della scheda video</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D90</div>
+<div class="qbody"><div class="qstem">Quale delle seguenti NON è generalmente una delle libertà fondamentali associate al software libero, secondo la definizione classica?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">La libertà di eseguire il programma per qualsiasi scopo</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">La libertà di studiarne e modificarne il codice sorgente</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">L'obbligo di venderlo sempre a pagamento</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">La libertà di ridistribuire copie, modificate o meno</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D91</div>
+<div class="qbody"><div class="qstem">Vero o Falso: due programmi che svolgono la stessa funzione, per esempio due editor di testo, possono avere requisiti hardware molto diversi tra loro.</div></div></div>
+<div class="quiz-card"><div class="qnum">D92</div>
+<div class="qbody"><div class="qstem">Che cosa indica, per un'applicazione, il termine "dipendenza" (dependency) in ambito software?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Un componente o libreria esterna necessaria al corretto funzionamento del programma</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Un tipo di virus</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Un colore del tema grafico</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un dispositivo hardware esterno</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D93</div>
+<div class="qbody"><div class="qstem">A cosa serve, tecnicamente, la compilazione del codice sorgente di un programma?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">A tradurre il codice scritto da una persona in istruzioni eseguibili dal computer</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">A stampare il codice su carta</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">A cancellare i file temporanei</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">A collegarsi automaticamente a internet</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D94</div>
+<div class="qbody"><div class="qstem">Vero o Falso: un software con codice sorgente aperto può, in linea di principio, essere esaminato da chiunque per verificarne il funzionamento e la sicurezza.</div></div></div>
+<div class="quiz-card"><div class="qnum">D95</div>
+<div class="qbody"><div class="qstem">Che cosa indica il termine "retrocompatibilità" di un software?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">La capacità di funzionare correttamente anche con versioni precedenti di un sistema, formato o hardware</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">La capacità di funzionare solo con l'ultimissima versione disponibile</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Un tipo di licenza commerciale</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un componente hardware</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D96</div>
+<div class="qbody"><div class="qstem">Che cosa si intende, in ambito Debian/FeniceOS, per programmi disponibili nei repository "ufficiali" rispetto a fonti esterne non verificate?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Nessuna differenza in termini di affidabilità</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">I repository ufficiali sono curati e verificati dalla comunità/progetto, riducendo il rischio di software non sicuro rispetto a fonti sconosciute</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">I repository ufficiali sono sempre più costosi</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">I repository ufficiali funzionano solo su Windows</span></div></div></div></div>
+  </div>
+</section></div><div class="page">
+<section class="chapter" id="cap6">
+  <div class="chapter-head">
+    <div class="chapter-icon"><svg width="112" height="112" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<circle cx="60" cy="60" r="58" fill="#d9752f"/>
+<circle cx="60" cy="60" r="58" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"/>
+<circle cx="60" cy="60" r="34" fill="none" stroke="#fff" stroke-width="4.5"/>
+<ellipse cx="60" cy="60" rx="14" ry="34" fill="none" stroke="#fff" stroke-width="3.5"/>
+<path d="M26 60 H94 M31 42 H89 M31 78 H89" stroke="#fff" stroke-width="3.5" fill="none"/>
+</svg></div>
+    <div>
+      <div class="chapter-eyebrow" style="color:#d9752f">Capitolo 6</div>
+      <h2>Internet e navigazione</h2>
+    </div>
+  </div>
+  <div class="chapter-body">
+    <p class="quiz-intro"><em>Come funziona il web e come muoversi al suo interno in modo consapevole.</em></p>
+<p class="quiz-intro"><strong>Sezione Livello Base</strong></p>
+<div class="quiz-card"><div class="qnum">D97</div>
+<div class="qbody"><div class="qstem">Come si chiama il programma usato per navigare su internet e visitare siti web?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Browser</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Editor di testo</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Foglio di calcolo</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Terminale</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D98</div>
+<div class="qbody"><div class="qstem">Vero o Falso: per accedere a internet è necessaria una qualche forma di connessione di rete, via cavo o senza fili.</div></div></div>
+<div class="quiz-card"><div class="qnum">D99</div>
+<div class="qbody"><div class="qstem">Che cos'è un "sito web"?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Un insieme di pagine collegate, raggiungibili tramite un indirizzo, consultabili con un browser</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Un componente hardware</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Un tipo di stampante</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un cavo di rete</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D100</div>
+<div class="qbody"><div class="qstem">A cosa serve, nella parte superiore del browser, la "barra degli indirizzi"?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">A digitare o visualizzare l'indirizzo del sito che si sta visitando</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">A cambiare il volume</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">A stampare la pagina</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">A spegnere il computer</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D101</div>
+<div class="qbody"><div class="qstem">Vero o Falso: il Wi-Fi permette di collegarsi a internet senza l'uso di cavi.</div></div></div>
+<div class="quiz-card"><div class="qnum">D102</div>
+<div class="qbody"><div class="qstem">Come si chiama comunemente il collegamento cliccabile che porta da una pagina web a un'altra?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Link (collegamento ipertestuale)</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Cursore</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Scanner</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Allegato</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D103</div>
+<div class="qbody"><div class="qstem">A cosa serve, in un browser, la funzione "preferiti" o "segnalibri"?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">A salvare gli indirizzi dei siti che si vogliono ritrovare facilmente in futuro</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">A cancellare la cronologia</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">A cambiare la password del Wi-Fi</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">A stampare automaticamente</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D104</div>
+<div class="qbody"><div class="qstem">Vero o Falso: un motore di ricerca permette di trovare pagine e siti a partire da parole chiave digitate dall'utente.</div></div></div>
+<p class="quiz-intro"><strong>Sezione Livello Intermedio</strong></p>
+<div class="quiz-card"><div class="qnum">D105</div>
+<div class="qbody"><div class="qstem">Che cosa indica, all'inizio di un indirizzo web, la sigla "https" rispetto a "http"?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Nessuna differenza pratica</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Indica una connessione cifrata e più sicura tra il browser e il sito visitato</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Indica che il sito è gratuito</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Indica che il sito è scritto in italiano</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D106</div>
+<div class="qbody"><div class="qstem">Vero o Falso: cancellare periodicamente la cronologia e i dati di navigazione del browser può aiutare a proteggere la privacy su un computer condiviso.</div></div></div>
+<div class="quiz-card"><div class="qnum">D107</div>
+<div class="qbody"><div class="qstem">Che cosa sono, in generale, i "cookie" di un sito web?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Piccoli file salvati dal browser che permettono al sito di ricordare informazioni tra una visita e l'altra</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Un tipo di virus informatico</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Un componente hardware del router</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un formato di immagine</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D108</div>
+<div class="qbody"><div class="qstem">A cosa serve affinare una ricerca con parole più specifiche in un motore di ricerca?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">A ottenere risultati più pertinenti e mirati rispetto a una ricerca generica</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">A cancellare la cronologia</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">A velocizzare sempre e comunque la connessione</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">A cambiare il Wi-Fi</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D109</div>
+<div class="qbody"><div class="qstem">Vero o Falso: aprire più "schede" (tab) nel browser permette di consultare più pagine web contemporaneamente nella stessa finestra.</div></div></div>
+<div class="quiz-card"><div class="qnum">D110</div>
+<div class="qbody"><div class="qstem">Che cos'è un indirizzo IP, in termini semplici?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Un identificativo numerico che permette a un dispositivo di essere raggiunto su una rete</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Un tipo di password</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Un componente hardware</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un formato di documento</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D111</div>
+<div class="qbody"><div class="qstem">A cosa serve un router domestico?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">A distribuire la connessione internet ai vari dispositivi di casa, via cavo o Wi-Fi</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">A stampare documenti</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">A caricare la batteria dei dispositivi</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">A registrare video</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D112</div>
+<div class="qbody"><div class="qstem">Vero o Falso: scaricare un file da internet comporta sempre e comunque un rischio nullo per la sicurezza del computer, indipendentemente dalla fonte.</div></div></div>
+<p class="quiz-intro"><strong>Sezione Livello Esperto</strong></p>
+<div class="quiz-card"><div class="qnum">D113</div>
+<div class="qbody"><div class="qstem">Che cosa indica, in rete, l'acronimo "DNS"?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Un sistema che traduce i nomi dei siti in indirizzi IP numerici comprensibili ai computer</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Un tipo di virus</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Un protocollo di stampa</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un formato audio</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D114</div>
+<div class="qbody"><div class="qstem">Vero o Falso: la larghezza di banda di una connessione internet è l'unico fattore che determina la reattività percepita nella navigazione quotidiana.</div></div></div>
+<div class="quiz-card"><div class="qnum">D115</div>
+<div class="qbody"><div class="qstem">Che cosa si intende per "cloud computing" applicato alla navigazione e all'uso quotidiano di internet?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">L'uso di servizi e risorse (archiviazione, elaborazione, programmi) ospitati su server remoti raggiungibili via internet, invece che solo localmente</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Un tipo di virus</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Un componente hardware del monitor</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un formato di compressione audio</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D116</div>
+<div class="qbody"><div class="qstem">A cosa serve un certificato digitale, associato al lucchetto visibile in molti browser accanto all'indirizzo?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">A garantire, tramite verifica crittografica, l'identità del sito visitato e la cifratura della connessione</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">A velocizzare sempre la connessione</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">A cambiare la lingua del sito</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">A stampare automaticamente la pagina</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D117</div>
+<div class="qbody"><div class="qstem">Vero o Falso: una rete Wi-Fi pubblica non protetta da password comporta, in generale, maggiori rischi per la sicurezza dei dati trasmessi rispetto a una rete domestica protetta.</div></div></div>
+<div class="quiz-card"><div class="qnum">D118</div>
+<div class="qbody"><div class="qstem">Che cosa indica, in ambito reti, il termine "larghezza di banda" (bandwidth)?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">La quantità massima di dati che può essere trasmessa in un dato intervallo di tempo su una connessione</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Il numero di dispositivi collegabili al router</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Il colore del cavo di rete</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Il tipo di stampante collegata</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D119</div>
+<div class="qbody"><div class="qstem">A cosa serve, in termini generali, una rete privata virtuale (VPN)?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">A creare un collegamento cifrato tra il dispositivo dell'utente e un altro punto della rete, aumentando riservatezza e sicurezza del traffico</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">A stampare documenti da remoto</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">A raddoppiare automaticamente la RAM</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">A cambiare il colore del desktop</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D120</div>
+<div class="qbody"><div class="qstem">Vero o Falso: la presenza del lucchetto "https" in un sito garantisce, da sola, che il contenuto del sito sia sempre affidabile e non fraudolento.</div></div></div>
+  </div>
+</section></div><div class="page">
+<section class="chapter" id="cap7">
+  <div class="chapter-head">
+    <div class="chapter-icon"><svg width="112" height="112" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<circle cx="60" cy="60" r="58" fill="#d9752f"/>
+<circle cx="60" cy="60" r="58" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"/>
+<path d="M24 36 H96 C100 36 102 38 102 42 V76 C102 80 100 82 96 82 H52 L34 96 V82 H24 C20 82 18 80 18 76 V42 C18 38 20 36 24 36 Z" fill="none" stroke="#fff" stroke-width="4.5" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="40" cy="59" r="4" fill="#fff"/><circle cx="60" cy="59" r="4" fill="#fff"/><circle cx="80" cy="59" r="4" fill="#fff"/>
+</svg></div>
+    <div>
+      <div class="chapter-eyebrow" style="color:#d9752f">Capitolo 7</div>
+      <h2>Comunicazione digitale e social</h2>
+    </div>
+  </div>
+  <div class="chapter-body">
+    <p class="quiz-intro"><em>Email, messaggistica e social network: strumenti potenti, da usare con consapevolezza.</em></p>
+<p class="quiz-intro"><strong>Sezione Livello Base</strong></p>
+<div class="quiz-card"><div class="qnum">D121</div>
+<div class="qbody"><div class="qstem">Come si chiama il servizio usato per inviare e ricevere messaggi tramite un indirizzo tipo nome@dominio.it?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Posta elettronica (email)</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Stampa di rete</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Foglio di calcolo</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Terminale</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D122</div>
+<div class="qbody"><div class="qstem">Vero o Falso: un allegato in un'email è un file, per esempio un documento o una foto, inviato insieme al messaggio.</div></div></div>
+<div class="quiz-card"><div class="qnum">D123</div>
+<div class="qbody"><div class="qstem">Che cosa permette di fare un'app di videochiamata?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Comunicare in tempo reale con audio e video tra dispositivi collegati a internet</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Stampare documenti a colori</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Aumentare la RAM del computer</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Collegare una stampante</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D124</div>
+<div class="qbody"><div class="qstem">A cosa serve, in un'email, il campo "oggetto"?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">A riassumere brevemente il contenuto o lo scopo del messaggio</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">A indicare la password dell'account</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">A cambiare la lingua del messaggio</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">A cancellare automaticamente il messaggio</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D125</div>
+<div class="qbody"><div class="qstem">Vero o Falso: rispondere a un'email sconosciuta con i propri dati personali è sempre sicuro, se il messaggio sembra ufficiale.</div></div></div>
+<div class="quiz-card"><div class="qnum">D126</div>
+<div class="qbody"><div class="qstem">Che cos'è, in generale, un social network?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Una piattaforma online che permette di creare un profilo, condividere contenuti e interagire con altre persone</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Un componente hardware</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Un tipo di stampante</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un protocollo di rete locale</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D127</div>
+<div class="qbody"><div class="qstem">A cosa serve una app di messaggistica istantanea?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">A inviare e ricevere messaggi di testo, immagini o audio in tempo quasi reale tramite internet</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">A stampare fotografie</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">A collegare periferiche hardware</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">A misurare la velocità del processore</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D128</div>
+<div class="qbody"><div class="qstem">Vero o Falso: è buona norma verificare sempre il mittente di un messaggio prima di cliccare su link sospetti ricevuti via email o chat.</div></div></div>
+<p class="quiz-intro"><strong>Sezione Livello Intermedio</strong></p>
+<div class="quiz-card"><div class="qnum">D129</div>
+<div class="qbody"><div class="qstem">Che cosa indica, in un'email, il campo "CC" (copia conoscenza)?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Destinatari aggiuntivi che ricevono il messaggio in visione, oltre al destinatario principale</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Un allegato nascosto</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Un tipo di virus</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">La dimensione massima del messaggio</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D130</div>
+<div class="qbody"><div class="qstem">Vero o Falso: il campo "CCN" (copia nascosta) permette di inviare un'email ad altri destinatari senza che essi vedano gli indirizzi degli altri.</div></div></div>
+<div class="quiz-card"><div class="qnum">D131</div>
+<div class="qbody"><div class="qstem">Che cosa si intende, sui social network, per "impostazioni sulla privacy" del profilo?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Le opzioni che regolano chi può vedere i propri contenuti e informazioni personali</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">La velocità della connessione internet</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Il colore del tema grafico</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">La lingua dell'interfaccia</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D132</div>
+<div class="qbody"><div class="qstem">A cosa serve, in molte app di messaggistica, la conferma di lettura?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">A indicare al mittente che il messaggio è stato visualizzato dal destinatario</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">A cambiare automaticamente la password</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">A cancellare il messaggio dopo un certo tempo</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">A tradurre automaticamente il messaggio</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D133</div>
+<div class="qbody"><div class="qstem">Vero o Falso: condividere pubblicamente informazioni sensibili, come indirizzo di casa e orari abituali, sui social può comportare rischi per la propria sicurezza.</div></div></div>
+<div class="quiz-card"><div class="qnum">D134</div>
+<div class="qbody"><div class="qstem">Che cosa indica il termine "netiquette"?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Un insieme di norme di buon comportamento e cortesia nella comunicazione online</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Un tipo di connessione internet</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Un componente hardware</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un formato di file</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D135</div>
+<div class="qbody"><div class="qstem">A cosa serve, in molte piattaforme, la funzione di "blocco" di un contatto?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">A impedire a quel contatto di continuare a scrivere o vedere i propri contenuti</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">A cancellare tutti i propri dati</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">A velocizzare la connessione</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">A cambiare il proprio nome utente</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D136</div>
+<div class="qbody"><div class="qstem">Vero o Falso: una videochiamata di gruppo permette a più persone di partecipare contemporaneamente alla stessa conversazione audio/video.</div></div></div>
+<p class="quiz-intro"><strong>Sezione Livello Esperto</strong></p>
+<div class="quiz-card"><div class="qnum">D137</div>
+<div class="qbody"><div class="qstem">Che cosa si intende per "identità digitale" di una persona?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">L'insieme di informazioni, account e tracce che la rappresentano nel mondo online</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Un documento cartaceo obbligatorio</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Un componente hardware</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un tipo di connessione internet</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D138</div>
+<div class="qbody"><div class="qstem">Vero o Falso: l'autenticazione a due fattori (2FA) aggiunge un ulteriore livello di sicurezza rispetto alla sola password, richiedendo una seconda prova d'identità.</div></div></div>
+<div class="quiz-card"><div class="qnum">D139</div>
+<div class="qbody"><div class="qstem">Che cosa indica, in ambito comunicazione digitale, il termine "crittografia end-to-end" usata da alcune app di messaggistica?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Un sistema che cifra i messaggi in modo che, in teoria, solo mittente e destinatario possano leggerli, non intermediari lungo il percorso</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Un tipo di allegato</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Una funzione per tradurre automaticamente i messaggi</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un componente hardware del router</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D140</div>
+<div class="qbody"><div class="qstem">A cosa può servire, in ambito professionale, distinguere un indirizzo email personale da uno istituzionale?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">A separare comunicazioni e responsabilità tra ambito privato e professionale</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">A cambiare colore all'interfaccia</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">A velocizzare sempre la connessione</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">A ridurre automaticamente lo spazio di archiviazione</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D141</div>
+<div class="qbody"><div class="qstem">Vero o Falso: la disinformazione online può diffondersi più rapidamente sui social network proprio grazie ai meccanismi di condivisione rapida dei contenuti.</div></div></div>
+<div class="quiz-card"><div class="qnum">D142</div>
+<div class="qbody"><div class="qstem">Che cosa si intende per "algoritmo di raccomandazione" di una piattaforma social?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Un sistema automatico che seleziona quali contenuti mostrare a ciascun utente, sulla base di comportamenti e preferenze osservate</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Un componente hardware</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Un protocollo di rete locale</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un tipo di stampante</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D143</div>
+<div class="qbody"><div class="qstem">A cosa serve, per un'organizzazione o un centro sociale, avere una politica chiara sull'uso di email e strumenti di comunicazione digitale?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">A stabilire regole condivise su sicurezza, riservatezza e comportamento corretto nell'uso di questi strumenti</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">A vietare completamente l'uso di internet</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">A rallentare deliberatamente le comunicazioni</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">A cambiare la lingua del sistema</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D144</div>
+<div class="qbody"><div class="qstem">Vero o Falso: verificare l'attendibilità di una fonte prima di condividerla è una pratica raccomandata di cittadinanza digitale consapevole.</div></div></div>
+  </div>
+</section></div><div class="page">
+<section class="chapter" id="cap8">
+  <div class="chapter-head">
+    <div class="chapter-icon"><svg width="112" height="112" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<circle cx="60" cy="60" r="58" fill="#d9752f"/>
+<circle cx="60" cy="60" r="58" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"/>
+<path d="M60 22 L92 34 V60 C92 82 78 96 60 100 C42 96 28 82 28 60 V34 Z" fill="none" stroke="#fff" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M46 60 L56 70 L76 46" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></div>
+    <div>
+      <div class="chapter-eyebrow" style="color:#d9752f">Capitolo 8</div>
+      <h2>Sicurezza informatica e privacy</h2>
+    </div>
+  </div>
+  <div class="chapter-body">
+    <p class="quiz-intro"><em>Riconoscere i rischi principali e adottare buone abitudini digitali.</em></p>
+<p class="quiz-intro"><strong>Sezione Livello Base</strong></p>
+<div class="quiz-card"><div class="qnum">D145</div>
+<div class="qbody"><div class="qstem">Che cos'è il "phishing"?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Un tipo di virus che rallenta il computer</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Un tentativo di truffa online che imita comunicazioni ufficiali per sottrarre dati personali</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Un metodo per velocizzare la connessione internet</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un componente hardware del computer</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D146</div>
+<div class="qbody"><div class="qstem">Vero o Falso: usare la stessa password per tutti i propri account online è una buona pratica di sicurezza.</div></div></div>
+<div class="quiz-card"><div class="qnum">D147</div>
+<div class="qbody"><div class="qstem">Che cos'è una password robusta?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Una parola facile da ricordare, come il proprio nome</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Una combinazione lunga e complessa di caratteri, diversa per ogni servizio</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">La stessa password usata per tutti gli account</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Una sequenza di numeri consecutivi</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D148</div>
+<div class="qbody"><div class="qstem">A cosa serve un antivirus?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">A individuare e neutralizzare software dannoso sul computer</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">A velocizzare sempre la connessione internet</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">A stampare documenti</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">A cambiare la password del Wi-Fi</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D149</div>
+<div class="qbody"><div class="qstem">Vero o Falso: cliccare su link contenuti in messaggi sospetti o non attesi è generalmente sconsigliato.</div></div></div>
+<div class="quiz-card"><div class="qnum">D150</div>
+<div class="qbody"><div class="qstem">Che cos'è un virus informatico, in termini semplici?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Un programma dannoso che può danneggiare dati o funzionamento del computer</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Un componente hardware</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Un tipo di stampante</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un protocollo di rete legittimo</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D151</div>
+<div class="qbody"><div class="qstem">A cosa serve fare regolarmente una copia di sicurezza (backup) dei propri file importanti?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">A poterli recuperare in caso di guasto, furto o smarrimento del dispositivo</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">A velocizzare il processore</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">A cambiare automaticamente la password</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">A cancellare i file superflui</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D152</div>
+<div class="qbody"><div class="qstem">Vero o Falso: gli aggiornamenti di sicurezza del sistema operativo aiutano a proteggere il computer da minacce note.</div></div></div>
+<p class="quiz-intro"><strong>Sezione Livello Intermedio</strong></p>
+<div class="quiz-card"><div class="qnum">D153</div>
+<div class="qbody"><div class="qstem">A cosa serve, in generale, un aggiornamento di sicurezza del sistema operativo?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">A cambiare i colori del desktop</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">A correggere vulnerabilità e proteggere il sistema da minacce note</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">A rallentare intenzionalmente il computer</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">A cancellare i file personali</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D154</div>
+<div class="qbody"><div class="qstem">Vero o Falso: nel "cloud computing", i file dell'utente sono conservati esclusivamente sul disco fisso del proprio computer.</div></div></div>
+<div class="quiz-card"><div class="qnum">D155</div>
+<div class="qbody"><div class="qstem">Che cosa indica il termine "malware"?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Una categoria generale che comprende virus, spyware, ransomware e altri software dannosi</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Un tipo di hardware</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Un browser sicuro</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un protocollo di posta elettronica</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D156</div>
+<div class="qbody"><div class="qstem">A cosa serve, per un account online, l'autenticazione a due fattori (2FA)?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">A richiedere, oltre alla password, una seconda prova d'identità, aumentando la sicurezza dell'accesso</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">A velocizzare l'accesso senza password</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">A cambiare automaticamente la password ogni giorno</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">A disattivare l'account dopo un uso</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D157</div>
+<div class="qbody"><div class="qstem">Vero o Falso: un messaggio che chiede con urgenza di confermare dati bancari cliccando su un link è tipicamente un segnale di allarme di possibile phishing.</div></div></div>
+<div class="quiz-card"><div class="qnum">D158</div>
+<div class="qbody"><div class="qstem">Che cosa si intende per "ingegneria sociale" in ambito sicurezza informatica?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Tecniche di manipolazione psicologica usate per indurre una persona a rivelare informazioni riservate o compiere azioni rischiose</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Un tipo di hardware</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Un protocollo di rete</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un componente della scheda video</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D159</div>
+<div class="qbody"><div class="qstem">A cosa serve, per una rete Wi-Fi domestica, impostare una password robusta e un protocollo di sicurezza aggiornato?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">A ridurre il rischio che persone non autorizzate accedano alla rete o ai dati che vi transitano</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">A velocizzare automaticamente la connessione</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">A cambiare il colore del router</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">A stampare da remoto</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D160</div>
+<div class="qbody"><div class="qstem">Vero o Falso: conservare le password scritte su un foglietto ben visibile vicino al computer è una pratica di sicurezza raccomandata.</div></div></div>
+<p class="quiz-intro"><strong>Sezione Livello Esperto</strong></p>
+<div class="quiz-card"><div class="qnum">D161</div>
+<div class="qbody"><div class="qstem">Che cosa indica il termine "ransomware"?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Un tipo di malware che cifra i dati della vittima e richiede un riscatto per ripristinarli</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Un tipo di antivirus</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Un protocollo di rete sicuro</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un componente hardware</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D162</div>
+<div class="qbody"><div class="qstem">Vero o Falso: un gestore di password (password manager) può aiutare a creare e conservare in modo sicuro password diverse e complesse per ogni servizio.</div></div></div>
+<div class="quiz-card"><div class="qnum">D163</div>
+<div class="qbody"><div class="qstem">Che cosa si intende per "principio del privilegio minimo" in sicurezza informatica?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Concedere a ciascun utente o processo solo i permessi strettamente necessari per svolgere il proprio compito</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Dare a tutti gli utenti accesso completo al sistema</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Vietare qualsiasi accesso al sistema</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un tipo di connessione internet</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D164</div>
+<div class="qbody"><div class="qstem">A cosa serve, in ambito privacy, il principio di "minimizzazione dei dati"?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">A raccogliere e conservare solo i dati personali realmente necessari per uno scopo dichiarato</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">A raccogliere quanti più dati possibile su ogni utente</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">A cancellare tutti i dati ogni giorno</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">A vietare qualsiasi raccolta dati in assoluto</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D165</div>
+<div class="qbody"><div class="qstem">Vero o Falso: una VPN, di per sé, rende un dispositivo completamente immune da ogni tipo di malware.</div></div></div>
+<div class="quiz-card"><div class="qnum">D166</div>
+<div class="qbody"><div class="qstem">Che cosa indica, in ambito sicurezza, il termine "vulnerabilità" di un software?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Una debolezza o falla che può essere sfruttata per compromettere la sicurezza di un sistema</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Un tipo di connessione internet veloce</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Un componente hardware</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un formato di file audio</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D167</div>
+<div class="qbody"><div class="qstem">A cosa serve, per un centro anziani o una scuola, una politica chiara su password, dispositivi condivisi e aggiornamenti di sicurezza?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">A ridurre in modo strutturato i rischi informatici comuni, con regole comprensibili anche a chi non è esperto</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">A vietare completamente l'uso dei computer</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">A rallentare deliberatamente le macchine</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">A eliminare la necessità di password</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D168</div>
+<div class="qbody"><div class="qstem">Vero o Falso: anche un sistema operativo "leggero" e pensato per hardware datato, come FeniceOS, trae beneficio da aggiornamenti di sicurezza regolari.</div></div></div>
+  </div>
+</section></div><div class="page part-divider">
+<div class="pnum" style="color:#2f6b8f">III</div>
+<div class="kick" style="color:#2f6b8f">Parte III</div>
+<h1>Cloud, Mobile e Intelligenza Artificiale</h1>
+<div class="rule" style="background:#2f6b8f"></div>
+<div class="desc">Smartphone, tablet, servizi cloud e intelligenza artificiale: il presente e il futuro prossimo dell'informatica, spiegati e verificati con il quiz.</div>
+<div class="chlist"><div><span style="color:#2f6b8f">09</span>Cloud, backup e dispositivi mobili</div><div><span style="color:#2f6b8f">10</span>Intelligenza artificiale: presente e futuro</div></div>
+</div><div class="page">
+<section class="chapter" id="cap9">
+  <div class="chapter-head">
+    <div class="chapter-icon"><svg width="112" height="112" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<circle cx="60" cy="60" r="58" fill="#2f6b8f"/>
+<circle cx="60" cy="60" r="58" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"/>
+<path d="M40 78 C28 78 20 70 20 60 C20 50 28 43 37 42 C40 30 51 22 63 22 C77 22 88 32 90 45 C98 47 104 54 104 63 C104 72 96 78 87 78 Z" fill="none" stroke="#fff" stroke-width="4.5" stroke-linejoin="round"/>
+<path d="M44 90 H80 M52 100 H72" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+</svg></div>
+    <div>
+      <div class="chapter-eyebrow" style="color:#2f6b8f">Capitolo 9</div>
+      <h2>Cloud, backup e dispositivi mobili</h2>
+    </div>
+  </div>
+  <div class="chapter-body">
+    <p class="quiz-intro"><em>Smartphone, tablet e servizi online: come usarli con consapevolezza, senza perdere mai i propri dati.</em></p>
+<p class="quiz-intro"><strong>Sezione Livello Base</strong></p>
+<div class="quiz-card"><div class="qnum">D169</div>
+<div class="qbody"><div class="qstem">Che cos'è uno smartphone, in sintesi?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Un telefono cellulare dotato di funzionalità avanzate simili a quelle di un piccolo computer</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Un componente hardware del PC</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Un tipo di stampante</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un cavo di ricarica</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D170</div>
+<div class="qbody"><div class="qstem">Vero o Falso: un tablet è un dispositivo touch screen portatile, generalmente più grande di uno smartphone, senza tastiera fisica integrata.</div></div></div>
+<div class="quiz-card"><div class="qnum">D171</div>
+<div class="qbody"><div class="qstem">Che cos'è un'app (applicazione mobile)?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Un programma pensato per essere eseguito su smartphone o tablet</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Un componente hardware</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Un tipo di connessione Wi-Fi</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un cavo USB</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D172</div>
+<div class="qbody"><div class="qstem">A cosa serve, su un dispositivo mobile, la ricarica tramite cavo o base wireless?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">A rifornire di energia la batteria del dispositivo</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">A collegarsi automaticamente a internet</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">A installare aggiornamenti</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">A cambiare la suoneria</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D173</div>
+<div class="qbody"><div class="qstem">Vero o Falso: salvare una copia dei propri file importanti anche su un servizio online (cloud), oltre che sul dispositivo, è una buona pratica di sicurezza dei dati.</div></div></div>
+<div class="quiz-card"><div class="qnum">D174</div>
+<div class="qbody"><div class="qstem">Che cosa permette di fare, su uno smartphone, la funzione di localizzazione GPS?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Determinare la posizione geografica approssimativa del dispositivo</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Aumentare la RAM</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Cambiare la lingua del sistema</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Collegare una stampante</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D175</div>
+<div class="qbody"><div class="qstem">A cosa serve un "app store" (negozio di applicazioni)?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">A cercare, scaricare e installare app su smartphone o tablet in modo centralizzato</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">A stampare documenti</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">A caricare la batteria</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">A cambiare la SIM</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D176</div>
+<div class="qbody"><div class="qstem">Vero o Falso: è generalmente consigliato scaricare app solo da store ufficiali o fonti verificate, per ridurre il rischio di software dannoso.</div></div></div>
+<p class="quiz-intro"><strong>Sezione Livello Intermedio</strong></p>
+<div class="quiz-card"><div class="qnum">D177</div>
+<div class="qbody"><div class="qstem">Che cosa si intende per "sincronizzazione" tra dispositivi, per esempio tra smartphone e computer?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">L'aggiornamento automatico e coerente degli stessi dati, come contatti, foto o documenti, su più dispositivi collegati allo stesso account</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Un tipo di virus</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Un componente hardware</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un cavo di ricarica speciale</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D178</div>
+<div class="qbody"><div class="qstem">Vero o Falso: uno spazio di archiviazione cloud permette di accedere ai propri file da dispositivi diversi, purché connessi a internet.</div></div></div>
+<div class="quiz-card"><div class="qnum">D179</div>
+<div class="qbody"><div class="qstem">Che cosa indica, per un dispositivo mobile, il termine "autonomia" della batteria?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Il tempo di utilizzo possibile con una singola carica completa</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">La velocità del processore</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">La quantità di app installabili</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">La risoluzione dello schermo</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D180</div>
+<div class="qbody"><div class="qstem">A cosa serve, in ambito backup, la nota regola del "3-2-1" (tre copie dei dati, su due supporti diversi, di cui una fuori sede)?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">A ridurre il rischio di perdita definitiva dei dati in caso di guasto, furto o disastro</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">A velocizzare la connessione internet</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">A risparmiare batteria</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">A cambiare automaticamente la password</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D181</div>
+<div class="qbody"><div class="qstem">Vero o Falso: disattivare Wi-Fi e Bluetooth quando non sono in uso può contribuire a risparmiare batteria su un dispositivo mobile.</div></div></div>
+<div class="quiz-card"><div class="qnum">D182</div>
+<div class="qbody"><div class="qstem">Che cosa si intende per "aggiornamento del sistema operativo" su uno smartphone?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Un'operazione che porta il software del dispositivo a una versione più recente, spesso con correzioni di sicurezza e nuove funzioni</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Un cambio di SIM</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Una sostituzione della batteria</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un tipo di ricarica rapida</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D183</div>
+<div class="qbody"><div class="qstem">A cosa serve, su molti dispositivi mobili, il "blocco schermo" con codice, impronta o riconoscimento del volto?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">A impedire l'accesso non autorizzato al dispositivo, se smarrito o sottratto</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">A risparmiare RAM</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">A velocizzare la connessione</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">A cambiare tema grafico</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D184</div>
+<div class="qbody"><div class="qstem">Vero o Falso: due dispositivi collegati allo stesso account cloud possono, in molti casi, condividere automaticamente foto, contatti o documenti caricati.</div></div></div>
+<p class="quiz-intro"><strong>Sezione Livello Esperto</strong></p>
+<div class="quiz-card"><div class="qnum">D185</div>
+<div class="qbody"><div class="qstem">Che cosa indica, in ambito cloud, il modello "software as a service" (SaaS)?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Un modello in cui il software è fruito come servizio online, senza doverlo installare e gestire localmente</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Un tipo di hardware</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Un protocollo di rete locale</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un formato di file</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D186</div>
+<div class="qbody"><div class="qstem">Vero o Falso: affidarsi esclusivamente a un unico fornitore cloud, senza alcuna copia locale o alternativa, comporta un certo grado di dipendenza da quel fornitore.</div></div></div>
+<div class="quiz-card"><div class="qnum">D187</div>
+<div class="qbody"><div class="qstem">Che cosa si intende per "crittografia dei dati a riposo" (data at rest), applicata per esempio a un backup cloud?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">La cifratura dei dati mentre sono memorizzati su un supporto, non solo mentre viaggiano in rete</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Un tipo di connessione Wi-Fi</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Un componente hardware</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un formato di compressione audio</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D188</div>
+<div class="qbody"><div class="qstem">A cosa serve, per un insieme di dispositivi mobili condivisi in un centro sociale, una gestione centralizzata con politiche comuni di aggiornamento e sicurezza?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">A mantenere un livello coerente di sicurezza e configurazione su più dispositivi condivisi</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">A vietare qualsiasi uso del dispositivo</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">A cambiare automaticamente la SIM</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">A ridurre la RAM disponibile</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D189</div>
+<div class="qbody"><div class="qstem">Vero o Falso: la portabilità dei dati tra un servizio cloud e un altro è, in molti casi, un tema di attenzione per chi valuta un cambio di fornitore.</div></div></div>
+<div class="quiz-card"><div class="qnum">D190</div>
+<div class="qbody"><div class="qstem">Che cosa indica, in ambito mobile, il concetto di "permessi delle app", per esempio l'accesso a fotocamera, posizione o contatti?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Le autorizzazioni che un'app richiede per accedere a determinate funzioni o dati del dispositivo</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Un tipo di connessione dati</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Un componente hardware</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un formato di immagine</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D191</div>
+<div class="qbody"><div class="qstem">A cosa serve rivedere periodicamente quali app hanno accesso a dati sensibili su smartphone o tablet?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">A mantenere maggiore controllo sulla propria privacy e ridurre l'esposizione di dati non necessari</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">A velocizzare sempre il dispositivo</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">A cambiare la lingua del sistema</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">A risparmiare spazio di archiviazione automaticamente</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D192</div>
+<div class="qbody"><div class="qstem">Vero o Falso: un backup cloud, per essere davvero utile in caso di emergenza, dovrebbe essere verificato periodicamente per assicurarsi che funzioni correttamente.</div></div></div>
+  </div>
+</section></div><div class="page">
+<section class="chapter" id="cap10">
+  <div class="chapter-head">
+    <div class="chapter-icon"><svg width="112" height="112" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<circle cx="60" cy="60" r="58" fill="#2f6b8f"/>
+<circle cx="60" cy="60" r="58" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"/>
+<circle cx="60" cy="60" r="33" fill="none" stroke="#fff" stroke-width="4.5"/>
+<circle cx="42" cy="46" r="4" fill="#fff"/><circle cx="60" cy="38" r="4" fill="#fff"/><circle cx="78" cy="46" r="4" fill="#fff"/>
+<circle cx="38" cy="68" r="4" fill="#fff"/><circle cx="60" cy="80" r="4" fill="#fff"/><circle cx="82" cy="68" r="4" fill="#fff"/>
+<circle cx="60" cy="58" r="5" fill="#fff"/>
+<path d="M42 46 L60 58 M60 38 L60 58 M78 46 L60 58 M38 68 L60 58 M60 80 L60 58 M82 68 L60 58" stroke="#fff" stroke-width="3" fill="none"/>
+</svg></div>
+    <div>
+      <div class="chapter-eyebrow" style="color:#2f6b8f">Capitolo 10</div>
+      <h2>Intelligenza artificiale: presente e futuro</h2>
+    </div>
+  </div>
+  <div class="chapter-body">
+    <p class="quiz-intro"><em>Che cos'è davvero l'IA, come funziona e come usarla con spirito critico.</em></p>
+<p class="quiz-intro"><strong>Sezione Livello Base</strong></p>
+<div class="quiz-card"><div class="qnum">D193</div>
+<div class="qbody"><div class="qstem">Che cos'è, in termini semplici, l'intelligenza artificiale (IA)?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Un ramo dell'informatica che sviluppa sistemi capaci di svolgere compiti che richiederebbero, se fatti da una persona, una qualche forma di intelligenza</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Un componente hardware</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Un tipo di stampante</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un cavo di rete</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D194</div>
+<div class="qbody"><div class="qstem">Vero o Falso: gli assistenti vocali, che rispondono a comandi parlati, sono un esempio di applicazione dell'intelligenza artificiale.</div></div></div>
+<div class="quiz-card"><div class="qnum">D195</div>
+<div class="qbody"><div class="qstem">Che cosa fa, in generale, un sistema di riconoscimento vocale?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Trasforma il parlato in testo o comandi comprensibili dal dispositivo</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Stampa documenti</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Aumenta la RAM</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Collega una stampante</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D196</div>
+<div class="qbody"><div class="qstem">A cosa può servire, oggi, un traduttore automatico basato su intelligenza artificiale?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">A tradurre testo o voce da una lingua a un'altra in modo automatico</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">A velocizzare il processore</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">A cambiare la password</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">A collegare periferiche hardware</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D197</div>
+<div class="qbody"><div class="qstem">Vero o Falso: l'intelligenza artificiale, oggi, funziona già senza alcuna necessità di dati o addestramento preliminare.</div></div></div>
+<div class="quiz-card"><div class="qnum">D198</div>
+<div class="qbody"><div class="qstem">Che cosa indica, in modo semplice, il termine "algoritmo"?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Una sequenza di passaggi definiti per risolvere un problema o svolgere un compito</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Un componente hardware</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Un tipo di connessione internet</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un formato di immagine</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D199</div>
+<div class="qbody"><div class="qstem">A cosa serve, in molte piattaforme di streaming o acquisti online, un sistema di raccomandazione basato su intelligenza artificiale?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">A suggerire contenuti o prodotti sulla base di comportamenti e preferenze osservate</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">A velocizzare sempre la connessione</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">A cambiare automaticamente la password</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">A stampare ricevute</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D200</div>
+<div class="qbody"><div class="qstem">Vero o Falso: è buona norma verificare criticamente le informazioni fornite da un sistema di intelligenza artificiale, poiché può talvolta sbagliare.</div></div></div>
+<p class="quiz-intro"><strong>Sezione Livello Intermedio</strong></p>
+<div class="quiz-card"><div class="qnum">D201</div>
+<div class="qbody"><div class="qstem">Che cosa si intende per "apprendimento automatico" (machine learning)?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Un approccio in cui un sistema migliora le proprie prestazioni su un compito analizzando dati, invece di seguire regole scritte esplicitamente per ogni caso</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Un tipo di hardware</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Un protocollo di rete</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un componente audio</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D202</div>
+<div class="qbody"><div class="qstem">Vero o Falso: un sistema di intelligenza artificiale addestrato su dati parziali o distorti può produrre risultati altrettanto parziali o distorti.</div></div></div>
+<div class="quiz-card"><div class="qnum">D203</div>
+<div class="qbody"><div class="qstem">Che cosa indica, in ambito IA, il termine "dati di addestramento" (training data)?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">L'insieme di esempi usati per "insegnare" a un sistema a svolgere un determinato compito</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Un tipo di connessione Wi-Fi</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Un componente hardware</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un formato di compressione video</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D204</div>
+<div class="qbody"><div class="qstem">A cosa serve, in generale, l'uso responsabile e critico degli strumenti di intelligenza artificiale generativa, che producono testo, immagini o altri contenuti?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">A verificarne sempre l'accuratezza prima di usarne i risultati per decisioni importanti</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">A sostituire sempre e comunque il giudizio umano senza controlli</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">A eliminare qualunque necessità di controllo</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">A garantire automaticamente risultati sempre corretti</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D205</div>
+<div class="qbody"><div class="qstem">Vero o Falso: l'intelligenza artificiale può oggi facilitare l'accessibilità digitale, per esempio tramite strumenti di lettura vocale o sottotitoli automatici.</div></div></div>
+<div class="quiz-card"><div class="qnum">D206</div>
+<div class="qbody"><div class="qstem">Che cosa si intende per "bias" (distorsione) in un sistema di intelligenza artificiale?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Una sistematica deviazione nei risultati, spesso legata a squilibri nei dati usati per l'addestramento</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Un tipo di hardware</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Un protocollo di rete sicuro</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un formato audio</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D207</div>
+<div class="qbody"><div class="qstem">A cosa serve, secondo molte linee guida etiche sull'IA, il principio di trasparenza?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">A rendere comprensibile, per quanto possibile, come un sistema arriva a un determinato risultato</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">A nascondere sempre il funzionamento del sistema</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">A vietare qualsiasi utilizzo dell'IA</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">A eliminare la necessità di dati</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D208</div>
+<div class="qbody"><div class="qstem">Vero o Falso: l'intelligenza artificiale può essere utile anche per l'inclusione digitale delle persone anziane, per esempio semplificando alcune interazioni con il computer.</div></div></div>
+<p class="quiz-intro"><strong>Sezione Livello Esperto</strong></p>
+<div class="quiz-card"><div class="qnum">D209</div>
+<div class="qbody"><div class="qstem">Che cosa indica, in ambito IA, la distinzione tra "IA ristretta" (o debole) e "IA generale"?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">L'IA ristretta è specializzata in compiti specifici, mentre l'IA generale, ancora ipotetica, dovrebbe eguagliare l'intelligenza umana in qualunque ambito</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Non esiste alcuna distinzione riconosciuta</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">L'IA ristretta è sempre più veloce di quella generale</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">L'IA generale è già ampiamente diffusa oggi</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D210</div>
+<div class="qbody"><div class="qstem">Vero o Falso: un modello di intelligenza artificiale generativa può, in alcuni casi, produrre informazioni plausibili ma non corrette, le cosiddette "allucinazioni".</div></div></div>
+<div class="quiz-card"><div class="qnum">D211</div>
+<div class="qbody"><div class="qstem">Che cosa si intende per "impatto ambientale" dell'addestramento di grandi modelli di intelligenza artificiale?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Il consumo energetico e le risorse computazionali necessarie per addestrare ed eseguire questi sistemi su larga scala</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Un tipo di connessione internet</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Un componente hardware</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un formato di immagine</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D212</div>
+<div class="qbody"><div class="qstem">A cosa serve, secondo molte linee guida, il principio di "supervisione umana" nell'uso di sistemi di IA per decisioni rilevanti?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">A mantenere una persona responsabile e in grado di intervenire, invece di affidarsi ciecamente all'automazione</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">A eliminare completamente l'uso dell'IA</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">A vietare qualsiasi automazione</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">A ridurre la necessità di dati</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D213</div>
+<div class="qbody"><div class="qstem">Vero o Falso: la qualità e la rappresentatività dei dati usati per addestrare un sistema di IA possono influenzare direttamente l'equità dei suoi risultati.</div></div></div>
+<div class="quiz-card"><div class="qnum">D214</div>
+<div class="qbody"><div class="qstem">Che cosa indica, in ambito privacy, la preoccupazione legata all'uso di dati personali per addestrare sistemi di intelligenza artificiale?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Il rischio che informazioni sensibili vengano raccolte, usate o esposte senza un adeguato consenso o tutela</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Un tipo di connessione Wi-Fi</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Un componente hardware</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un formato audio</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D215</div>
+<div class="qbody"><div class="qstem">A cosa si riferisce, in ambito lavorativo, il dibattito sull'automazione basata su intelligenza artificiale?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Alle possibili trasformazioni di alcune mansioni e professioni, con opportunità e sfide da affrontare consapevolmente</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">A un tipo di virus informatico</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">A un componente hardware</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">A un protocollo di rete</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D216</div>
+<div class="qbody"><div class="qstem">Vero o Falso: comprendere almeno i principi di base dell'intelligenza artificiale è, secondo questo manuale, parte utile di un'alfabetizzazione digitale aggiornata, a qualunque età.</div></div></div>
+  </div>
+</section></div><div class="page part-divider">
+<div class="pnum" style="color:#7a4f9e">IV</div>
+<div class="kick" style="color:#7a4f9e">Parte IV</div>
+<h1>Sostenibilità, Etica e FeniceOS</h1>
+<div class="rule" style="background:#7a4f9e"></div>
+<div class="desc">I principi di Tecnologia Gentile applicati alla pratica quotidiana, e un capitolo dedicato a FeniceOS, il progetto da cui tutto è partito.</div>
+<div class="chlist"><div><span style="color:#7a4f9e">11</span>Economia circolare ed etica del digitale</div><div><span style="color:#7a4f9e">12</span>FeniceOS e il mondo Linux: uso consapevole</div></div>
+</div><div class="page">
+<section class="chapter" id="cap11">
+  <div class="chapter-head">
+    <div class="chapter-icon"><svg width="112" height="112" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<circle cx="60" cy="60" r="58" fill="#7a4f9e"/>
+<circle cx="60" cy="60" r="58" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"/>
+<path d="M60 28 L72 50 L60 50 Z M60 28 A32 32 0 0 1 88 46" fill="none" stroke="#fff" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M92 62 L92 88 L68 88 Z M92 62 A32 32 0 0 1 78 90" fill="none" stroke="#fff" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M28 62 L46 88 L58 78 Z M28 62 A32 32 0 0 1 46 34" fill="none" stroke="#fff" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+</svg></div>
+    <div>
+      <div class="chapter-eyebrow" style="color:#7a4f9e">Capitolo 11</div>
+      <h2>Economia circolare ed etica del digitale</h2>
+    </div>
+  </div>
+  <div class="chapter-body">
+    <p class="quiz-intro"><em>I principi di Tecnologia Gentile applicati al mondo dei dispositivi: riduzione, riuso, riparazione, inclusione.</em></p>
+<p class="quiz-intro"><strong>Sezione Livello Base</strong></p>
+<div class="quiz-card"><div class="qnum">D217</div>
+<div class="qbody"><div class="qstem">Che cosa si intende per "economia circolare", applicata al mondo dei dispositivi elettronici?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Un modello che privilegia riduzione, riuso e riparazione degli oggetti, invece del semplice usa e getta</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Un tipo di connessione internet</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Un componente hardware</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un formato di file</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D218</div>
+<div class="qbody"><div class="qstem">Vero o Falso: un computer "vecchio" e uno "rotto" sono, per definizione, la stessa cosa.</div></div></div>
+<div class="quiz-card"><div class="qnum">D219</div>
+<div class="qbody"><div class="qstem">Che cos'è l'obsolescenza programmata?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Una pratica industriale che limita artificialmente la vita utile di un prodotto</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Un tipo di virus informatico</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Un componente hardware</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un protocollo di rete</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D220</div>
+<div class="qbody"><div class="qstem">A cosa serve, in generale, riparare un dispositivo invece di sostituirlo subito con uno nuovo?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">A ridurre gli sprechi e i rifiuti elettronici, quando la riparazione è ragionevole e conveniente</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">A velocizzare sempre il dispositivo</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">A cambiare automaticamente il sistema operativo</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">A garantire sempre un risparmio maggiore rispetto all'acquisto</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D221</div>
+<div class="qbody"><div class="qstem">Vero o Falso: donare un computer ancora funzionante ma "vecchio" a un centro sociale o una scuola può dargli una seconda vita utile.</div></div></div>
+<div class="quiz-card"><div class="qnum">D222</div>
+<div class="qbody"><div class="qstem">Che cosa indica il termine "rifiuti elettronici" (e-waste)?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">I dispositivi elettronici ed elettrici dismessi, che richiedono uno smaltimento adeguato</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Un tipo di software</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Un componente hardware funzionante</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un formato di file audio</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D223</div>
+<div class="qbody"><div class="qstem">A cosa serve, in linea generale, installare un sistema operativo leggero come FeniceOS su un computer datato?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">A permettere di continuare a usare l'hardware esistente, invece di sostituirlo subito</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">A cambiare la marca del computer</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">A velocizzare sempre la connessione internet</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">A stampare più velocemente</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D224</div>
+<div class="qbody"><div class="qstem">Vero o Falso: l'inclusione digitale riguarda anche le persone che non possono permettersi dispositivi sempre aggiornati.</div></div></div>
+<p class="quiz-intro"><strong>Sezione Livello Intermedio</strong></p>
+<div class="quiz-card"><div class="qnum">D225</div>
+<div class="qbody"><div class="qstem">Che cosa si intende per "ciclo di vita" di un dispositivo elettronico?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">L'insieme delle fasi, dalla produzione all'uso fino allo smaltimento o riutilizzo, che caratterizzano l'esistenza del dispositivo</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Un tipo di connessione internet</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Un componente hardware</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un formato di immagine</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D226</div>
+<div class="qbody"><div class="qstem">Vero o Falso: allungare la vita utile di un dispositivo, quando possibile, riduce generalmente l'impatto ambientale complessivo rispetto a una sostituzione frequente.</div></div></div>
+<div class="quiz-card"><div class="qnum">D227</div>
+<div class="qbody"><div class="qstem">Che cosa indica, in ambito economia circolare, un percorso a livelli progressivi che va dalla riduzione degli acquisti, al riutilizzo dell'hardware esistente, alla riparazione condivisa, fino al riciclo consapevole come ultima risorsa?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Una gerarchia di priorità per una gestione responsabile dei dispositivi elettronici</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Un tipo di protocollo di rete</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Un componente hardware</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un formato di compressione</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D228</div>
+<div class="qbody"><div class="qstem">A cosa serve, per un'organizzazione come una scuola o un centro anziani, un progetto di raccolta di hardware donato e rigenerato?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">A offrire accesso a strumenti informatici funzionanti a chi altrimenti non potrebbe permetterseli, riducendo anche gli sprechi</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">A vietare l'uso dei computer</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">A rallentare deliberatamente le macchine</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">A aumentare il costo dei dispositivi</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D229</div>
+<div class="qbody"><div class="qstem">Vero o Falso: la sostenibilità ambientale, in ambito informatico, riguarda anche il consumo energetico dei dispositivi durante l'uso quotidiano.</div></div></div>
+<div class="quiz-card"><div class="qnum">D230</div>
+<div class="qbody"><div class="qstem">Che cosa si intende per "software leggero", pensato per hardware datato?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Un software progettato per funzionare correttamente anche con risorse hardware limitate, come poca RAM o processori meno recenti</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Un software che occupa più spazio possibile</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Un software che richiede sempre hardware nuovissimo</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un tipo di virus</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D231</div>
+<div class="qbody"><div class="qstem">A cosa serve, in termini etici, riflettere sull'accessibilità economica degli strumenti digitali?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">A considerare come includere anche chi ha minori possibilità economiche nell'uso consapevole della tecnologia</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">A escludere automaticamente chi non può spendere molto</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">A vietare l'uso di dispositivi datati</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">A rendere la tecnologia disponibile solo a pagamento</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D232</div>
+<div class="qbody"><div class="qstem">Vero o Falso: la scelta di un sistema operativo gratuito e libero, come FeniceOS, può contribuire a ridurre le barriere economiche all'accesso alla tecnologia.</div></div></div>
+<p class="quiz-intro"><strong>Sezione Livello Esperto</strong></p>
+<div class="quiz-card"><div class="qnum">D233</div>
+<div class="qbody"><div class="qstem">Che cosa si intende, in etica del digitale, per "esclusione digitale"?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">La condizione di chi, per ragioni economiche, tecniche, culturali o di età, ha un accesso limitato o nullo agli strumenti e alle competenze digitali</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Un tipo di virus informatico</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Un componente hardware</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un protocollo di rete</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D234</div>
+<div class="qbody"><div class="qstem">Vero o Falso: l'esclusione digitale riguarda esclusivamente le persone anziane, e non altre categorie di popolazione.</div></div></div>
+<div class="quiz-card"><div class="qnum">D235</div>
+<div class="qbody"><div class="qstem">Che cosa indica, in ambito sostenibilità digitale, il concetto di "impronta di carbonio" legato all'uso della tecnologia?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Una stima delle emissioni di gas serra associate alla produzione, all'uso e allo smaltimento dei dispositivi e dei servizi digitali</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Un tipo di connessione internet</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Un componente hardware</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un formato di file</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D236</div>
+<div class="qbody"><div class="qstem">A cosa serve, secondo i principi di Tecnologia Gentile richiamati in questo manuale, distinguere tra un dispositivo "vecchio" e uno "rotto"?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">A evitare di scartare inutilmente hardware ancora perfettamente funzionante, semplicemente perché non più recentissimo</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">A giustificare sempre la sostituzione immediata</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">A vietare qualsiasi riparazione</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">A ridurre la vita utile dei dispositivi</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D237</div>
+<div class="qbody"><div class="qstem">Vero o Falso: contribuire a un progetto open source, per esempio segnalando problemi, proponendo miglioramenti o curando la documentazione, è una delle modalità con cui chiunque può contribuire, anche senza saper programmare.</div></div></div>
+<div class="quiz-card"><div class="qnum">D238</div>
+<div class="qbody"><div class="qstem">Che cosa si intende per "trasparenza" come principio etico applicato al software?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">La possibilità di verificare, quando il codice è aperto, come un programma funziona realmente</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Un tipo di connessione Wi-Fi</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Un componente hardware</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un formato di immagine</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D239</div>
+<div class="qbody"><div class="qstem">A cosa serve, secondo questo manuale, promuovere la formazione digitale nei centri anziani, nelle scuole e nei centri sociali?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">A ridurre le barriere di accesso e competenza, favorendo una cittadinanza digitale più ampia e consapevole</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">A vietare l'uso della tecnologia agli anziani</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">A limitare l'accesso alla sola scuola</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">A rendere la tecnologia più costosa</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D240</div>
+<div class="qbody"><div class="qstem">Vero o Falso: economia circolare, etica del digitale e contrasto all'obsolescenza programmata sono, secondo l'impostazione di questo manuale, principi tra loro collegati e complementari.</div></div></div>
+  </div>
+</section></div><div class="page">
+<section class="chapter" id="cap12">
+  <div class="chapter-head">
+    <div class="chapter-icon"><svg width="112" height="112" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<circle cx="60" cy="60" r="58" fill="#7a4f9e"/>
+<circle cx="60" cy="60" r="58" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"/>
+<rect x="24" y="30" width="72" height="60" rx="5" fill="none" stroke="#fff" stroke-width="4.5"/>
+<path d="M36 50 L48 60 L36 70 M56 72 H76" stroke="#fff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</svg></div>
+    <div>
+      <div class="chapter-eyebrow" style="color:#7a4f9e">Capitolo 12</div>
+      <h2>FeniceOS e il mondo Linux: uso consapevole</h2>
+    </div>
+  </div>
+  <div class="chapter-body">
+    <p class="quiz-intro"><em>Dalla teoria alla pratica: come nasce e come si usa concretamente FeniceOS.</em></p>
+<p class="quiz-intro"><strong>Sezione Livello Base</strong></p>
+<div class="quiz-card"><div class="qnum">D241</div>
+<div class="qbody"><div class="qstem">Su quale distribuzione Linux è basato FeniceOS?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Ubuntu</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Debian</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Fedora</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Arch Linux</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D242</div>
+<div class="qbody"><div class="qstem">Vero o Falso: FeniceOS è pensato per funzionare anche su computer con risorse hardware limitate.</div></div></div>
+<div class="quiz-card"><div class="qnum">D243</div>
+<div class="qbody"><div class="qstem">Che cosa significa che FeniceOS è un sistema "live"?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Che si aggiorna automaticamente ogni giorno</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Che può funzionare direttamente da chiavetta USB, senza essere necessariamente installato</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Che richiede una connessione internet permanente</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Che mostra contenuti in diretta streaming</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D244</div>
+<div class="qbody"><div class="qstem">A chi è pensato, in particolare, il progetto FeniceOS, secondo quanto descritto in questo manuale?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Esclusivamente a informatici professionisti</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">A centri anziani, scuole e centri per il sociale, tra gli altri</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Solo a chi possiede hardware nuovissimo</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Solo a grandi aziende</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D245</div>
+<div class="qbody"><div class="qstem">Vero o Falso: il nome "FeniceOS" richiama simbolicamente l'idea di far "rinascere" hardware che altrimenti sarebbe scartato.</div></div></div>
+<div class="quiz-card"><div class="qnum">D246</div>
+<div class="qbody"><div class="qstem">Che cosa permette di fare, praticamente, avviare FeniceOS da una chiavetta USB su un computer esistente?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Provare e usare il sistema operativo senza modificare necessariamente il disco del computer</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Cancellare automaticamente tutti i dati del disco</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Aumentare fisicamente la RAM</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Cambiare il processore</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D247</div>
+<div class="qbody"><div class="qstem">Vero o Falso: FeniceOS include, in linea con le distribuzioni Debian, strumenti di produttività e navigazione di base già pronti all'uso.</div></div></div>
+<div class="quiz-card"><div class="qnum">D248</div>
+<div class="qbody"><div class="qstem">Che cosa si intende, in generale, per software "libero" scelto come base per un progetto come FeniceOS?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Software che garantisce libertà d'uso, studio, modifica e condivisione</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Software sempre a pagamento</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Software disponibile solo per una settimana</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Software che richiede sempre una licenza commerciale</span></div></div></div></div>
+<p class="quiz-intro"><strong>Sezione Livello Intermedio</strong></p>
+<div class="quiz-card"><div class="qnum">D249</div>
+<div class="qbody"><div class="qstem">FeniceOS è pensato per essere compatibile con quali due standard di avvio dei computer?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">DOS e Windows</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">BIOS e UEFI</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Mac OS e iOS</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Android e iOS</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D250</div>
+<div class="qbody"><div class="qstem">Vero o Falso: essendo basato su Debian, FeniceOS può beneficiare di un ampio ecosistema di pacchetti software mantenuti dalla comunità.</div></div></div>
+<div class="quiz-card"><div class="qnum">D251</div>
+<div class="qbody"><div class="qstem">Che cosa consente, su FeniceOS come su altre distribuzioni Debian, il sistema di gestione pacchetti APT?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Installare, aggiornare e rimuovere programmi in modo centralizzato e sicuro</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Cambiare il colore del desktop</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Collegare automaticamente una stampante</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Tradurre l'interfaccia</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D252</div>
+<div class="qbody"><div class="qstem">A cosa serve, per chi si occupa di un centro anziani o una scuola, avere un sistema operativo con requisiti hardware minimi contenuti, come FeniceOS?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">A poter riutilizzare hardware donato o datato invece di richiedere l'acquisto di macchine nuove</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">A vietare l'uso del computer</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">A garantire sempre la massima velocità possibile</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">A rendere obbligatorio l'acquisto di software aggiuntivo</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D253</div>
+<div class="qbody"><div class="qstem">Vero o Falso: usare FeniceOS da chiavetta USB, senza installarlo, rende comunque possibile navigare in internet, scrivere documenti e fare altre operazioni di base.</div></div></div>
+<div class="quiz-card"><div class="qnum">D254</div>
+<div class="qbody"><div class="qstem">Che cosa indica, in ambito Debian/FeniceOS, il fatto che il sistema sia sviluppato "in modo comunitario e trasparente"?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Che lo sviluppo coinvolge una comunità di collaboratori, con processi e codice sorgente verificabili, invece di essere gestito da un'unica azienda chiusa</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Che il sistema non ha alcun tipo di aggiornamento</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Che il sistema è disponibile solo a pagamento</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Che il sistema non può essere usato in ambito educativo</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D255</div>
+<div class="qbody"><div class="qstem">Vero o Falso: la scelta di Debian come base per FeniceOS è motivata, tra l'altro, dalla sua stabilità e dal supporto di lungo periodo tipico di questo progetto.</div></div></div>
+<div class="quiz-card"><div class="qnum">D256</div>
+<div class="qbody"><div class="qstem">A cosa serve, in pratica, la possibilità di personalizzare l'ambiente grafico di FeniceOS?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">A adattare l'aspetto e la semplicità dell'interfaccia alle esigenze di chi lo utilizza, per esempio persone alle prime armi</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">A cambiare il processore installato</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">A modificare la RAM disponibile</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">A collegare automaticamente periferiche hardware</span></div></div></div></div>
+<p class="quiz-intro"><strong>Sezione Livello Esperto</strong></p>
+<div class="quiz-card"><div class="qnum">D257</div>
+<div class="qbody"><div class="qstem">Che cos'è "debootstrap", nel contesto della costruzione di sistemi basati su Debian come FeniceOS?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Uno strumento che permette di creare da zero un sistema Debian minimo, utile come base per un'immagine live</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Un tipo di virus</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Un browser preinstallato</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Un formato audio</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D258</div>
+<div class="qbody"><div class="qstem">Vero o Falso: l'ambiente "chroot", usato in fase di costruzione di un sistema come FeniceOS, permette di operare "dentro" al sistema in costruzione come se fosse quello effettivamente in esecuzione.</div></div></div>
+<div class="quiz-card"><div class="qnum">D259</div>
+<div class="qbody"><div class="qstem">Che cosa fa, in generale, uno strumento come mksquashfs nella pipeline di build di una distribuzione live?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Comprime il sistema di file in un'immagine compatta ed efficiente, adatta alla distribuzione</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Naviga su internet</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Gestisce la posta elettronica</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Configura la scheda video</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D260</div>
+<div class="qbody"><div class="qstem">A cosa serve, nella creazione di un'immagine live avviabile, uno strumento come xorriso?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">A costruire l'immagine ISO avviabile finale, pronta per essere scritta su una chiavetta USB</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">A tradurre l'interfaccia in altre lingue</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">A collegare periferiche Bluetooth</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">A gestire gli account utente</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D261</div>
+<div class="qbody"><div class="qstem">Vero o Falso: contribuire a un progetto open source come FeniceOS può avvenire anche segnalando problemi, proponendo miglioramenti o curando la documentazione, senza necessariamente scrivere codice.</div></div></div>
+<div class="quiz-card"><div class="qnum">D262</div>
+<div class="qbody"><div class="qstem">Che cosa distingue, in generale, il modello di sviluppo di una distribuzione Debian da quello di un sistema operativo commerciale chiuso?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Debian è sviluppato e mantenuto in modo comunitario e trasparente, senza costi di licenza</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Debian è sviluppato da un'unica azienda privata</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Debian richiede sempre l'acquisto di una licenza</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Debian non riceve mai aggiornamenti</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D263</div>
+<div class="qbody"><div class="qstem">Perché, secondo l'impostazione di questo manuale, la compatibilità dual-boot BIOS/UEFI di FeniceOS è particolarmente utile?</div>
+<div class="opts"><div class="opt"><span class="optlet">A)</span><span class="opttext">Perché il progetto è pensato per girare su hardware eterogeneo e spesso datato, con configurazioni di avvio diverse tra loro</span></div><div class="opt"><span class="optlet">B)</span><span class="opttext">Perché rende il sistema più costoso</span></div><div class="opt"><span class="optlet">C)</span><span class="opttext">Perché elimina la necessità di qualunque test</span></div><div class="opt"><span class="optlet">D)</span><span class="opttext">Perché riguarda solo l'estetica del sistema</span></div></div></div></div>
+<div class="quiz-card"><div class="qnum">D264</div>
+<div class="qbody"><div class="qstem">Vero o Falso: la manutenzione nel tempo di un progetto come FeniceOS, incluso l'aggiornamento periodico della base Debian su cui si fonda, fa parte integrante della sua sostenibilità come strumento didattico.</div></div></div>
+  </div>
+</section></div><div class="page"><div class="backmatter">
+<div class="chapter-eyebrow" style="color:#1b3a4b">Approfondimenti</div>
+<h2>Nota sull'autore e sul progetto FeniceOS</h2>
+<p>Danilo D'Auria è ideatore e sviluppatore di <strong>FeniceOS</strong>, distribuzione Linux live basata su Debian 12, pensata per il riuso di hardware informatico rigenerato e donato, con particolare attenzione ai centri anziani, alle scuole e ai centri per il sociale. È inoltre autore del libro <strong>«Tecnologia Gentile: Informatica Sostenibile»</strong>, pubblicato su Amazon, nel quale approfondisce i principi di sostenibilità, economia circolare, accessibilità e contrasto all'obsolescenza programmata che ispirano tanto il progetto FeniceOS quanto questo manuale di quiz.</p>
+<p>Questo vademecum nasce come naturale completamento del manuale didattico <em>FeniceOS — Tecnologia Gentile per Tutte le Età</em>: dove quel volume introduce e spiega, questo interroga e verifica, applicando la stessa attenzione alla progressione didattica e alla chiarezza per chi si avvicina all'informatica a qualunque età.</p>
+<h2 style="margin-top:24px;">Il Foglio delle Risposte</h2>
+<p>La soluzione commentata di ognuna delle 264 domande di questo manuale si trova in un <strong>volume separato</strong>, il <em>Foglio delle Risposte</em>, pensato per essere consultato da chi conduce l'attività — in aula, al centro anziani o al centro sociale — senza anticipare le risposte a chi sta rispondendo.</p>
+<div class="colophon"><svg width="58" height="58" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<circle cx="60" cy="60" r="58" fill="#c78a2e"/>
+<circle cx="60" cy="60" r="58" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"/>
+<circle cx="60" cy="46" r="26" fill="none" stroke="#fff" stroke-width="4.5"/>
+<path d="M50 40 C50 32 70 32 70 42 C70 50 60 48 60 58" stroke="#fff" stroke-width="5" stroke-linecap="round" fill="none"/>
+<circle cx="60" cy="70" r="3.5" fill="#fff"/>
+<rect x="34" y="86" width="16" height="16" rx="3" fill="none" stroke="#fff" stroke-width="4"/>
+<rect x="70" y="86" width="16" height="16" rx="3" fill="none" stroke="#fff" stroke-width="4"/>
+</svg><br><br>Il Grande Quiz dell'Informatica &mdash; Un progetto FeniceOS<br>A cura di Danilo D'Auria &middot; Edizione digitale</div>
+</div></div>
+</body></html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Il Grande Quiz dell'Informatica — Versione Interattiva Offline</title>
+<meta name="description" content="Quiz interattivo offline: 264 domande di informatica per centri anziani, scuole e centri sociali. Un progetto FeniceOS di Danilo D'Auria.">
+<style>__CSS__</style>
+</head>
+<body>
+
+<div id="topbar">
+  <div class="brand" id="brandHome" role="button" tabindex="0" aria-label="Torna all'indice">
+    __PHOENIX_SMALL__
+    <div class="brand-text">
+      <span class="k">Un progetto FeniceOS</span>
+      <span class="t">Il Grande Quiz dell'Informatica</span>
+    </div>
+  </div>
+  <span id="offlineTag">&#9679; Funziona offline, nel tuo browser</span>
+  <div class="a11y-bar" role="group" aria-label="Accessibilit&agrave;">
+    <button id="btnFontMinus" aria-label="Riduci dimensione testo">A&minus;</button>
+    <button id="btnFontPlus" aria-label="Aumenta dimensione testo">A+</button>
+    <button id="btnContrast" aria-pressed="false" aria-label="Attiva alto contrasto">Alto contrasto</button>
+  </div>
+</div>
+
+<main id="main"></main>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script id="quiz-data" type="application/json">__DATA__</script>
+<script>__JS__</script>
+</body>
+</html>
