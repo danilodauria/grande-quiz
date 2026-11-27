@@ -34,6 +34,27 @@ def server(cartella, porta):
     return s
 
 
+def dichiarato_pacchetto(home):
+    """Etichetta di dimensione che la home mostra accanto al pacchetto offline.
+    La scrive costruisci.py come "%.1f MB" sui byte dello zip, con la virgola decimale."""
+    m = re.search(r'href="download/grande-quiz-offline\.zip"[^>]*>.{0,500}?<small>[^<]*?·\s*([0-9]+,[0-9]+ MB)</small>', home, re.S)
+    return m.group(1) if m else None
+
+
+def coerenza_pacchetto():
+    print("== 0. La home dichiara la dimensione vera del pacchetto offline")
+    zp = os.path.join(REPO, "docs", "download", "grande-quiz-offline.zip")
+    presente = os.path.isfile(zp)
+    check("il pacchetto offline è presente in docs/download", presente)
+    if not presente:
+        return
+    byte = os.path.getsize(zp)
+    atteso = ("%.1f MB" % (byte / 1e6)).replace(".", ",")
+    dichiarato = dichiarato_pacchetto(open(os.path.join(REPO, "docs", "index.html"), encoding="utf-8").read())
+    check("la home dichiara la dimensione del pacchetto offline", dichiarato is not None)
+    check("dimensione dichiarata nella home (%s) = file reale (%d byte → %s)" % (dichiarato, byte, atteso), dichiarato == atteso)
+
+
 def nessuna_soluzione(privato):
     print("== 1. Nessuna soluzione in chiaro nel repository pubblico")
     spie = ["Tim Berners-Lee —", '"correct":', '"giusta":', 'class="answer"', "1-b, 2-c, 3-d, 4-a", "1-d, 2-c, 3-a, 4-b"]
@@ -203,6 +224,7 @@ def prove_cassaforte(b, privato):
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument("--privato"); a = ap.parse_args()
     privato = os.path.abspath(a.privato) if a.privato else None
+    coerenza_pacchetto()
     nessuna_soluzione(privato)
     with sync_playwright() as p:
         b = p.chromium.launch()
