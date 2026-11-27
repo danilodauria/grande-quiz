@@ -17,7 +17,7 @@
   GQ.TIMER = T;
 
   var KI = "gq.impostazioni", KS = "gq.sessione";
-  var BASE_IMP = { quiz: "grande", modo: "tempo", ambito: "tutte", capitoli: [], livelli: [], quante: 0, ordine: "sequenza",
+  var BASE_IMP = { quiz: "grande", modo: "tempo", ambito: "tutte", capitoli: [], livelli: [], quante: 0, ordine: "sequenza", mescolaRisposte: true,
     timer: true, secondi: T.BASE, scadenza: "avanti", indietro: false, pausa: true, suono: true,
     schedaTimer: false, schedaMinuti: T.SCHEDA_BASE, testoScheda: true, schermoAuto: false, schermoSecondi: 30,
     info: { nome: "", data: "", centro: "", gruppo: "", livello: "", note: "" } };
@@ -126,6 +126,8 @@
       (imp.quante ? '<label class="campo cursore"><span>Numero di domande: <b id="vquante">' + Math.min(imp.quante, disp) + "</b> su " + disp + '</span><input type="range" id="quante" min="' + Math.min(5, disp) +
         '" max="' + disp + '" step="1" value="' + Math.min(imp.quante, disp) + '"></label>' : "") + "</div>" +
       '<div><span class="etichetta">Ordine</span><div class="segmenti">' + seg("ordine", "sequenza", "Nell'ordine del libro") + seg("ordine", "mescolato", "Mescolate") + "</div></div>" +
+      "<label class='interruttore'><input type='checkbox' id='mescolaRisposte'" + (imp.mescolaRisposte ? " checked" : "") + "> Mescolare le risposte: le lettere A-B-C-D cambiano a ogni prova</label>" +
+      '<p class="nota">' + ic("info") + " Così non si può indovinare scegliendo sempre la stessa lettera. La correzione non cambia: il file esportato usa la lettera del libro. Nello Schermo domande l'ordine resta quello del libro, perché si risponde sulla scheda di carta.</p>" +
       '<p class="nota" id="nota-dom">' + ic("info") + " Domande scelte: <b>" + elencoDomande(true).length + "</b>.</p>";
   }
   function seg(nome, val, testo, attuale) {
@@ -182,6 +184,7 @@
     righe.push(["Quiz", q.titolo]);
     righe.push(["Modalità", { tempo: "Quiz a tempo, una domanda alla volta", scheda: "Scheda risposte", schermo: "Schermo domande da proiettare" }[imp.modo]]);
     righe.push(["Domande", n + (imp.ordine === "mescolato" ? ", in ordine mescolato" : ", nell'ordine del libro")]);
+    if (imp.modo !== "schermo") righe.push(["Risposte", imp.mescolaRisposte ? "mescolate a ogni prova" : "nell'ordine del libro"]);
     if (imp.modo === "tempo") righe.push(["Timer", imp.timer ? etiSec(imp.secondi) + " per domanda (circa " + GQ.durata(imp.secondi * n) + " in tutto)" : "nessun limite di tempo"]);
     if (imp.modo === "scheda") righe.push(["Tempo", imp.schedaTimer ? imp.schedaMinuti + " minuti per tutta la scheda" : "nessun limite di tempo"]);
     if (imp.modo === "schermo") righe.push(["Avanzamento", imp.schermoAuto ? "automatico ogni " + etiSec(imp.schermoSecondi) : "a mano"]);
@@ -223,7 +226,7 @@
       };
     });
     $$("[data-preset]").forEach(function (p) { p.onclick = function () { imp.secondi = +p.getAttribute("data-preset"); salvaImp(); maschera(); }; });
-    ["timer", "indietro", "pausa", "suono", "schedaTimer", "testoScheda", "schermoAuto"].forEach(function (id) {
+    ["timer", "indietro", "pausa", "suono", "schedaTimer", "testoScheda", "schermoAuto", "mescolaRisposte"].forEach(function (id) {
       var c = document.getElementById(id); if (c) c.onchange = function () { imp[id] = c.checked; salvaImp(); maschera(); };
     });
     $$("[data-info]").forEach(function (c) { c.oninput = c.onchange = function () { imp.info[c.getAttribute("data-info")] = c.value; salvaImp(); }; });
@@ -251,6 +254,41 @@
     return el;
   }
   function mescola(a) { for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+
+  /* ---------- ordine delle risposte mescolato, prova dopo prova ----------
+     Le lettere mostrate (A-B-C-D) cambiano a ogni prova, così non si può indovinare
+     scegliendo sempre la stessa. La risposta scelta resta però registrata con la
+     lettera del libro: il file esportato e la correzione riservata non cambiano.
+     L'ordine dipende solo dal numero della domanda e dall'inizio della prova, quindi
+     resta identico anche ricaricando la pagina o riprendendo una prova interrotta. */
+  function mescolaRisposteAttiva() {
+    return !!(ses && ses.imp.mescolaRisposte && ses.modo !== "schermo" && !(ses.modo === "scheda" && !ses.imp.testoScheda));
+  }
+  function permutaRisposte(d) {
+    if (d.tipo !== "mc" || !d.opzioni || d.opzioni.length < 2 || !mescolaRisposteAttiva()) return null;
+    var semi = (ses.iniziato || "") + "|" + d.n, i, j, t;
+    var seme = 2166136261;
+    for (i = 0; i < semi.length; i++) { seme ^= semi.charCodeAt(i); seme = Math.imul(seme, 16777619); }
+    seme = seme >>> 0;
+    var rnd = function () { /* mulberry32: numeri pseudo-casuali stabili a parità di seme */
+      seme = (seme + 0x6D2B79F5) >>> 0;
+      var x = seme;
+      x = Math.imul(x ^ (x >>> 15), x | 1);
+      x ^= x + Math.imul(x ^ (x >>> 7), x | 61);
+      return ((x ^ (x >>> 14)) >>> 0) / 4294967296;
+    };
+    var ord = d.opzioni.map(function (_, k) { return k; });
+    for (i = ord.length - 1; i > 0; i--) {
+      j = Math.floor(rnd() * (i + 1));
+      t = ord[i]; ord[i] = ord[j]; ord[j] = t;
+    }
+    return ord;
+  }
+  /* lettera mostrata (o tasto premuto) -> lettera del libro, quella da salvare */
+  function letteraOriginale(d, k) {
+    var ord = permutaRisposte(d), pos = "ABCD".indexOf(k);
+    return ord && pos >= 0 && pos < ord.length ? "ABCD"[ord[pos]] : k;
+  }
 
   /* =========================================================================
      AVVIO, RIPRESA, TIMER
@@ -403,10 +441,11 @@
   function rispostaHtml(d, val, lettura, pref) {
     var dis = lettura ? " disabled" : "", nome = pref + "q" + d.n;
     if (d.tipo === "mc") {
-      return '<div class="opzioni' + (pref ? " compatte" : "") + '" role="radiogroup" aria-label="Risposte">' + d.opzioni.map(function (o, i) {
-        var l = "ABCD"[i], on = val === l;
-        return '<button type="button" class="opzione' + (on ? " scelta-fatta" : "") + '" role="radio" aria-checked="' + on + '" data-n="' + d.n + '" data-v="' + l + '"' + dis + '><span class="lettera">' + l +
-          "</span><span class=\"o-testo\">" + (pref && !ses.imp.testoScheda ? "" : o) + "</span></button>";
+      var ord = permutaRisposte(d) || d.opzioni.map(function (_, i) { return i; });
+      return '<div class="opzioni' + (pref ? " compatte" : "") + '" role="radiogroup" aria-label="Risposte">' + ord.map(function (orig, i) {
+        var l = "ABCD"[i], vo = "ABCD"[orig], on = val === vo;
+        return '<button type="button" class="opzione' + (on ? " scelta-fatta" : "") + '" role="radio" aria-checked="' + on + '" data-n="' + d.n + '" data-v="' + vo + '"' + dis + '><span class="lettera">' + l +
+          "</span><span class=\"o-testo\">" + (pref && !ses.imp.testoScheda ? "" : d.opzioni[orig]) + "</span></button>";
       }).join("") + "</div>";
     }
     if (d.tipo === "vf") {
@@ -507,8 +546,8 @@
       if (e.key === "ArrowLeft" && ses.indice > 0) { ses.indice--; ses.rimasti = null; mostraDomanda(); }
       return;
     }
-    if (d.tipo === "mc" && "ABCD".indexOf(k) >= 0 && k.length === 1) { scegli(n, k); aggiornaScelte($(".domanda"), n); aggiornaPrimario(); }
-    else if (d.tipo === "mc" && "1234".indexOf(k) >= 0 && k.length === 1) { scegli(n, "ABCD"[+k - 1]); aggiornaScelte($(".domanda"), n); aggiornaPrimario(); }
+    if (d.tipo === "mc" && "ABCD".indexOf(k) >= 0 && k.length === 1) { scegli(n, letteraOriginale(d, k)); aggiornaScelte($(".domanda"), n); aggiornaPrimario(); }
+    else if (d.tipo === "mc" && "1234".indexOf(k) >= 0 && k.length === 1) { scegli(n, letteraOriginale(d, "ABCD"[+k - 1])); aggiornaScelte($(".domanda"), n); aggiornaPrimario(); }
     else if (d.tipo === "vf" && (k === "V" || k === "F")) { scegli(n, k === "V" ? "Vero" : "Falso"); aggiornaScelte($(".domanda"), n); aggiornaPrimario(); }
     else if (e.key === "Enter") { e.preventDefault(); succ(); }
     else if (e.key === "ArrowLeft" && ses.imp.indietro) prec();
