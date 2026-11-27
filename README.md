@@ -5,6 +5,7 @@ Un progetto FeniceOS per l'alfabetizzazione digitale in centri anziani, scuole, 
 
 🌐 **Sito:** https://danilodauria.github.io/grande-quiz/
 
+- 🔀 **Risposte mescolate** — l'ordine delle opzioni cambia a ogni prova: non si può indovinare scegliendo sempre la stessa lettera
 - ⏱️ **Quiz a tempo** — una domanda alla volta, timer regolabile da 10 secondi a 5 minuti per domanda
 - 📝 **Scheda risposte** — tutte le domande insieme, come su carta, con tempo complessivo facoltativo
 - 🖥️ **Schermo domande** — da proiettare in aula
